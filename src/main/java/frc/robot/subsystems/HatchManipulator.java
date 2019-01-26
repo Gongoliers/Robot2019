@@ -22,6 +22,8 @@ import edu.wpi.first.wpilibj.Talon;
  */
 public class HatchManipulator extends Subsystem implements IPiston {
 
+    public static final double DEFAULT_SPEED = 0.5;
+
     private Piston hatchPiston1;
     private Piston hatchPiston2;
     private WPI_TalonSRX hatchSpeedController;

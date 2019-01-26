@@ -10,7 +10,7 @@ public class RetractClimber extends Command {
 
     public RetractClimber() {
 
-        requires(Robot.hABClimber);
+        requires(Robot.habClimber);
 
     }
 

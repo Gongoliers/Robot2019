@@ -24,6 +24,8 @@ import edu.wpi.first.wpilibj.SpeedController;
  */
 public class CargoManipulator extends Subsystem implements IPiston{
 
+    public static final double DEFAULT_SPEED = 0.5;
+
     private Piston cargoPiston1;
     private Piston cargoPiston2;
     private LimitSwitch cargoLimitSwitch1;

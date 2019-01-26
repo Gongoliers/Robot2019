@@ -25,7 +25,7 @@ public class Robot extends TimedRobot {
     public static Drivetrain drivetrain;
     public static HatchManipulator hatchManipulator;
     public static CargoManipulator cargoManipulator;
-    public static HABClimber hABClimber;
+    public static HABClimber habClimber;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -38,7 +38,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData(drivetrain);
         hatchManipulator = new HatchManipulator();
         cargoManipulator = new CargoManipulator();
-        hABClimber = new HABClimber();
+        habClimber = new HABClimber();
 
         // OI must be constructed after subsystems. If the OI creates Commands
         //(which it very likely will), subsystems are not guaranteed to be

@@ -10,7 +10,7 @@ public class ExtendClimber extends Command {
 
     public ExtendClimber() {
 
-        requires(Robot.hABClimber);
+        requires(Robot.habClimber);
 
     }
 

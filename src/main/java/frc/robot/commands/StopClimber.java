@@ -10,7 +10,7 @@ public class StopClimber extends Command {
 
     public StopClimber() {
 
-        requires(Robot.hABClimber);
+        requires(Robot.habClimber);
 
     }
 

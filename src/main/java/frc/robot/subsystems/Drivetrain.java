@@ -23,6 +23,8 @@ import edu.wpi.first.wpilibj.Talon;
  */
 public class Drivetrain extends Subsystem implements SmartDrivetrain {
 
+    public static final double DEFAULT_SPEED = 0.5;
+
     private WPI_TalonSRX driveSpeedControllerRight;
     private WPI_TalonSRX driveSpeedControllerLeft;
     private DifferentialDrive robotDrive;
@@ -31,9 +33,11 @@ public class Drivetrain extends Subsystem implements SmartDrivetrain {
     public Drivetrain() {
         driveSpeedControllerRight = new WPI_TalonSRX(4);
         driveSpeedControllerRight.setInverted(false);
+        driveSpeedControllerRight.configOpenloopRamp(0.5); // TODO: Find ideal value
         
         driveSpeedControllerLeft = new WPI_TalonSRX(3);
         driveSpeedControllerLeft.setInverted(false);
+        driveSpeedControllerLeft.configOpenloopRamp(0.5); // TODO: Find ideal value
         
         robotDrive = new DifferentialDrive(driveSpeedControllerLeft, driveSpeedControllerRight);
         
