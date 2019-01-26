@@ -24,9 +24,9 @@ public class CargoManipulator extends Subsystem {
 
     private Piston cargoPiston1;
     private Piston cargoPiston2;
-    private LimitSwitch cargoDigitalInput1;
-    private LimitSwitch cargoDigitalInput2;
-    private LimitSwitch cargoDigitalInput3;
+    private LimitSwitch cargoLimitSwitch1;
+    private LimitSwitch cargoLimitSwitch2;
+    private LimitSwitch cargoLimitSwitch3;
     private WPI_TalonSRX cargoSpeedController1;
     private WPI_TalonSRX cargoSpeedController2;
     private WPI_TalonSRX cargoSpeedController3;
@@ -36,11 +36,11 @@ public class CargoManipulator extends Subsystem {
         
         cargoPiston2 = new Piston(new FRCSolenoid(0, 1));
         
-        cargoDigitalInput1 = new LimitSwitch(0);
+        cargoLimitSwitch1 = new LimitSwitch(0);
         
-        cargoDigitalInput2 = new LimitSwitch(1);
+        cargoLimitSwitch2 = new LimitSwitch(1);
         
-        cargoDigitalInput3 = new LimitSwitch(2);
+        cargoLimitSwitch3 = new LimitSwitch(2);
         
         cargoSpeedController1 = new WPI_TalonSRX(0);
         cargoSpeedController1.setInverted(false);
