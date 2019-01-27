@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 /**
- *
+ * Retracts the HAB climber piston to inside the robot.
  */
 public class RetractClimber extends Command {
 
@@ -17,6 +17,7 @@ public class RetractClimber extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        Robot.habClimber.retract();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -27,7 +28,7 @@ public class RetractClimber extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true

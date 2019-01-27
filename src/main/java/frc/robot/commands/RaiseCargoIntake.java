@@ -2,13 +2,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.subsystems.CargoManipulator;
 
 /**
  *
  */
-public class RotateCargoIntake extends Command {
+public class RaiseCargoIntake extends Command {
 
-    public RotateCargoIntake() {
+    public RaiseCargoIntake() {
 
         requires(Robot.cargoManipulator);
 
@@ -22,12 +23,13 @@ public class RotateCargoIntake extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        Robot.cargoManipulator.raiseWrist(CargoManipulator.DEFAULT_SPEED);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+        return false; // TODO: Determine when cargo arm reaches maximum height.
     }
 
     // Called once after isFinished returns true

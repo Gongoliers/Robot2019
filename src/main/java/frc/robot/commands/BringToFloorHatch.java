@@ -29,7 +29,7 @@ public class BringToFloorHatch extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false; // TODO: Automatically stop the cargo manipulator when it reaches desired position
+        return false; // TODO: Automatically stop the hatch manipulator when it reaches desired position
     }
 
     // Called once after isFinished returns true

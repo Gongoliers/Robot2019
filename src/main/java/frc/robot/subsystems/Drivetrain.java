@@ -30,6 +30,8 @@ public class Drivetrain extends Subsystem implements SmartDrivetrain {
     private DifferentialDrive robotDrive;
     private Gyro gyro;
 
+    private boolean turbo = false;
+
     public Drivetrain() {
         driveSpeedControllerRight = new WPI_TalonSRX(4);
         driveSpeedControllerRight.setInverted(false);
@@ -175,10 +177,15 @@ public class Drivetrain extends Subsystem implements SmartDrivetrain {
     @Override
     public double getWheelbaseWidth() {
         return 0;
-	}
+    }
+    
+    public void setTurbo(boolean turbo) {
+        this.turbo = turbo;
+    }
 
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
+    public boolean isTurboEnabled() {
+        return turbo;
+    }
 
 }
 

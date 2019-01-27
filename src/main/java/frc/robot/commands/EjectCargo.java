@@ -22,12 +22,13 @@ public class EjectCargo extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        Robot.cargoManipulator.outtake(.8, .7); // TODO: Calibrate these speeds.
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+        return false; // TODO: Determine when the cargo has been fully ejected.
     }
 
     // Called once after isFinished returns true

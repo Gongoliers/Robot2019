@@ -19,12 +19,14 @@ import edu.wpi.first.wpilibj.Solenoid;
 public class HABClimber extends Subsystem implements IPiston {
 
     private Piston climberPiston;
-    private Servo climberServo;
+    private Piston skidPiston1;
+    private Piston skidPiston2;
 
     public HABClimber() {
         climberPiston = new Piston(new FRCSolenoid(0, 2));
         
-        climberServo = new Servo(5);
+        skidPiston1 = new Piston(new FRCSolenoid(0, 5));
+        skidPiston1 = new Piston(new FRCSolenoid(0, 6));
 
     }
 
@@ -71,11 +73,8 @@ public class HABClimber extends Subsystem implements IPiston {
     }
 
     public void deploySkids() {
-        climberServo.setAngle(90); // TODO: Find the proper angle the servo needs to spin
+        skidPiston1.extend();
+        skidPiston2.extend();
     }
 
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
-
 }
-

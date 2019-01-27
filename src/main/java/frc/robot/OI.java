@@ -75,7 +75,7 @@ public class OI {
         SmartDashboard.putData("PickupCargo", new PickupCargo());
         SmartDashboard.putData("StopCargoIntake", new StopCargoIntake());
         SmartDashboard.putData("RetractCargoArm", new RetractCargoArm());
-        SmartDashboard.putData("RotateCargoIntake", new RotateCargoIntake());
+        SmartDashboard.putData("RotateCargoIntake", new RaiseCargoIntake());
         SmartDashboard.putData("ResetCargoManipulator", new ResetCargoManipulator());
         SmartDashboard.putData("DeploySkids", new DeploySkids());
         SmartDashboard.putData("ExtendClimber", new ExtendClimber());
