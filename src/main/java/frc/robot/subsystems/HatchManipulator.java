@@ -116,4 +116,11 @@ public class HatchManipulator extends Subsystem implements IPiston {
         hatchSpeedController.set(ControlMode.PercentOutput, -speed);
     }
 
+    /**
+     * Stops the manipulator arm from moving
+     */
+    public void stopArm(){
+        hatchSpeedController.stopMotor();
+    }
+
 }

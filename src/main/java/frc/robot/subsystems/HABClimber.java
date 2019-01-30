@@ -1,17 +1,10 @@
  package frc.robot.subsystems;
 
-import frc.robot.commands.*;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import com.thegongoliers.output.FRCSolenoid;
 import com.thegongoliers.output.Piston;
 import com.thegongoliers.output.interfaces.IPiston;
-
-import edu.wpi.first.wpilibj.PIDOutput;
-import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.Servo;
-import edu.wpi.first.wpilibj.Solenoid;
 
 /**
  *
@@ -31,15 +24,14 @@ public class HABClimber extends Subsystem implements IPiston {
     }
 
     @Override
-    public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        setDefaultCommand(new StopClimber());
-    }
-
-    @Override
     public void periodic() {
         // Put code here to be run every loop
 
+    }
+
+    @Override
+    protected void initDefaultCommand() {
+        // No default command for the climber subsystem
     }
 
     @Override

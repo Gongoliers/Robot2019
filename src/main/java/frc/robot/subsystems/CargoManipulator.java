@@ -1,23 +1,14 @@
 package frc.robot.subsystems;
 
 import frc.robot.commands.*;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.PIDOutput;
-import edu.wpi.first.wpilibj.PIDSource;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.thegongoliers.input.switches.LimitSwitch;
 import com.thegongoliers.output.FRCSolenoid;
 import com.thegongoliers.output.Piston;
 import com.thegongoliers.output.interfaces.IPiston;
-
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.SpeedController;
 
 /**
  *
@@ -29,7 +20,7 @@ public class CargoManipulator extends Subsystem implements IPiston{
     private Piston cargoPiston1;
     private Piston cargoPiston2;
     private LimitSwitch cargoLimitSwitch1;
-    private LimitSwitch cargoLimitSwitch2;
+    private LimitSwitch cargoLimitSwitch2; // TODO: Consider switching to potentiometer (or similar)
     private LimitSwitch cargoLimitSwitch3;
     private WPI_TalonSRX cargoSpeedControllerWrist;
     private WPI_TalonSRX cargoSpeedControllerTopRoller;
@@ -172,4 +163,20 @@ public class CargoManipulator extends Subsystem implements IPiston{
     public void outtake(double bottomSpeed, double topSpeed) {
         intake(-bottomSpeed, -topSpeed);
     }
+
+    /**
+     * Stops the cargo intake/outtake rollers.
+     */
+    public void stopRollers() {
+        cargoSpeedControllerBottomRoller.stopMotor();
+        cargoSpeedControllerTopRoller.stopMotor();
+    }
+
+    /**
+     * Stops the cargo wrist from moving. 
+     */
+    public void stopWrist(){
+        cargoSpeedControllerWrist.stopMotor();
+    }     
+
 }
