@@ -3,6 +3,8 @@ package frc.robot;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.subsystems.*;
 
 
@@ -39,58 +41,58 @@ public class OI {
     // button.whenReleased(new ExampleCommand());
 
 
-    public Joystick joystick1;
-    public Joystick joystick2;
+    /**
+     * Driver Xbox controller is responsible for movement of the drivetrain.
+     */
+    public XboxController driverController;
+    /**
+     * Manipulator Xbox controller is responsible for control of hatch/cargo/climbing subsystems.
+     */
+    public XboxController manipulatorController;
 
     public OI() {
 
-        joystick2 = new Joystick(1);
+        // Driver controller is plugged into port 0
+        driverController = new XboxController(0);
         
-        joystick1 = new Joystick(0);
+        // Manipulator controler is plugged into port 1                
+        manipulatorController = new XboxController(1);
+
+        // Cargo wrist controlled by DPAD
+        
         
         // SmartDashboard Buttons
-        SmartDashboard.putData("StopDrivetrain", new StopDrivetrain());
-        SmartDashboard.putData("StopCargoManipulator", new StopCargoManipulator());
-        SmartDashboard.putData("StopHatchManipulator", new StopHatchManipulator());
-        SmartDashboard.putData("StopClimber", new StopClimber());
-        SmartDashboard.putData("StopEverything", new StopEverything());
-        SmartDashboard.putData("OperateDrivetrain", new OperateDrivetrain());
-        SmartDashboard.putData("ForwardDrivetrain", new ForwardDrivetrain());
-        SmartDashboard.putData("BackwardDrivetrain", new BackwardDrivetrain());
-        SmartDashboard.putData("RotateClockwiseDrivetrain", new RotateClockwiseDrivetrain());
-        SmartDashboard.putData("RotateCounterClockwiseDrivetrain", new RotateCounterClockwiseDrivetrain());
-        SmartDashboard.putData("EnableTurboDrivetrain", new EnableTurboDrivetrain());
-        SmartDashboard.putData("DisableTurboDrivetrain", new DisableTurboDrivetrain());
-        SmartDashboard.putData("FollowPathDrivetrain", new FollowPathDrivetrain());
-        SmartDashboard.putData("RotateToAngleDrivetrain", new RotateToAngleDrivetrain());
-        SmartDashboard.putData("BringToFloorHatch", new BringToFloorHatch());
-        SmartDashboard.putData("BringToStandardPositionHatch", new BringToStandardPositionHatch());
-        SmartDashboard.putData("EjectHatch", new EjectHatch());
-        SmartDashboard.putData("RetractHatchPistons", new RetractHatchPistons());
-        SmartDashboard.putData("DepositHatch", new DepositHatch());
-        SmartDashboard.putData("ResetHatchManipulator", new ResetHatchManipulator());
-        SmartDashboard.putData("BringCargoArmToFloor", new BringCargoArmToFloor());
-        SmartDashboard.putData("IntakeCargo", new IntakeCargo());
-        SmartDashboard.putData("EjectCargo", new EjectCargo());
-        SmartDashboard.putData("PickupCargo", new PickupCargo());
-        SmartDashboard.putData("StopCargoIntake", new StopCargoIntake());
-        SmartDashboard.putData("RetractCargoArm", new RetractCargoArm());
-        SmartDashboard.putData("RotateCargoIntake", new RaiseCargoIntake());
-        SmartDashboard.putData("ResetCargoManipulator", new ResetCargoManipulator());
-        SmartDashboard.putData("DeploySkids", new DeploySkids());
-        SmartDashboard.putData("ExtendClimber", new ExtendClimber());
-        SmartDashboard.putData("RetractClimber", new RetractClimber());
+        SmartDashboard.putData("Stop Drivetrain", new StopDrivetrain());
+        SmartDashboard.putData("Stop Cargo Manipulator", new StopCargoManipulator());
+        SmartDashboard.putData("Stop Hatch Manipulator", new StopHatchManipulator());
+        SmartDashboard.putData("** STOP EVERYTHING **", new StopEverything());
+        SmartDashboard.putData("Operate Drivetrain", new OperateDrivetrain());
+        SmartDashboard.putData("Forward Drivetrain", new ForwardDrivetrain());
+        SmartDashboard.putData("Backward Drivetrain", new BackwardDrivetrain());
+        SmartDashboard.putData("Rotate Clockwise Drivetrain", new RotateClockwiseDrivetrain());
+        SmartDashboard.putData("Rotate CounterClockwise Drivetrain", new RotateCounterClockwiseDrivetrain());
+        SmartDashboard.putData("Enable Turbo Drivetrain", new EnableTurboDrivetrain());
+        SmartDashboard.putData("Disable Turbo Drivetrain", new DisableTurboDrivetrain());
+        SmartDashboard.putData("Follow Path Drivetrain", new FollowPathDrivetrain());
+        SmartDashboard.putData("Rotate To Angle Drivetrain", new RotateToAngleDrivetrain());
+        SmartDashboard.putData("Bring To Floor Hatch", new BringToFloorHatch());
+        SmartDashboard.putData("Bring To Standard Position Hatch", new BringToStandardPositionHatch());
+        SmartDashboard.putData("Eject Hatch", new EjectHatch());
+        SmartDashboard.putData("Retract Hatch Pistons", new RetractHatchPistons());
+        SmartDashboard.putData("Deposit Hatch", new DepositHatch());
+        SmartDashboard.putData("Reset Hatch Manipulator", new ResetHatchManipulator());
+        SmartDashboard.putData("Bring Cargo Arm To Floor", new BringCargoArmToFloor());
+        SmartDashboard.putData("Intake Cargo", new IntakeCargo());
+        SmartDashboard.putData("Eject Cargo", new EjectCargo());
+        SmartDashboard.putData("Pickup Cargo", new PickupCargo());
+        SmartDashboard.putData("Stop Cargo Intake", new StopCargoIntake());
+        SmartDashboard.putData("Retract Cargo Arm", new RetractCargoArm());
+        SmartDashboard.putData("Rotate Cargo Intake", new RaiseCargoIntake());
+        SmartDashboard.putData("Reset Cargo Manipulator", new ResetCargoManipulator());
+        SmartDashboard.putData("Deploy Skids", new DeploySkids());
+        SmartDashboard.putData("Extend Climber", new ExtendClimber());
+        SmartDashboard.putData("Retract Climber", new RetractClimber());
 
     }
-
-    public Joystick getJoystick1() {
-        return joystick1;
-    }
-
-    public Joystick getJoystick2() {
-        return joystick2;
-    }
-
 
 }
-

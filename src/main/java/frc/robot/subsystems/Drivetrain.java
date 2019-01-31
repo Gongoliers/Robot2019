@@ -4,12 +4,16 @@ import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.thegongoliers.input.odometry.Odometry;
 import com.thegongoliers.output.interfaces.SmartDrivetrain;
 import com.thegongoliers.pathFollowing.controllers.MotionProfileController;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 
 /**
  *
@@ -122,6 +126,28 @@ public class Drivetrain extends Subsystem implements SmartDrivetrain {
     }
 
     /**
+     * Enables the usage of an Xbox controller to move the drivetrain.
+     * 
+     * @param driverController The Xbox controller to be used for driving
+     */
+	public void operate(XboxController driverController) {
+
+        // SmartDashboard.putNumber("Encoder Distance", Odometry.getDistance(encoderLeft.getDistance(), encoderRight.getDistance()));
+        // SmartDashboard.putNumber("Gyro Angle", gyro.getAngle());
+
+        double speed = driverController.getTriggerAxis(Hand.kRight) - driverController.getTriggerAxis(Hand.kLeft);
+        double rotation = driverController.getX(Hand.kLeft);
+
+        if (turbo) {
+            robotDrive.arcadeDrive(.9 * speed, .9 * rotation);
+        } else {
+            robotDrive.arcadeDrive(.5 * speed, .5 * rotation);
+        }
+        // TODO: Check how well this works
+
+	}
+
+    /**
      * Returns the gyro angle
      */
     @Override
@@ -171,7 +197,14 @@ public class Drivetrain extends Subsystem implements SmartDrivetrain {
     public double getWheelbaseWidth() {
         return 0;
     }
-    
+
+    /**
+     * Enables/disables turbo drivetrain mode.
+     * Turbo drivetrain mode allows movement at full speed.
+     * Precise drivetrain mode contrains movement to 50% max speed.
+     * 
+     * @param turbo Sets the turbo mode value
+     */
     public void setTurbo(boolean turbo) {
         this.turbo = turbo;
     }
@@ -180,5 +213,6 @@ public class Drivetrain extends Subsystem implements SmartDrivetrain {
         return turbo;
     }
 
-}
+    
 
+}
