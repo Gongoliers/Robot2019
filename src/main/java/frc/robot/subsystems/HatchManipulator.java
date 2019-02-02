@@ -5,6 +5,7 @@ import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
+import com.thegongoliers.input.switches.LimitSwitch;
 import com.thegongoliers.output.FRCSolenoid;
 import com.thegongoliers.output.Piston;
 import com.thegongoliers.output.interfaces.IPiston;
@@ -21,13 +22,20 @@ public class HatchManipulator extends Subsystem implements IPiston {
     private Piston hatchPiston2;
     private GTalonSRX hatchSpeedController;
 
+    private LimitSwitch topSwitch;
+    private LimitSwitch bottomSwitch;
+
     public HatchManipulator() {
         hatchPiston1 = new Piston(new FRCSolenoid(0, RobotMap.hatchPiston1));
-        
         hatchPiston2 = new Piston(new FRCSolenoid(0, RobotMap.hatchPiston2));
 
         hatchSpeedController = new GTalonSRX(RobotMap.hatchMotor1);
         hatchSpeedController.setInverted(false);
+        hatchSpeedController.useBrakeMode();
+        
+        topSwitch = new LimitSwitch(RobotMap.topLimitSwitchHatch);
+        bottomSwitch = new LimitSwitch(RobotMap.bottomLimitSwitchHatch);
+        
         // TODO: Add PID and sensor if needed
 
     }
@@ -113,13 +121,11 @@ public class HatchManipulator extends Subsystem implements IPiston {
     // TODO: Add set position method if needed (not using limit switches)
 
     public boolean isAtTop() {
-        return false;
-        // TODO NOT COMPLETE
+        return topSwitch.isTriggered();
     }
 
     public boolean isAtBottom() { 
-        return false;
-        // TODO NOT COMPLETE
+        return bottomSwitch.isTriggered();
     }
 
     /**

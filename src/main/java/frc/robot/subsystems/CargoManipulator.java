@@ -29,13 +29,10 @@ public class CargoManipulator extends Subsystem implements IPiston {
 
     public CargoManipulator() {
         cargoPiston1 = new Piston(new FRCSolenoid(0, RobotMap.cargoPiston1));
-        
         cargoPiston2 = new Piston(new FRCSolenoid(0, RobotMap.cargoPiston2));
         
         cargoLimitSwitch1 = new LimitSwitch(RobotMap.cargoLimitSwitch1);
-        
         cargoLimitSwitch2 = new LimitSwitch(RobotMap.cargoLimitSwitch2);
-        
         cargoLimitSwitch3 = new LimitSwitch(RobotMap.cargoLimitSwitch3);
         
         cargoSpeedControllerWrist = new GTalonSRX(RobotMap.cargoMotor1);
@@ -185,7 +182,8 @@ public class CargoManipulator extends Subsystem implements IPiston {
         // TODO
 	}     
 
-
-    // TODO: Add rotate wrist to position method (use talon.setPosition)
+    public void rotateWristToPosition(double position) {
+        cargoSpeedControllerWrist.setPosition(position);
+    }
 
 }

@@ -1,16 +1,20 @@
 package frc.robot.subsystems;
 
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.kauailabs.navx.frc.AHRS;
+import com.thegongoliers.input.odometry.Odometry;
 import com.thegongoliers.output.interfaces.DriveTrainInterface;
 import com.thegongoliers.talonsrx.GTalonSRX;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 
@@ -20,13 +24,27 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
 
     public static final double DEFAULT_SPEED = 0.5;
-    public static final double MAX_TURBO_SPEED = 0.9;
-    public static final double MAX_NON_TURBO_SPEED = 0.5;
+    private static final double MAX_TURBO_SPEED = 0.9;
+    private static final double MAX_PRECISE_SPEED = 0.5;
 
     private GTalonSRX driveRight;
     private GTalonSRX driveLeft;
     private DifferentialDrive robotDrive;
-    private Gyro gyro; // TODO: Change type to NavX
+    private AHRS navX;
+
+    /**
+     * The number of milliseconds since the last time the hatch manipulator arm was fully raised and activating the limit switch.
+     * It is possible that the limit switch could become deactivated during a bounce.
+     * The drivetrain will stop if the hatch manipulator has been not fully upright for more than the number of milliseconds in DEBOUNCE_DURATION_MILLIS.
+     * The drivetrain will deactivate if the hatch manipulator is down to prevent the hook tape from sticking to the carpet.
+     */
+    private long lastTimeAtTop = 0;
+    /**
+     * The drivetrain will stop if the hatch manipulator has been not fully upright for more than this number of milliseconds.
+     * It is possible that the limit switch could become deactivated during a bounce.
+     * The drivetrain will deactivate if the hatch manipulator is down to prevent the hook tape from sticking to the carpet.
+     */
+    private static final int DEBOUNCE_DURATION_MILLIS = 300;
 
     private boolean turbo = false;
 
@@ -59,8 +77,11 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
         robotDrive.setExpiration(0.1);
         robotDrive.setMaxOutput(1.0);
 
-        gyro = new AnalogGyro(0); // TODO: switch to NavX
-        gyro.calibrate();
+        try {
+            navX = new AHRS(SerialPort.Port.kMXP); // TODO: switch to NavX
+        } catch (Exception ex) {
+            DriverStation.reportError(ex.getMessage(), true);
+        }
 
     }
 
@@ -144,33 +165,43 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
      * @param driverController The Xbox controller to be used for driving
      */
 	public void operate(XboxController driverController) {
+        SmartDashboard.putNumber("Encoder Distance", Odometry.getDistance(getLeftDistance(), getRightDistance()));
+        SmartDashboard.putNumber("Gyro Angle", navX.getAngle());
 
-        // SmartDashboard.putNumber("Encoder Distance", Odometry.getDistance(encoderLeft.getDistance(), encoderRight.getDistance()));
-        // SmartDashboard.putNumber("Gyro Angle", gyro.getAngle());
-
-        double speed = driverController.getTriggerAxis(Hand.kRight) - driverController.getTriggerAxis(Hand.kLeft);
-        double rotation = driverController.getX(Hand.kLeft);
-
-        if (turbo) {
-            robotDrive.arcadeDrive(MAX_TURBO_SPEED * speed, MAX_TURBO_SPEED * rotation);
-        } else {
-            robotDrive.arcadeDrive(MAX_NON_TURBO_SPEED * speed, MAX_NON_TURBO_SPEED * rotation);
+        if (!Robot.hatchManipulator.isAtTop() && System.currentTimeMillis() - lastTimeAtTop > DEBOUNCE_DURATION_MILLIS) {
+            stop();
         }
+        else {
+            if (Robot.hatchManipulator.isAtTop()) {
+                lastTimeAtTop = System.currentTimeMillis();
+            }
 
-	}
+            double speed = driverController.getTriggerAxis(Hand.kRight) - driverController.getTriggerAxis(Hand.kLeft);
+            double rotation = driverController.getX(Hand.kLeft);
+
+            if (turbo) {
+                robotDrive.arcadeDrive(MAX_TURBO_SPEED * speed, MAX_TURBO_SPEED * rotation);
+            } else {
+                robotDrive.arcadeDrive(MAX_PRECISE_SPEED * speed, MAX_PRECISE_SPEED * rotation);
+            }
+
+    }
+}
 
     /**
-     * Returns the gyro angle
+     * Returns the navX angle
      */
     public double getHeading() {
-        return gyro.getAngle();
+        if (navX == null) return 0;
+        return navX.getAngle();
     }
 
     /**
-     * Resets the gyro
+     * Resets the navX
      */
     public void resetHeading() {
-        gyro.reset();
+        if (navX == null) return;
+        navX.reset();
     }
 
     /**
