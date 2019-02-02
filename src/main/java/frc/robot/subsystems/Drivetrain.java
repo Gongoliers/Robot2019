@@ -78,7 +78,7 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
         robotDrive.setMaxOutput(1.0);
 
         try {
-            navX = new AHRS(SerialPort.Port.kMXP); // TODO: switch to NavX
+            navX = new AHRS(SerialPort.Port.kMXP);
         } catch (Exception ex) {
             DriverStation.reportError(ex.getMessage(), true);
         }
@@ -120,7 +120,7 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
      */
     @Override
     public void rotateLeft(double speed) {
-        robotDrive.arcadeDrive(0, speed);
+        robotDrive.arcadeDrive(0, -speed);
     }
 
     /**
@@ -221,14 +221,12 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
 
     @Override
     protected double returnPIDInput() {
-        return 0; // TODO: Implement PID (gyro angle) 
+        return navX.getAngle(); // TODO: Implement PID (gyro angle) 
     }
 
     @Override
     protected void usePIDOutput(double output) {
-        // TODO: Implement PID (call rotate)
+        rotateRight(output);
     }
-
-    
 
 }

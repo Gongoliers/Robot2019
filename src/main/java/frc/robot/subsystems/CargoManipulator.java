@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import frc.robot.RobotMap;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import com.thegongoliers.input.switches.LimitSwitch;
@@ -17,6 +18,7 @@ import com.thegongoliers.talonsrx.GTalonSRX;
 public class CargoManipulator extends Subsystem implements IPiston {
 
     public static final double DEFAULT_SPEED = 0.5;
+    public static final double MAXIMUM_SPEED = 0.8;
 
     private Piston cargoPiston1;
     private Piston cargoPiston2;
@@ -179,7 +181,7 @@ public class CargoManipulator extends Subsystem implements IPiston {
     }
 
 	public void operate(XboxController manipulatorController) {
-        // TODO
+        cargoSpeedControllerWrist.set(manipulatorController.getY(Hand.kLeft) * MAXIMUM_SPEED);
 	}     
 
     public void rotateWristToPosition(double position) {

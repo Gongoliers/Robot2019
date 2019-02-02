@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import frc.robot.RobotMap;
 import frc.robot.commands.*;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import com.thegongoliers.input.switches.LimitSwitch;
@@ -43,7 +42,7 @@ public class HatchManipulator extends Subsystem implements IPiston {
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        setDefaultCommand(new OperateHatch());
+        setDefaultCommand(new StopHatchManipulator());
     }
 
     @Override
@@ -134,9 +133,5 @@ public class HatchManipulator extends Subsystem implements IPiston {
     public void stopArm(){
         hatchSpeedController.stopMotor();
     }
-
-	public void operate(XboxController manipulatorController) {
-        // TODO
-	}
 
 }
