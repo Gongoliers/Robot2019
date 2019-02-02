@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.commands.*;
+import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
@@ -18,7 +19,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 /**
  *
  */
-public class Drivetrain extends Subsystem implements SmartDrivetrain {
+public class Drivetrain extends PIDSubsystem implements SmartDrivetrain {
 
     public static final double DEFAULT_SPEED = 0.5;
 
@@ -30,6 +31,8 @@ public class Drivetrain extends Subsystem implements SmartDrivetrain {
     private boolean turbo = false;
 
     public Drivetrain() {
+        super("", 0, 0, 0); // TODO: Find ideal values for PID
+
         driveSpeedControllerRight = new WPI_TalonSRX(4);
         driveSpeedControllerRight.setInverted(false);
         driveSpeedControllerRight.configOpenloopRamp(0.5); // TODO: Find ideal value
@@ -54,7 +57,7 @@ public class Drivetrain extends Subsystem implements SmartDrivetrain {
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());
 
-        setDefaultCommand(new OperateDrivetrain());
+        setDefaultCommand(new OperateCargo());
     }
 
     @Override
@@ -211,6 +214,16 @@ public class Drivetrain extends Subsystem implements SmartDrivetrain {
 
     public boolean isTurboEnabled() {
         return turbo;
+    }
+
+    @Override
+    protected double returnPIDInput() {
+        return 0; // TODO: Implement PID 
+    }
+
+    @Override
+    protected void usePIDOutput(double output) {
+        // TODO: Implement PID
     }
 
     

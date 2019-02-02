@@ -11,6 +11,12 @@ import com.thegongoliers.output.interfaces.IPiston;
  */
 public class HABClimber extends Subsystem implements IPiston {
 
+    /**
+     * This safety value will prevent accidental activation of HAB Climber functions.
+     * The skids cannot be deployed nor can the piston be controlled unless this value is set to FALSE.
+     */
+    private boolean safety = true;
+
     private Piston climberPiston;
     private Piston skidPiston1;
     private Piston skidPiston2;
@@ -36,12 +42,14 @@ public class HABClimber extends Subsystem implements IPiston {
 
     @Override
     public void extend() {
-        climberPiston.extend();
+        if (!safety)
+            climberPiston.extend();
     }
 
     @Override
     public void retract() {
-        climberPiston.retract();
+        if (!safety)
+            climberPiston.retract();
     }
 
     @Override
@@ -65,8 +73,27 @@ public class HABClimber extends Subsystem implements IPiston {
     }
 
     public void deploySkids() {
-        skidPiston1.extend();
-        skidPiston2.extend();
+        if (!safety) {
+            skidPiston1.extend();
+            skidPiston2.extend();
+        }
+    }
+
+    /**
+     * None of the climber actions will function unless climber safety mode is turned OFF (set to FALSE)
+     * The skids will not lower and the pistons will not function unless safety mode is false.
+     * @param safety Whether safety mode will be enabled or disabled (TRUE means HAB Climber functions DISABLED)
+     */
+	public void setClimberSafety(boolean safety) {
+        this.safety = safety;
+    }
+    
+    /**
+     * When safety is enabled, the HAB Climber functions are prevented from accidentially activating.
+     * @return Returns whether the HAB Climber functions are DISABLED
+     */
+    public boolean getClimberSafety() {
+        return safety;
     }
 
 }

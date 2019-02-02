@@ -6,11 +6,11 @@ import frc.robot.Robot;
 /**
  *
  */
-public class EjectCargo extends Command {
+public class OperateHatch extends Command {
 
-    public EjectCargo() {
+    public OperateHatch() {
 
-        requires(Robot.cargoManipulator);
+        requires(Robot.hatchManipulator);
 
     }
 
@@ -22,13 +22,13 @@ public class EjectCargo extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.cargoManipulator.outtake(.8, .7); // TODO: Calibrate these speeds.
+        Robot.hatchManipulator.operate(Robot.oi.manipulatorController);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false; // TODO: Determine when the cargo has been fully ejected.
+        return false;
     }
 
     // Called once after isFinished returns true

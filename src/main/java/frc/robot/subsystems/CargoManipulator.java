@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.commands.*;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -13,7 +14,7 @@ import com.thegongoliers.output.interfaces.IPiston;
 /**
  *
  */
-public class CargoManipulator extends Subsystem implements IPiston{
+public class CargoManipulator extends Subsystem implements IPiston {
 
     public static final double DEFAULT_SPEED = 0.5;
 
@@ -53,7 +54,7 @@ public class CargoManipulator extends Subsystem implements IPiston{
      */
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new StopCargoManipulator());
+        setDefaultCommand(new OperateCargo());
     }
 
     /**
@@ -177,6 +178,10 @@ public class CargoManipulator extends Subsystem implements IPiston{
      */
     public void stopWrist(){
         cargoSpeedControllerWrist.stopMotor();
-    }     
+    }
+
+	public void operate(XboxController manipulatorController) {
+        // TODO
+	}     
 
 }

@@ -11,7 +11,7 @@ public class PickupCargo extends CommandGroup {
     public PickupCargo() {
 
         addSequential(new BringCargoArmToFloor());
-        addSequential(new RaiseCargoIntake());
+        addSequential(new LowerCargoIntake());
         addSequential(new IntakeCargo());
         addSequential(new ResetCargoManipulator());
 

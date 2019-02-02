@@ -1,21 +1,14 @@
 package frc.robot.subsystems;
 
 import frc.robot.commands.*;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.thegongoliers.output.FRCSolenoid;
 import com.thegongoliers.output.Piston;
 import com.thegongoliers.output.interfaces.IPiston;
-
-import edu.wpi.first.wpilibj.PIDOutput;
-import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.Talon;
 
 /**
  *
@@ -41,7 +34,7 @@ public class HatchManipulator extends Subsystem implements IPiston {
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        // setDefaultCommand(new MySpecialCommand());
+        setDefaultCommand(new OperateHatch());
     }
 
     @Override
@@ -122,5 +115,9 @@ public class HatchManipulator extends Subsystem implements IPiston {
     public void stopArm(){
         hatchSpeedController.stopMotor();
     }
+
+	public void operate(XboxController manipulatorController) {
+        // TODO
+	}
 
 }
