@@ -1,6 +1,8 @@
  package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.Robot;
+import frc.robot.RobotMap;
 
 import com.thegongoliers.output.FRCSolenoid;
 import com.thegongoliers.output.Piston;
@@ -22,10 +24,10 @@ public class HABClimber extends Subsystem implements IPiston {
     private Piston skidPiston2;
 
     public HABClimber() {
-        climberPiston = new Piston(new FRCSolenoid(0, 2)); // TODO: Add to robot map
+        climberPiston = new Piston(new FRCSolenoid(0, RobotMap.climberPiston1)); 
         
-        skidPiston1 = new Piston(new FRCSolenoid(0, 5)); // TODO: Add to robot map
-        skidPiston1 = new Piston(new FRCSolenoid(0, 6)); // TODO: Add to robot map
+        skidPiston1 = new Piston(new FRCSolenoid(0, RobotMap.skidPiston1));
+        skidPiston1 = new Piston(new FRCSolenoid(0, RobotMap.skidPiston2));
 
     }
 
@@ -86,6 +88,14 @@ public class HABClimber extends Subsystem implements IPiston {
      */
 	public void setClimberSafety(boolean safety) {
         this.safety = safety;
+        if(safety) {
+            Robot.oi.manipulatorController.stopVibration();
+            Robot.oi.driverController.stopVibration();
+        }
+        else {
+            Robot.oi.manipulatorController.vibrate(0.8F);
+            Robot.oi.driverController.vibrate(.4F);
+        }
     }
     
     /**

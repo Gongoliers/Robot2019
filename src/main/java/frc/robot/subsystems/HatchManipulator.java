@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import frc.robot.RobotMap;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -21,11 +22,11 @@ public class HatchManipulator extends Subsystem implements IPiston {
     private GTalonSRX hatchSpeedController;
 
     public HatchManipulator() {
-        hatchPiston1 = new Piston(new FRCSolenoid(0, 3)); // TODO: Add to robot map
+        hatchPiston1 = new Piston(new FRCSolenoid(0, RobotMap.hatchPiston1));
         
-        hatchPiston2 = new Piston(new FRCSolenoid(0, 4)); // TODO: Add to robot map
-        
-        hatchSpeedController = new GTalonSRX(6); // TODO: Add to robot map
+        hatchPiston2 = new Piston(new FRCSolenoid(0, RobotMap.hatchPiston2));
+
+        hatchSpeedController = new GTalonSRX(RobotMap.hatchMotor1);
         hatchSpeedController.setInverted(false);
         // TODO: Add PID and sensor if needed
 
@@ -111,7 +112,15 @@ public class HatchManipulator extends Subsystem implements IPiston {
 
     // TODO: Add set position method if needed (not using limit switches)
 
-    // TODO: Add is at bottom / at top methods
+    public boolean isAtTop() {
+        return false;
+        // TODO NOT COMPLETE
+    }
+
+    public boolean isAtBottom() { 
+        return false;
+        // TODO NOT COMPLETE
+    }
 
     /**
      * Stops the manipulator arm from moving

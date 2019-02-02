@@ -5,7 +5,7 @@ import frc.robot.Robot;
 import frc.robot.subsystems.CargoManipulator;
 
 /**
- *
+ * Raises the Cargo Intake to its default posistion
  */
 public class RaiseCargoIntake extends Command {
 
@@ -35,11 +35,13 @@ public class RaiseCargoIntake extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.cargoManipulator.stopWrist();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        end();
     }
 }

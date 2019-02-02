@@ -1,14 +1,12 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
 
 /**
- *
+ * Brings the Cargo arm to the floor, which runs instantly because of the InstantCommand function
  */
-public class BringCargoArmToFloor extends Command {
-    // TODO: Convert to instant command
-
+public class BringCargoArmToFloor extends InstantCommand {
     public BringCargoArmToFloor() {
 
         requires(Robot.cargoManipulator);
@@ -19,27 +17,5 @@ public class BringCargoArmToFloor extends Command {
     @Override
     protected void initialize() {
         Robot.cargoManipulator.extend();
-    }
-
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    protected void execute() {
-    }
-
-    // Make this return true when this Command no longer needs to run execute()
-    @Override
-    protected boolean isFinished() {
-        return true;
-    }
-
-    // Called once after isFinished returns true
-    @Override
-    protected void end() {
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    @Override
-    protected void interrupted() {
     }
 }

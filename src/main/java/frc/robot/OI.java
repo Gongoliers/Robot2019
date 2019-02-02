@@ -4,6 +4,7 @@ import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.thegongoliers.input.operator.EnhancedXboxController;
+import com.thegongoliers.commands.RotateToAngle;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -48,12 +49,31 @@ public class OI {
     public EnhancedXboxController manipulatorController;
 
     public OI() {
-        // TODO: Add a "map" of the controls in the comments here: something like this
         /*
          * Driver
          * ------
-         * LB (pressed) -> disable turbo
+         * LB (pressed) -> enable precise
          * RB (pressed) -> enable turbo 
+         * LT (held) -> brake/reverse
+         * RT (held) -> forward
+         * Left Thumbstick -> Steer L/R
+         * Select Button (pressed) (Small Button on top left of controller) -> Stop Everything
+         * 
+         * Manipulator
+         * -----------
+         * LB (pressed) -> Intake Cargo
+         * RB (pressed) -> Pickup Cargo
+         * LT (pressed) -> Deposit Cargo
+         * RT (pressed) -> Deposit Hatch
+         * Left Thumbstick -> Aim Cargo Wrist (Up/Down)
+         * Right Thumbstick -> Aim Hatch Arm (Up/Down
+         * Select Button (pressed) (Small Button on top left of controller) -> Stop Everything
+         * Pause Button (held) (Small Button on top right of controller) -> Disables Climber Safety
+         * PAUSE + Y (pressed) -> drop skids
+         * PAUSE + B (pressed) -> retract lift piston
+         * PAUSE + A (pressed) -> Lift Robot
+         * UP D_PAD (held) -> Raises cargo arm
+         * DOWN D_PAD (held) -> Lowers cargo arm
          */
 
         // Driver controller is plugged into port 0
@@ -96,8 +116,8 @@ public class OI {
         SmartDashboard.putData("Enable Turbo Drivetrain", new EnableTurboDrivetrain());
         SmartDashboard.putData("Disable Turbo Drivetrain", new DisableTurboDrivetrain());
         SmartDashboard.putData("Follow Path Drivetrain", new FollowPathDrivetrain());
-        SmartDashboard.putData("Rotate To 90° Angle Drivetrain", new RotateToAngleDrivetrain(90));
-        SmartDashboard.putData("Rotate To 180° Angle Drivetrain", new RotateToAngleDrivetrain(180));
+        SmartDashboard.putData("Rotate To 90° Angle Drivetrain", new RotateToAngle(Robot.drivetrain, 90));
+        SmartDashboard.putData("Rotate To 180° Angle Drivetrain", new RotateToAngle(Robot.drivetrain, 180));
         SmartDashboard.putData("Bring To Floor Hatch", new BringToFloorHatch());
         SmartDashboard.putData("Bring To Standard Position Hatch", new BringToStandardPositionHatch());
         SmartDashboard.putData("Eject Hatch", new EjectHatch());

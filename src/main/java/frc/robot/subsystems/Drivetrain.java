@@ -5,10 +5,8 @@ import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.thegongoliers.input.odometry.Odometry;
 import com.thegongoliers.output.interfaces.DriveTrainInterface;
 import com.thegongoliers.talonsrx.GTalonSRX;
 
@@ -17,11 +15,13 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 
 /**
- *
+ * Runs the drivetrain subsystem
  */
 public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
 
     public static final double DEFAULT_SPEED = 0.5;
+    public static final double MAX_TURBO_SPEED = 0.9;
+    public static final double MAX_NON_TURBO_SPEED = 0.5;
 
     private GTalonSRX driveRight;
     private GTalonSRX driveLeft;
@@ -40,8 +40,8 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
         driveRight.setRamp(0.5); // TODO: Test to find ideal value
         driveRight.setNeutralDeadband(0.05);
         
-        new GTalonSRX(RobotMap.rightMotor, RobotMap.rightSlave1); // TODO: convert these to variables in case they need to be inverted
-        new GTalonSRX(RobotMap.rightMotor, RobotMap.rightSlave2);
+        GTalonSRX rightSlave1 = new GTalonSRX(RobotMap.rightMotor, RobotMap.rightSlave1);
+        GTalonSRX rightSlave2 = new GTalonSRX(RobotMap.rightMotor, RobotMap.rightSlave2);
 
         driveLeft = new GTalonSRX(RobotMap.leftMotor);
         driveLeft.setInverted(false);
@@ -50,8 +50,8 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
         driveLeft.setRamp(0.5); // TODO: Test to find ideal value
         driveLeft.setNeutralDeadband(0.05);
         
-        new GTalonSRX(RobotMap.leftMotor, RobotMap.leftSlave1); // TODO: convert these to variables in case they need to be inverted
-        new GTalonSRX(RobotMap.leftMotor, RobotMap.leftSlave2);
+        GTalonSRX leftSlave1 = new GTalonSRX(RobotMap.leftMotor, RobotMap.leftSlave1);
+        GTalonSRX leftSlave2 = new GTalonSRX(RobotMap.leftMotor, RobotMap.leftSlave2);
 
         robotDrive = new DifferentialDrive(driveLeft, driveRight);
         
@@ -151,10 +151,10 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
         double speed = driverController.getTriggerAxis(Hand.kRight) - driverController.getTriggerAxis(Hand.kLeft);
         double rotation = driverController.getX(Hand.kLeft);
 
-        if (turbo) { // TODO: extract the .9 and .5 into constants
-            robotDrive.arcadeDrive(.9 * speed, .9 * rotation);
+        if (turbo) {
+            robotDrive.arcadeDrive(MAX_TURBO_SPEED * speed, MAX_TURBO_SPEED * rotation);
         } else {
-            robotDrive.arcadeDrive(.5 * speed, .5 * rotation);
+            robotDrive.arcadeDrive(MAX_NON_TURBO_SPEED * speed, MAX_NON_TURBO_SPEED * rotation);
         }
 
 	}

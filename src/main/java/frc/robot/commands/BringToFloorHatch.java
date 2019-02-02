@@ -5,7 +5,7 @@ import frc.robot.Robot;
 import frc.robot.subsystems.HatchManipulator;
 
 /**
- *
+ * This command brings the hatch to floor
  */
 public class BringToFloorHatch extends Command {
 
@@ -36,13 +36,13 @@ public class BringToFloorHatch extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        // TODO: Stop hatch manipulator
+        Robot.hatchManipulator.stopArm();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        // TODO: call end
+        end();
     }
 }

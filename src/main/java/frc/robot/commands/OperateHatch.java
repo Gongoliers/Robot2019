@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 /**
- *
+ * Allows the operator to take control of the Hatch Manipulator
  */
 public class OperateHatch extends Command {
 
@@ -34,11 +34,13 @@ public class OperateHatch extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.hatchManipulator.stopArm();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        end();
     }
 }

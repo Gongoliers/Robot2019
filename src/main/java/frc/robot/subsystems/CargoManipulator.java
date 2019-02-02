@@ -32,20 +32,20 @@ public class CargoManipulator extends Subsystem implements IPiston {
         
         cargoPiston2 = new Piston(new FRCSolenoid(0, RobotMap.cargoPiston2));
         
-        cargoLimitSwitch1 = new LimitSwitch(0); // TODO: Add to robot map
+        cargoLimitSwitch1 = new LimitSwitch(RobotMap.cargoLimitSwitch1);
         
-        cargoLimitSwitch2 = new LimitSwitch(1);
+        cargoLimitSwitch2 = new LimitSwitch(RobotMap.cargoLimitSwitch2);
         
-        cargoLimitSwitch3 = new LimitSwitch(2);
+        cargoLimitSwitch3 = new LimitSwitch(RobotMap.cargoLimitSwitch3);
         
-        cargoSpeedControllerWrist = new GTalonSRX(0); // TODO: Add to robot map
+        cargoSpeedControllerWrist = new GTalonSRX(RobotMap.cargoMotor1);
         cargoSpeedControllerWrist.setInverted(false);
         // TODO: Add PID and sensor
         
-        cargoSpeedControllerTopRoller = new GTalonSRX(1); // TODO: Add to robot map
+        cargoSpeedControllerTopRoller = new GTalonSRX(RobotMap.cargoMotor2);
         cargoSpeedControllerTopRoller.setInverted(false);
         
-        cargoSpeedControllerBottomRoller = new GTalonSRX(2); // TODO: Add to robot map
+        cargoSpeedControllerBottomRoller = new GTalonSRX(RobotMap.cargoMotor3);
         cargoSpeedControllerBottomRoller.setInverted(false);
 
     }

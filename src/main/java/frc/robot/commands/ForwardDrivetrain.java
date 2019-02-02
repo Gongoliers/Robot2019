@@ -5,7 +5,7 @@ import frc.robot.Robot;
 import frc.robot.subsystems.Drivetrain;
 
 /**
- *
+ * Makes the robot go forward at a default speed
  */
 public class ForwardDrivetrain extends Command {
 
@@ -35,11 +35,13 @@ public class ForwardDrivetrain extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.drivetrain.stop();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        end();
     }
 }

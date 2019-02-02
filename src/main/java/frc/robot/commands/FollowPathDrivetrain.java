@@ -4,8 +4,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 /**
- *
+ * Follows a set path, which will be used in autonomous mode
  */
+
+ // TODO: WORK-IN-PROGRESS, EMPTY COMMAND (FollowPathDrivetrain)
 public class FollowPathDrivetrain extends Command {
 
     public FollowPathDrivetrain() {

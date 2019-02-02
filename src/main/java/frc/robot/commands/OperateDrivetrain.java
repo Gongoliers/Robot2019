@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 /**
- *
+ * Allows the operator to take control of the drivetrain
  */
 public class OperateDrivetrain extends Command {
 
@@ -34,12 +34,13 @@ public class OperateDrivetrain extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.drivetrain.stop();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.drivetrain.stop();
+        end();
     }
 }

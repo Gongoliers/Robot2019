@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 /**
- *
+ * Enables Turbo mode on the drivetrain, which allows you to accelerate to speeds that could otherwise not be accessed. This command also provides haptic feedback when used
  */
 public class EnableTurboDrivetrain extends Command {
 
@@ -43,5 +43,6 @@ public class EnableTurboDrivetrain extends Command {
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        end();
     }
 }

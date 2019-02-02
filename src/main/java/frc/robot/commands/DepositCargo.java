@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 /**
- *
+ * Deposits the Cargo into the Cargo Ship
  */
 public class DepositCargo extends Command {
 
@@ -34,11 +34,13 @@ public class DepositCargo extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.cargoManipulator.stopRollers();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        end();
     }
 }
