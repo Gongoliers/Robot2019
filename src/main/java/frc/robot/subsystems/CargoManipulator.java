@@ -1,15 +1,15 @@
 package frc.robot.subsystems;
 
+import frc.robot.RobotMap;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.thegongoliers.input.switches.LimitSwitch;
 import com.thegongoliers.output.FRCSolenoid;
 import com.thegongoliers.output.Piston;
 import com.thegongoliers.output.interfaces.IPiston;
+import com.thegongoliers.talonsrx.GTalonSRX;
 
 /**
  *
@@ -23,28 +23,29 @@ public class CargoManipulator extends Subsystem implements IPiston {
     private LimitSwitch cargoLimitSwitch1;
     private LimitSwitch cargoLimitSwitch2; // TODO: Consider switching to potentiometer (or similar)
     private LimitSwitch cargoLimitSwitch3;
-    private WPI_TalonSRX cargoSpeedControllerWrist;
-    private WPI_TalonSRX cargoSpeedControllerTopRoller;
-    private WPI_TalonSRX cargoSpeedControllerBottomRoller;
+    private GTalonSRX cargoSpeedControllerWrist;
+    private GTalonSRX cargoSpeedControllerTopRoller;
+    private GTalonSRX cargoSpeedControllerBottomRoller;
 
     public CargoManipulator() {
-        cargoPiston1 = new Piston(new FRCSolenoid(0, 0));
+        cargoPiston1 = new Piston(new FRCSolenoid(0, RobotMap.cargoPiston1));
         
-        cargoPiston2 = new Piston(new FRCSolenoid(0, 1));
+        cargoPiston2 = new Piston(new FRCSolenoid(0, RobotMap.cargoPiston2));
         
-        cargoLimitSwitch1 = new LimitSwitch(0);
+        cargoLimitSwitch1 = new LimitSwitch(0); // TODO: Add to robot map
         
         cargoLimitSwitch2 = new LimitSwitch(1);
         
         cargoLimitSwitch3 = new LimitSwitch(2);
         
-        cargoSpeedControllerWrist = new WPI_TalonSRX(0);
+        cargoSpeedControllerWrist = new GTalonSRX(0); // TODO: Add to robot map
         cargoSpeedControllerWrist.setInverted(false);
+        // TODO: Add PID and sensor
         
-        cargoSpeedControllerTopRoller = new WPI_TalonSRX(1);
+        cargoSpeedControllerTopRoller = new GTalonSRX(1); // TODO: Add to robot map
         cargoSpeedControllerTopRoller.setInverted(false);
         
-        cargoSpeedControllerBottomRoller = new WPI_TalonSRX(2);
+        cargoSpeedControllerBottomRoller = new GTalonSRX(2); // TODO: Add to robot map
         cargoSpeedControllerBottomRoller.setInverted(false);
 
     }
@@ -118,14 +119,14 @@ public class CargoManipulator extends Subsystem implements IPiston {
      * Raises/aims the cargo wrist at a specific speed
      */
     public void raiseWrist(double speed) {
-        cargoSpeedControllerWrist.set(ControlMode.PercentOutput, speed);
+        cargoSpeedControllerWrist.set(speed);
     }
 
     /**
      * Lowers/aims the cargo wrist at a specific speed
      */
     public void lowerWrist(double speed){
-      cargoSpeedControllerWrist.set(ControlMode.PercentOutput, -speed);         
+      cargoSpeedControllerWrist.set(-speed);         
     }
 
     /**
@@ -139,8 +140,8 @@ public class CargoManipulator extends Subsystem implements IPiston {
      * Intakes cargo by spinning both horizontal rollers at the same speed
      */
     public void intake(double speed) {
-        cargoSpeedControllerBottomRoller.set(ControlMode.PercentOutput, speed);
-        cargoSpeedControllerTopRoller.set(ControlMode.PercentOutput, speed);
+        cargoSpeedControllerBottomRoller.set(speed);
+        cargoSpeedControllerTopRoller.set(speed);
     }
 
     /**
@@ -154,8 +155,8 @@ public class CargoManipulator extends Subsystem implements IPiston {
      * Intakes cargo by spinning both horizontal rollers at separate specific speeds
      */
     public void intake(double bottomSpeed, double topSpeed) {
-        cargoSpeedControllerBottomRoller.set(ControlMode.PercentOutput, bottomSpeed);
-        cargoSpeedControllerTopRoller.set(ControlMode.PercentOutput, topSpeed);
+        cargoSpeedControllerBottomRoller.set(bottomSpeed);
+        cargoSpeedControllerTopRoller.set(topSpeed);
     }
 
     /**
@@ -183,5 +184,8 @@ public class CargoManipulator extends Subsystem implements IPiston {
 	public void operate(XboxController manipulatorController) {
         // TODO
 	}     
+
+
+    // TODO: Add rotate wrist to position method (use talon.setPosition)
 
 }

@@ -48,6 +48,13 @@ public class OI {
     public EnhancedXboxController manipulatorController;
 
     public OI() {
+        // TODO: Add a "map" of the controls in the comments here: something like this
+        /*
+         * Driver
+         * ------
+         * LB (pressed) -> disable turbo
+         * RB (pressed) -> enable turbo 
+         */
 
         // Driver controller is plugged into port 0
         driverController = new EnhancedXboxController(0);

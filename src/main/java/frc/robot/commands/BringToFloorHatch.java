@@ -23,6 +23,7 @@ public class BringToFloorHatch extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        // TODO: Call hatch manipulator's setPosition method if not using limit switches
         Robot.hatchManipulator.down(HatchManipulator.DEFAULT_SPEED);
     }
 
@@ -35,11 +36,13 @@ public class BringToFloorHatch extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        // TODO: Stop hatch manipulator
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        // TODO: call end
     }
 }

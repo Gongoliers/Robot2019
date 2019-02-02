@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
         // pointers. Bad news. Don't move it.
         oi = new OI();
 
-        // Add commands to Autonomous Sendable Chooser
+        // TODO: Add commands to Autonomous Sendable Chooser
 
         chooser.setDefaultOption("Null Autonomous Command", null);
 

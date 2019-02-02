@@ -1,16 +1,16 @@
 package frc.robot.subsystems;
 
+import frc.robot.RobotMap;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.thegongoliers.input.odometry.Odometry;
-import com.thegongoliers.output.interfaces.SmartDrivetrain;
-import com.thegongoliers.pathFollowing.controllers.MotionProfileController;
+import com.thegongoliers.output.interfaces.DriveTrainInterface;
+import com.thegongoliers.talonsrx.GTalonSRX;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.XboxController;
@@ -19,35 +19,47 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 /**
  *
  */
-public class Drivetrain extends PIDSubsystem implements SmartDrivetrain {
+public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
 
     public static final double DEFAULT_SPEED = 0.5;
 
-    private WPI_TalonSRX driveSpeedControllerRight;
-    private WPI_TalonSRX driveSpeedControllerLeft;
+    private GTalonSRX driveRight;
+    private GTalonSRX driveLeft;
     private DifferentialDrive robotDrive;
-    private Gyro gyro;
+    private Gyro gyro; // TODO: Change type to NavX
 
     private boolean turbo = false;
 
     public Drivetrain() {
-        super("", 0, 0, 0); // TODO: Find ideal values for PID
+        super("", 0.02, 0, 0); // TODO: Test to find ideal values
 
-        driveSpeedControllerRight = new WPI_TalonSRX(4);
-        driveSpeedControllerRight.setInverted(false);
-        driveSpeedControllerRight.configOpenloopRamp(0.5); // TODO: Find ideal value
+        driveRight = new GTalonSRX(RobotMap.rightMotor);
+        driveRight.setInverted(false);
+        driveRight.setSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+        driveRight.setPID(0.02, 0, 0, 1); // TODO: Test to find ideal values
+        driveRight.setRamp(0.5); // TODO: Test to find ideal value
+        driveRight.setNeutralDeadband(0.05);
         
-        driveSpeedControllerLeft = new WPI_TalonSRX(3);
-        driveSpeedControllerLeft.setInverted(false);
-        driveSpeedControllerLeft.configOpenloopRamp(0.5); // TODO: Find ideal value
+        new GTalonSRX(RobotMap.rightMotor, RobotMap.rightSlave1); // TODO: convert these to variables in case they need to be inverted
+        new GTalonSRX(RobotMap.rightMotor, RobotMap.rightSlave2);
+
+        driveLeft = new GTalonSRX(RobotMap.leftMotor);
+        driveLeft.setInverted(false);
+        driveLeft.setSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+        driveLeft.setPID(0.02, 0, 0, 1); // TODO: Test to find ideal values
+        driveLeft.setRamp(0.5); // TODO: Test to find ideal value
+        driveLeft.setNeutralDeadband(0.05);
         
-        robotDrive = new DifferentialDrive(driveSpeedControllerLeft, driveSpeedControllerRight);
+        new GTalonSRX(RobotMap.leftMotor, RobotMap.leftSlave1); // TODO: convert these to variables in case they need to be inverted
+        new GTalonSRX(RobotMap.leftMotor, RobotMap.leftSlave2);
+
+        robotDrive = new DifferentialDrive(driveLeft, driveRight);
         
         robotDrive.setSafetyEnabled(true);
         robotDrive.setExpiration(0.1);
         robotDrive.setMaxOutput(1.0);
 
-        gyro = new AnalogGyro(0);
+        gyro = new AnalogGyro(0); // TODO: switch to NavX
         gyro.calibrate();
 
     }
@@ -113,19 +125,17 @@ public class Drivetrain extends PIDSubsystem implements SmartDrivetrain {
         robotDrive.stopMotor();
     }
 
-    @Override
     public double getLeftDistance() {
-        return 0;
+        return driveLeft.getPosition();
     }
 
-    @Override
     public double getRightDistance() {
-        return 0;
+        return driveRight.getPosition();
     }
 
-    @Override
     public void resetDistance() {
-
+        driveLeft.resetEncoder();
+        driveRight.resetEncoder();
     }
 
     /**
@@ -141,19 +151,17 @@ public class Drivetrain extends PIDSubsystem implements SmartDrivetrain {
         double speed = driverController.getTriggerAxis(Hand.kRight) - driverController.getTriggerAxis(Hand.kLeft);
         double rotation = driverController.getX(Hand.kLeft);
 
-        if (turbo) {
+        if (turbo) { // TODO: extract the .9 and .5 into constants
             robotDrive.arcadeDrive(.9 * speed, .9 * rotation);
         } else {
             robotDrive.arcadeDrive(.5 * speed, .5 * rotation);
         }
-        // TODO: Check how well this works
 
 	}
 
     /**
      * Returns the gyro angle
      */
-    @Override
     public double getHeading() {
         return gyro.getAngle();
     }
@@ -161,44 +169,8 @@ public class Drivetrain extends PIDSubsystem implements SmartDrivetrain {
     /**
      * Resets the gyro
      */
-    @Override
     public void resetHeading() {
         gyro.reset();
-    }
-
-    @Override
-    public MotionProfileController getLeftDistanceController() {
-        return null;
-    }
-
-    @Override
-    public MotionProfileController getRightDistanceController() {
-        return null;
-    }
-
-    @Override
-    public MotionProfileController getHeadingController() {
-        return null;
-    }
-
-    @Override
-    public double getMaxVelocity() {
-        return 0;
-    }
-
-    @Override
-    public double getMaxAcceleration() {
-        return 0;
-    }
-
-    @Override
-    public double getMaxJerk() {
-        return 0;
-    }
-
-    @Override
-    public double getWheelbaseWidth() {
-        return 0;
     }
 
     /**
@@ -218,12 +190,12 @@ public class Drivetrain extends PIDSubsystem implements SmartDrivetrain {
 
     @Override
     protected double returnPIDInput() {
-        return 0; // TODO: Implement PID 
+        return 0; // TODO: Implement PID (gyro angle) 
     }
 
     @Override
     protected void usePIDOutput(double output) {
-        // TODO: Implement PID
+        // TODO: Implement PID (call rotate)
     }
 
     

@@ -22,10 +22,10 @@ public class HABClimber extends Subsystem implements IPiston {
     private Piston skidPiston2;
 
     public HABClimber() {
-        climberPiston = new Piston(new FRCSolenoid(0, 2));
+        climberPiston = new Piston(new FRCSolenoid(0, 2)); // TODO: Add to robot map
         
-        skidPiston1 = new Piston(new FRCSolenoid(0, 5));
-        skidPiston1 = new Piston(new FRCSolenoid(0, 6));
+        skidPiston1 = new Piston(new FRCSolenoid(0, 5)); // TODO: Add to robot map
+        skidPiston1 = new Piston(new FRCSolenoid(0, 6)); // TODO: Add to robot map
 
     }
 

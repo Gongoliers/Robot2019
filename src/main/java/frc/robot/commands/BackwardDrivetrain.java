@@ -35,11 +35,13 @@ public class BackwardDrivetrain extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        // TODO: stop drivetrain here
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        // TODO: call end
     }
 }
