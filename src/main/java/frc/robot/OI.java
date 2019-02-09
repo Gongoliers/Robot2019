@@ -1,6 +1,7 @@
 package frc.robot;
 
 import frc.robot.commands.*;
+import frc.robot.paths.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.thegongoliers.input.operator.EnhancedXboxController;
@@ -88,7 +89,6 @@ public class OI {
         SmartDashboard.putData("Rotate CounterClockwise Drivetrain", new RotateCounterClockwiseDrivetrain());
         SmartDashboard.putData("Enable Turbo Drivetrain", new EnableTurboDrivetrain());
         SmartDashboard.putData("Disable Turbo Drivetrain", new DisableTurboDrivetrain());
-        SmartDashboard.putData("Follow Path Drivetrain", new FollowPathDrivetrain());
         SmartDashboard.putData("Rotate To 90° Angle Drivetrain", new RotateToAngle(Robot.drivetrain, 90));
         SmartDashboard.putData("Rotate To 180° Angle Drivetrain", new RotateToAngle(Robot.drivetrain, 180));
         SmartDashboard.putData("Bring To Floor Hatch", new BringToFloorHatch());
@@ -108,6 +108,14 @@ public class OI {
         SmartDashboard.putData("Deploy Skids", new DeploySkids());
         SmartDashboard.putData("Extend Climber", new ExtendClimber());
         SmartDashboard.putData("Retract Climber", new RetractClimber());
+
+        // SmartDashboard Autonomous Paths
+        SmartDashboard.putData("Path: Left HAB1 To FrontLeft Hatch", new FollowPathDrivetrain(PathLeftHAB1ToFrontLeftHatch.leftPoints, PathLeftHAB1ToFrontLeftHatch.rightPoints));
+        SmartDashboard.putData("Path: Middle HAB1 To FrontLeft Hatch", new FollowPathDrivetrain(PathMiddleHAB1ToFrontLeftHatch.leftPoints, PathMiddleHAB1ToFrontLeftHatch.rightPoints));
+        SmartDashboard.putData("Path: Right HAB1 To FrontRight Hatch", new FollowPathDrivetrain(PathRightHAB1ToFrontRightHatch.leftPoints, PathRightHAB1ToFrontRightHatch.rightPoints));
+        SmartDashboard.putData("Path: Left HAB1 To LeftSide Hatch", new FollowPathDrivetrain(PathLeftHAB1ToLeftSideHatch.leftPoints, PathLeftHAB1ToLeftSideHatch.rightPoints));
+        SmartDashboard.putData("Path: Middle HAB1 To LeftSide Hatch", new FollowPathDrivetrain(PathMiddleHAB1ToLeftSideHatch.leftPoints, PathMiddleHAB1ToLeftSideHatch.rightPoints));
+        SmartDashboard.putData("Path: Right HAB1 To RightSide Hatch", new FollowPathDrivetrain(PathRightHAB1ToRightSideHatch.leftPoints, PathRightHAB1ToRightSideHatch.rightPoints));
 
     }
 

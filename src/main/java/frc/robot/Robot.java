@@ -1,5 +1,11 @@
 package frc.robot;
 
+import org.opencv.core.Mat;
+
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoSink;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -20,11 +26,18 @@ public class Robot extends TimedRobot {
     SendableChooser<Command> chooser = new SendableChooser<>();
 
     public static OI oi;
+    
     public static Drivetrain drivetrain;
     public static HatchManipulator hatchManipulator;
     public static CargoManipulator cargoManipulator;
     public static HABClimber habClimber;
 
+    public static UsbCamera frontCamera;
+    public static UsbCamera rearCamera;
+    public static VideoSink cameraServer;
+    public static Vision vision;
+    public static CvSink cameraSink;
+    private static Mat image;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -33,15 +46,18 @@ public class Robot extends TimedRobot {
     public void robotInit() {
 
         drivetrain = new Drivetrain();
-        SmartDashboard.putData(drivetrain);
         hatchManipulator = new HatchManipulator();
         cargoManipulator = new CargoManipulator();
         habClimber = new HABClimber();
 
-        // OI must be constructed after subsystems. If the OI creates Commands
-        //(which it very likely will), subsystems are not guaranteed to be
-        // constructed yet. Thus, their requires() statements may grab null
-        // pointers. Bad news. Don't move it.
+        frontCamera = CameraServer.getInstance().startAutomaticCapture(0);
+        rearCamera = CameraServer.getInstance().startAutomaticCapture(1);
+        image = new Mat();
+        cameraServer = CameraServer.getInstance().getServer();
+        cameraServer.setSource(frontCamera);
+        cameraSink = CameraServer.getInstance().getVideo();
+        vision = new Vision();
+
         oi = new OI();
 
         // TODO: Add commands to Autonomous Sendable Chooser
@@ -96,4 +112,24 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
     }
+
+    /**
+     * Switches the CameraServer stream to the front camera (hatch targeting)
+     */
+    public static void switchToFrontCamera() {
+        cameraServer.setSource(frontCamera);
+    }
+
+    /**
+     * Switches the CameraServer steeam to the rear camera (cargo targeting)
+     */
+    public static void switchToRearCamera() {
+        cameraServer.setSource(rearCamera);
+    }
+
+    public static Mat getImage() {
+        cameraSink.grabFrame(image);
+        return image;
+    }
+
 }

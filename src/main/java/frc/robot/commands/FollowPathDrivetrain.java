@@ -7,40 +7,47 @@ import frc.robot.Robot;
  * Follows a set path, which will be used in autonomous mode
  */
 
- // TODO: WORK-IN-PROGRESS, EMPTY COMMAND (FollowPathDrivetrain)
 public class FollowPathDrivetrain extends Command {
 
-    public FollowPathDrivetrain() {
+    private double[][] leftPath;
+    private double[][] rightPath;
+
+    public FollowPathDrivetrain(double[][] leftPath, double[][] rightPath) {
 
         requires(Robot.drivetrain);
+
+        this.leftPath = leftPath;
+        this.rightPath = rightPath;
 
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        Robot.drivetrain.followPath(leftPath, rightPath);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        // TODO: Add functionality for path following.
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+        return Robot.drivetrain.isDoneFollowingPath();
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.drivetrain.stop();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        end();
     }
 }
