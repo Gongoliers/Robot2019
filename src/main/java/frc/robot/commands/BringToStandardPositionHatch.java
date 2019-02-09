@@ -10,26 +10,31 @@ import frc.robot.subsystems.HatchManipulator;
 public class BringToStandardPositionHatch extends Command {
 
     public BringToStandardPositionHatch() {
-
         requires(Robot.hatchManipulator);
+    }
 
+    // Called just before this Command runs the first time
+    @Override
+    protected void initialize() {
+        Robot.hatchManipulator.enable();
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.hatchManipulator.up(HatchManipulator.DEFAULT_SPEED);
+        Robot.hatchManipulator.setSetpoint(HatchManipulator.TOP_ANGLE);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false; // TODO: Automatically stop the hatch manipulator when it reaches desired position
+        return Robot.hatchManipulator.onTarget();
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.hatchManipulator.disable();
         Robot.hatchManipulator.stopArm();
     }
 

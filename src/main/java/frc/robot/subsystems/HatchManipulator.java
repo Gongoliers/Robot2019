@@ -2,9 +2,10 @@ package frc.robot.subsystems;
 
 import frc.robot.RobotMap;
 import frc.robot.commands.*;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
+import edu.wpi.first.wpilibj.command.PIDSubsystem;
+import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 
-import com.thegongoliers.input.switches.LimitSwitch;
 import com.thegongoliers.output.FRCSolenoid;
 import com.thegongoliers.output.Piston;
 import com.thegongoliers.output.interfaces.IPiston;
@@ -13,36 +14,38 @@ import com.thegongoliers.talonsrx.GTalonSRX;
 /**
  *
  */
-public class HatchManipulator extends Subsystem implements IPiston {
+public class HatchManipulator extends PIDSubsystem implements IPiston {
 
     public static final double DEFAULT_SPEED = 0.5;
+    public static final double TOP_ANGLE = 0;
+    public static final double BOTTOM_ANGLE = 90; // TODO: Find this
+    public static final double TOLERANCE = 10;
 
     private Piston hatchPiston1;
     private Piston hatchPiston2;
     private GTalonSRX hatchSpeedController;
 
-    private LimitSwitch topSwitch;
-    private LimitSwitch bottomSwitch;
+    private Potentiometer hatchPotentiometer;
 
     public HatchManipulator() {
+        super(0.02, 0, 0); // TODO: Test to find ideal PID values
+        setAbsoluteTolerance(5);
+        getPIDController().setContinuous(false);
+
         hatchPiston1 = new Piston(new FRCSolenoid(0, RobotMap.hatchPiston1));
         hatchPiston2 = new Piston(new FRCSolenoid(0, RobotMap.hatchPiston2));
 
         hatchSpeedController = new GTalonSRX(RobotMap.hatchMotor1);
         hatchSpeedController.setInverted(false);
-        hatchSpeedController.useBrakeMode();
         
-        topSwitch = new LimitSwitch(RobotMap.topLimitSwitchHatch);
-        bottomSwitch = new LimitSwitch(RobotMap.bottomLimitSwitchHatch);
+        hatchPotentiometer = new AnalogPotentiometer(RobotMap.hatchPotentiometer, 360*10, 0);
         
-        // TODO: Add PID and sensor if needed
-
     }
 
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        setDefaultCommand(new StopHatchManipulator());
+        setDefaultCommand(new BringToStandardPositionHatch());
     }
 
     @Override
@@ -117,14 +120,12 @@ public class HatchManipulator extends Subsystem implements IPiston {
         hatchSpeedController.set(-speed);
     }
 
-    // TODO: Add set position method if needed (not using limit switches)
-
     public boolean isAtTop() {
-        return topSwitch.isTriggered();
+        return Math.abs(hatchPotentiometer.get() - TOP_ANGLE) < TOLERANCE;
     }
 
     public boolean isAtBottom() { 
-        return bottomSwitch.isTriggered();
+        return Math.abs(hatchPotentiometer.get() - BOTTOM_ANGLE) < TOLERANCE;
     }
 
     /**
@@ -132,6 +133,16 @@ public class HatchManipulator extends Subsystem implements IPiston {
      */
     public void stopArm(){
         hatchSpeedController.stopMotor();
+    }
+
+    @Override
+    protected double returnPIDInput() {
+        return hatchPotentiometer.get();
+    }
+
+    @Override
+    protected void usePIDOutput(double output) {
+        up(output);
     }
 
 }

@@ -2,9 +2,11 @@ package frc.robot.subsystems;
 
 import frc.robot.RobotMap;
 import frc.robot.commands.*;
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.command.PIDSubsystem;
+import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 
 import com.thegongoliers.input.switches.LimitSwitch;
 import com.thegongoliers.output.FRCSolenoid;
@@ -15,31 +17,35 @@ import com.thegongoliers.talonsrx.GTalonSRX;
 /**
  *
  */
-public class CargoManipulator extends Subsystem implements IPiston {
+public class CargoManipulator extends PIDSubsystem implements IPiston {
 
     public static final double DEFAULT_SPEED = 0.5;
-    public static final double MAXIMUM_SPEED = 0.8;
+    public static final double MAXIMUM_SPEED = 0.9;
+    public static final double RESTING_ANGLE = 0;
 
     private Piston cargoPiston1;
     private Piston cargoPiston2;
-    private LimitSwitch cargoLimitSwitch1;
-    private LimitSwitch cargoLimitSwitch2; // TODO: Consider switching to potentiometer (or similar)
-    private LimitSwitch cargoLimitSwitch3;
+
+    private LimitSwitch cargoLimitSwitch;
+    private Potentiometer cargoPotentiometer;
+
     private GTalonSRX cargoSpeedControllerWrist;
     private GTalonSRX cargoSpeedControllerTopRoller;
     private GTalonSRX cargoSpeedControllerBottomRoller;
 
     public CargoManipulator() {
+        super(0.02, 0, 0); // TODO: Test to find ideal PID values
+        setAbsoluteTolerance(5);
+        getPIDController().setContinuous(false);
+
         cargoPiston1 = new Piston(new FRCSolenoid(0, RobotMap.cargoPiston1));
         cargoPiston2 = new Piston(new FRCSolenoid(0, RobotMap.cargoPiston2));
         
-        cargoLimitSwitch1 = new LimitSwitch(RobotMap.cargoLimitSwitch1);
-        cargoLimitSwitch2 = new LimitSwitch(RobotMap.cargoLimitSwitch2);
-        cargoLimitSwitch3 = new LimitSwitch(RobotMap.cargoLimitSwitch3);
+        cargoLimitSwitch = new LimitSwitch(RobotMap.cargoLimitSwitch);
+        cargoPotentiometer = new AnalogPotentiometer(RobotMap.cargoPotentiometer);
         
         cargoSpeedControllerWrist = new GTalonSRX(RobotMap.cargoMotor1);
         cargoSpeedControllerWrist.setInverted(false);
-        // TODO: Add PID and sensor
         
         cargoSpeedControllerTopRoller = new GTalonSRX(RobotMap.cargoMotor2);
         cargoSpeedControllerTopRoller.setInverted(false);
@@ -132,7 +138,7 @@ public class CargoManipulator extends Subsystem implements IPiston {
      * Checks the limit switch to determine if the robot possesses cargo
      */
     public boolean hasCargo() {
-        return cargoLimitSwitch1.isTriggered();
+        return cargoLimitSwitch.isTriggered();
     }
 
     /**
@@ -186,6 +192,16 @@ public class CargoManipulator extends Subsystem implements IPiston {
 
     public void rotateWristToPosition(double position) {
         cargoSpeedControllerWrist.setPosition(position);
+    }
+
+    @Override
+    protected double returnPIDInput() {
+        return cargoPotentiometer.get();
+    }
+
+    @Override
+    protected void usePIDOutput(double output) {
+        raiseWrist(output);
     }
 
 }

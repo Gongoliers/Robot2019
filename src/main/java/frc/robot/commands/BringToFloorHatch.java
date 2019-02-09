@@ -10,32 +10,31 @@ import frc.robot.subsystems.HatchManipulator;
 public class BringToFloorHatch extends Command {
 
     public BringToFloorHatch() {
-
         requires(Robot.hatchManipulator);
-
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        Robot.hatchManipulator.enable();
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        // TODO: Call hatch manipulator's setPosition method if not using limit switches
-        Robot.hatchManipulator.down(HatchManipulator.DEFAULT_SPEED);
+        Robot.hatchManipulator.setSetpoint(HatchManipulator.BOTTOM_ANGLE);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false; // TODO: Automatically stop the hatch manipulator when it reaches desired position
+        return Robot.hatchManipulator.onTarget();
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.hatchManipulator.disable();
         Robot.hatchManipulator.stopArm();
     }
 

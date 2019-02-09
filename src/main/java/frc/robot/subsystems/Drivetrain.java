@@ -50,7 +50,7 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
     private boolean turbo = false;
 
     public Drivetrain() {
-        super("", 0.02, 0, 0); // TODO: Test to find ideal values
+        super(0.02, 0, 0); // TODO: Test to find ideal values
 
         driveRight = new GTalonSRX(RobotMap.rightMotor);
         driveRight.setInverted(false);
