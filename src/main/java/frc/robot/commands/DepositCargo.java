@@ -22,7 +22,7 @@ public class DepositCargo extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.cargoManipulator.outtake(.8, .7); // TODO: Calibrate these speeds.
+        Robot.cargoManipulator.outtake(.8); // TODO: Calibrate these speeds.
     }
 
     // Make this return true when this Command no longer needs to run execute()

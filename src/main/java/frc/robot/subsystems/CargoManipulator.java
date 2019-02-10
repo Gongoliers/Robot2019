@@ -30,8 +30,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
     private Potentiometer cargoPotentiometer;
 
     private GTalonSRX cargoSpeedControllerWrist;
-    private GTalonSRX cargoSpeedControllerTopRoller;
-    private GTalonSRX cargoSpeedControllerBottomRoller;
+    private GTalonSRX cargoSpeedControllerRoller;
 
     public CargoManipulator() {
         super(0.02, 0, 0); // TODO: Test to find ideal PID values
@@ -44,15 +43,12 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
         cargoLimitSwitch = new LimitSwitch(RobotMap.cargoLimitSwitch);
         cargoPotentiometer = new AnalogPotentiometer(RobotMap.cargoPotentiometer);
         
-        cargoSpeedControllerWrist = new GTalonSRX(RobotMap.cargoMotor1);
+        cargoSpeedControllerWrist = new GTalonSRX(RobotMap.cargoWristMotor);
         cargoSpeedControllerWrist.setInverted(false);
         
-        cargoSpeedControllerTopRoller = new GTalonSRX(RobotMap.cargoMotor2);
-        cargoSpeedControllerTopRoller.setInverted(false);
+        cargoSpeedControllerRoller = new GTalonSRX(RobotMap.cargoRollerMotor);
+        cargoSpeedControllerRoller.setInverted(false);
         
-        cargoSpeedControllerBottomRoller = new GTalonSRX(RobotMap.cargoMotor3);
-        cargoSpeedControllerBottomRoller.setInverted(false);
-
     }
 
     /**
@@ -145,8 +141,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
      * Intakes cargo by spinning both horizontal rollers at the same speed
      */
     public void intake(double speed) {
-        cargoSpeedControllerBottomRoller.set(speed);
-        cargoSpeedControllerTopRoller.set(speed);
+        cargoSpeedControllerRoller.set(speed);
     }
 
     /**
@@ -157,26 +152,10 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
     }
     
     /**
-     * Intakes cargo by spinning both horizontal rollers at separate specific speeds
-     */
-    public void intake(double bottomSpeed, double topSpeed) {
-        cargoSpeedControllerBottomRoller.set(bottomSpeed);
-        cargoSpeedControllerTopRoller.set(topSpeed);
-    }
-
-    /**
-     * Outtakes cargo by spinning both horizontal rollers at separate specific speeds
-     */
-    public void outtake(double bottomSpeed, double topSpeed) {
-        intake(-bottomSpeed, -topSpeed);
-    }
-
-    /**
      * Stops the cargo intake/outtake rollers.
      */
     public void stopRollers() {
-        cargoSpeedControllerBottomRoller.stopMotor();
-        cargoSpeedControllerTopRoller.stopMotor();
+        cargoSpeedControllerRoller.stopMotor();
     }
 
     /**

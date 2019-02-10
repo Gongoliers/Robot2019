@@ -21,12 +21,11 @@ public class RobotMap {
   public static final int cargoPiston1 = 0;
   public static final int cargoPiston2 = 1;
 
-  public static final int cargoMotor1 = 7;
-  public static final int cargoMotor2 = 8;
-  public static final int cargoMotor3 = 9;
+  public static final int cargoWristMotor = 7;
+  public static final int cargoRollerMotor = 8;
 
   public static final int cargoLimitSwitch = 0;
-  public static final int cargoPotentiometer = 1;
+  public static final int cargoPotentiometer = 0;
 
   // HAB Climber Subsystem
   public static final int climberPiston1 = 2;
@@ -37,8 +36,8 @@ public class RobotMap {
   public static final int hatchPiston1 = 5;
   public static final int hatchPiston2 = 6;
 
-  public static final int hatchMotor1 = 10;
+  public static final int hatchMotor1 = 9;
 
-  public static final int hatchPotentiometer = 0;
+  public static final int hatchPotentiometer = 1;
 
 }
