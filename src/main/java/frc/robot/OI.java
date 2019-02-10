@@ -35,54 +35,47 @@ public class OI {
          * 
          * Manipulator
          * -----------
-         * LB (pressed) -> Intake Cargo
-         * RB (pressed) -> Pickup Cargo
+         * LB (held) -> Pickup Cargo
+         * RB (pressed) -> Pickup Hatch
          * LT (pressed) -> Deposit Cargo
          * RT (pressed) -> Deposit Hatch
-         * Left Thumbstick -> Aim Cargo Wrist (Up/Down)
-         * Right Thumbstick -> Aim Hatch Arm (Up/Down
-         * Select Button (pressed) (Small Button on top left of controller) -> Stop Everything
-         * Pause Button (held) (Small Button on top right of controller) -> Disables Climber Safety
+         * SELECT Button (pressed) (Small Button on top left of controller) -> Stop Everything
+         * PAUSE Button (held) (Small Button on top right of controller) -> Disables Climber Safety
          * PAUSE + Y (pressed) -> drop skids
          * PAUSE + B (pressed) -> retract lift piston
          * PAUSE + A (pressed) -> Lift Robot
-         * UP D_PAD (held) -> Raises cargo arm
-         * DOWN D_PAD (held) -> Lowers cargo arm
          */
 
         // Driver controller is plugged into port 0
         driverController = new EnhancedXboxController(0);
 
-        driverController.BACK.whenPressed(new StopEverything()); // back button to emergency stop
+        driverController.BACK.whenPressed(new StopEverything()); // SELECT to stop everything
         driverController.RB.whenPressed(new EnableTurboDrivetrain()); // RB to turbo
         driverController.LB.whenPressed(new DisableTurboDrivetrain()); // LB to precise
 
         // Manipulator controler is plugged into port 1
         manipulatorController = new EnhancedXboxController(1);
 
-        manipulatorController.BACK.whenPressed(new StopEverything()); // back button to emergency stop
-        manipulatorController.START.whenPressed(new DisableClimberSafety()); // allow HAB commands to work (while holding START)
-        manipulatorController.START.whenReleased(new EnableClimberSafety()); // prevent HAB commands from working (when START released)
+        manipulatorController.BACK.whenPressed(new StopEverything()); // SELECT to stop everything
+        manipulatorController.START.whenPressed(new DisableClimberSafety()); // allow HAB commands to work (while holding PAUSE)
+        manipulatorController.START.whenReleased(new EnableClimberSafety()); // prevent HAB commands from working (when PAUSE released)
 
-        manipulatorController.Y.whenPressed(new DeploySkids()); // press Y while holding START to deploy skids for climbing
-        manipulatorController.B.whenPressed(new RetractClimber()); // press B while holding START to retract climbing piston
-        manipulatorController.A.whenPressed(new ExtendClimber()); // press A while holding START to extend climbing piston
-        
-        manipulatorController.DPAD_DOWN.whileHeld(new LowerCargoIntake()); // DPAD-DOWN lowers cargo wrist towards floor
-        manipulatorController.DPAD_UP.whileHeld(new RaiseCargoIntake()); // DPAD-UP raises cargo wrist away from floor
+        manipulatorController.Y.whenPressed(new DeploySkids()); // press Y while holding PAUSE to deploy skids for climbing
+        manipulatorController.B.whenPressed(new RetractClimber()); // press B while holding PAUSE to retract climbing piston
+        manipulatorController.A.whenPressed(new ExtendClimber()); // press A while holding PAUSE to extend climbing piston
         
         manipulatorController.LT.whenPressed(new DepositCargo()); // LT to deposit cargo
         manipulatorController.RT.whenPressed(new DepositHatch()); // RT to deposit hatch
 
-        manipulatorController.LB.whenPressed(new IntakeCargo()); // LB to manually intake cargo
-        manipulatorController.RB.whenPressed(new PickupCargo()); // RB to automatically pickup cargo from floor
+        manipulatorController.LB.whenPressed(new PickupCargo()); // LB to automatically pickup cargo from floor
+        manipulatorController.LB.whenReleased(new ResetCargoManipulator()); // release LB to reset cargo manipulator
+        manipulatorController.RB.whenPressed(new BringToFloorHatch()); // RB to automatically pickup hatch from floor
         
         // SmartDashboard Buttons
         SmartDashboard.putData("Stop Drivetrain", new StopDrivetrain());
         SmartDashboard.putData("Stop Cargo Manipulator", new StopCargoManipulator());
         SmartDashboard.putData("Stop Hatch Manipulator", new StopHatchManipulator());
         SmartDashboard.putData("** STOP EVERYTHING **", new StopEverything());
-        SmartDashboard.putData("Operate Drivetrain", new OperateCargo());
         SmartDashboard.putData("Forward Drivetrain", new ForwardDrivetrain());
         SmartDashboard.putData("Backward Drivetrain", new BackwardDrivetrain());
         SmartDashboard.putData("Rotate Clockwise Drivetrain", new RotateClockwiseDrivetrain());
@@ -103,7 +96,6 @@ public class OI {
         SmartDashboard.putData("Pickup Cargo", new PickupCargo());
         SmartDashboard.putData("Stop Cargo Intake", new StopCargoIntake());
         SmartDashboard.putData("Retract Cargo Arm", new RetractCargoArm());
-        SmartDashboard.putData("Rotate Cargo Intake", new RaiseCargoIntake());
         SmartDashboard.putData("Reset Cargo Manipulator", new ResetCargoManipulator());
         SmartDashboard.putData("Deploy Skids", new DeploySkids());
         SmartDashboard.putData("Extend Climber", new ExtendClimber());

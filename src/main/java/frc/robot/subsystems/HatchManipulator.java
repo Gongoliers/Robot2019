@@ -37,7 +37,8 @@ public class HatchManipulator extends PIDSubsystem implements IPiston {
 
         hatchSpeedController = new GTalonSRX(RobotMap.hatchMotor1);
         hatchSpeedController.setInverted(false);
-        
+        hatchSpeedController.useBrakeMode();
+
         hatchPotentiometer = new AnalogPotentiometer(RobotMap.hatchPotentiometer, 360*10, 0);
         
     }
@@ -45,7 +46,7 @@ public class HatchManipulator extends PIDSubsystem implements IPiston {
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        setDefaultCommand(new BringToStandardPositionHatch());
+        setDefaultCommand(new ResetHatchManipulator());
     }
 
     @Override

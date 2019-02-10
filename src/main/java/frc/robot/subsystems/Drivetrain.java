@@ -53,7 +53,6 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
         super(0.02, 0, 0); // TODO: Test to find ideal values
 
         driveRight = new GTalonSRX(RobotMap.rightMotor);
-        driveRight.setInverted(false);
         driveRight.setSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
         driveRight.setPID(0.02, 0, 0, 1); // TODO: Test to find ideal values
         driveRight.setRamp(0.5); // TODO: Test to find ideal value
@@ -62,8 +61,11 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
         GTalonSRX rightSlave1 = new GTalonSRX(RobotMap.rightMotor, RobotMap.rightSlave1);
         GTalonSRX rightSlave2 = new GTalonSRX(RobotMap.rightMotor, RobotMap.rightSlave2);
 
+        driveRight.setInverted(false);
+        rightSlave1.setInverted(false);
+        rightSlave2.setInverted(false);
+
         driveLeft = new GTalonSRX(RobotMap.leftMotor);
-        driveLeft.setInverted(true);
         driveLeft.setSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
         driveLeft.setPID(0.02, 0, 0, 1); // TODO: Test to find ideal values
         driveLeft.setRamp(0.5); // TODO: Test to find ideal value
@@ -72,6 +74,7 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
         GTalonSRX leftSlave1 = new GTalonSRX(RobotMap.leftMotor, RobotMap.leftSlave1);
         GTalonSRX leftSlave2 = new GTalonSRX(RobotMap.leftMotor, RobotMap.leftSlave2);
 
+        driveLeft.setInverted(true);
         leftSlave1.setInverted(true);
         leftSlave2.setInverted(true);
 
@@ -94,7 +97,7 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());
 
-        setDefaultCommand(new OperateCargo());
+        setDefaultCommand(new OperateDrivetrain());
     }
 
     @Override

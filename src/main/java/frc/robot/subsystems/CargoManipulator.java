@@ -21,7 +21,10 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
 
     public static final double DEFAULT_SPEED = 0.5;
     public static final double MAXIMUM_SPEED = 0.9;
+    public static final double INTAKE_SPEED = 0.7; // TODO: Test to find ideal intake speed value.
     public static final double RESTING_ANGLE = 0;
+    
+    public double shootingSpeed = DEFAULT_SPEED; 
 
     private Piston cargoPiston1;
     private Piston cargoPiston2;
@@ -45,6 +48,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
         
         cargoSpeedControllerWrist = new GTalonSRX(RobotMap.cargoWristMotor);
         cargoSpeedControllerWrist.setInverted(false);
+        cargoSpeedControllerWrist.useBrakeMode();
         
         cargoSpeedControllerRoller = new GTalonSRX(RobotMap.cargoRollerMotor);
         cargoSpeedControllerRoller.setInverted(false);
@@ -56,7 +60,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
      */
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new OperateCargo());
+        setDefaultCommand(new ResetCargoManipulator());
     }
 
     /**

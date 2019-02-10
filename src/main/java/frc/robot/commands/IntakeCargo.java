@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.subsystems.CargoManipulator;
 
 /**
  * Starts Rollers to intake cargo
@@ -22,7 +23,7 @@ public class IntakeCargo extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.cargoManipulator.intake(.7); // TODO: Calibrate this speed.
+        Robot.cargoManipulator.intake(CargoManipulator.INTAKE_SPEED);
     }
 
     // Make this return true when this Command no longer needs to run execute()

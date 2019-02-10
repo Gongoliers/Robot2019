@@ -17,18 +17,19 @@ public class DepositCargo extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        setTimeout(1);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.cargoManipulator.outtake(.8); // TODO: Calibrate these speeds.
+        Robot.cargoManipulator.outtake(Robot.cargoManipulator.shootingSpeed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false; // TODO: Determine when the cargo has been fully ejected.
+        return isTimedOut() && !Robot.cargoManipulator.hasCargo();
     }
 
     // Called once after isFinished returns true
