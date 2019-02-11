@@ -35,7 +35,7 @@ public class OI {
          * 
          * Manipulator
          * -----------
-         * LB (held) -> Pickup Cargo
+         * LB (pressed) -> Pickup Cargo
          * RB (pressed) -> Pickup Hatch
          * LT (pressed) -> Deposit Cargo
          * RT (pressed) -> Deposit Hatch
@@ -68,7 +68,6 @@ public class OI {
         manipulatorController.RT.whenPressed(new DepositHatch()); // RT to deposit hatch
 
         manipulatorController.LB.whenPressed(new PickupCargo()); // LB to automatically pickup cargo from floor
-        manipulatorController.LB.whenReleased(new ResetCargoManipulator()); // release LB to reset cargo manipulator
         manipulatorController.RB.whenPressed(new BringToFloorHatch()); // RB to automatically pickup hatch from floor
         
         // SmartDashboard Buttons
