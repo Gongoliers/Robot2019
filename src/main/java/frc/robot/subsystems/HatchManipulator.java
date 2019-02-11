@@ -10,6 +10,7 @@ import com.thegongoliers.output.FRCSolenoid;
 import com.thegongoliers.output.Piston;
 import com.thegongoliers.output.interfaces.IPiston;
 import com.thegongoliers.talonsrx.GTalonSRX;
+import com.thegongoliers.talonsrx.ITalonSRX;
 
 /**
  *
@@ -21,9 +22,9 @@ public class HatchManipulator extends PIDSubsystem implements IPiston {
     public static final double BOTTOM_ANGLE = 90; // TODO: Find this
     public static final double TOLERANCE = 10;
 
-    private Piston hatchPiston1;
-    private Piston hatchPiston2;
-    private GTalonSRX hatchSpeedController;
+    private IPiston hatchPiston1;
+    private IPiston hatchPiston2;
+    private ITalonSRX hatchSpeedController;
 
     private Potentiometer hatchPotentiometer;
 
@@ -41,6 +42,17 @@ public class HatchManipulator extends PIDSubsystem implements IPiston {
 
         hatchPotentiometer = new AnalogPotentiometer(RobotMap.hatchPotentiometer, 360*10, 0);
         
+    }
+
+    /**
+     * Create a HatchManipulator with passed in components - used for testing purposes
+     */ 
+    public HatchManipulator(IPiston piston1, IPiston piston2, ITalonSRX talon, Potentiometer potentiometer){
+        super(0.02, 0, 0); // This doesn't matter
+        this.hatchPiston1 = piston1;
+        this.hatchPiston2 = piston2;
+        this.hatchSpeedController = talon;
+        this.hatchPotentiometer = potentiometer;
     }
 
     @Override
