@@ -1,7 +1,11 @@
 package frc.robot;
 
 import frc.robot.commands.*;
-import frc.robot.paths.*;
+import frc.robot.paths.returnToSideHatch.*;
+import frc.robot.paths.toFrontHatch.*;
+import frc.robot.paths.toPlayerStation.*;
+import frc.robot.paths.toSideHatch.*;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.thegongoliers.input.operator.EnhancedXboxController;

@@ -1,4 +1,4 @@
-package frc.robot.paths;
+package frc.robot.paths.toFrontHatch;
 
 public class PathMiddleHAB1ToFrontLeftHatch {
 	// Position, velocity, acceleration, duration
