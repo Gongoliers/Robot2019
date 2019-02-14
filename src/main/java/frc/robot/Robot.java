@@ -11,15 +11,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import frc.robot.commands.StopEverything;
+import frc.robot.commands.sandstorm.*;
 import frc.robot.subsystems.*;
 
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the TimedRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.properties file in 
- * the project.
- */
 public class Robot extends TimedRobot {
 
     Command autonomousCommand;
@@ -38,6 +34,7 @@ public class Robot extends TimedRobot {
     public static Vision vision;
     public static CvSink cameraSink;
     private static Mat image;
+
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -60,9 +57,10 @@ public class Robot extends TimedRobot {
 
         oi = new OI();
 
-        // TODO: Add commands to Autonomous Sendable Chooser
-
-        chooser.setDefaultOption("Null Autonomous Command", null);
+        chooser.setDefaultOption("DO NOTHING", new StopEverything());
+        chooser.addOption("L1 2x H", new AutoLeftHAB1DeliverTwoHatches());
+        chooser.addOption("M1 2x H", new AutoMiddleHAB1DeliverTwoHatches());
+        chooser.addOption("R1 2x H", new AutoRightHAB1DeliverTwoHatches());
 
         SmartDashboard.putData("Auto mode", chooser);
     }
@@ -84,7 +82,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         autonomousCommand = chooser.getSelected();
-        // schedule the autonomous command (example)
+        // schedule the autonomous command
         if (autonomousCommand != null) autonomousCommand.start();
     }
 
