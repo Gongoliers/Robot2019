@@ -36,7 +36,7 @@ public class HatchManipulator extends PIDSubsystem implements IPiston {
         hatchPiston1 = new Piston(new FRCSolenoid(0, RobotMap.hatchPiston1));
         hatchPiston2 = new Piston(new FRCSolenoid(0, RobotMap.hatchPiston2));
 
-        hatchSpeedController = new GTalonSRX(RobotMap.hatchMotor1);
+        hatchSpeedController = new GTalonSRX(RobotMap.hatchMotor);
         hatchSpeedController.setInverted(false);
         hatchSpeedController.useBrakeMode();
 

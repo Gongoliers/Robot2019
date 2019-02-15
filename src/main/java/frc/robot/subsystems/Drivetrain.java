@@ -12,6 +12,7 @@ import com.kauailabs.navx.frc.AHRS;
 import com.thegongoliers.input.odometry.Odometry;
 import com.thegongoliers.output.interfaces.DriveTrainInterface;
 import com.thegongoliers.talonsrx.GTalonSRX;
+import com.thegongoliers.talonsrx.ITalonSRX;
 import com.thegongoliers.talonsrx.TrajectoryCreator;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -28,8 +29,8 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
     private static final double MAX_TURBO_SPEED = 0.9;
     private static final double MAX_PRECISE_SPEED = 0.5;
 
-    private GTalonSRX driveRight;
-    private GTalonSRX driveLeft;
+    private ITalonSRX driveRight;
+    private ITalonSRX driveLeft;
     private DifferentialDrive robotDrive;
     private AHRS navX;
 

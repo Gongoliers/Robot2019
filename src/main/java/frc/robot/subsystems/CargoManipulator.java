@@ -9,10 +9,12 @@ import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 
 import com.thegongoliers.input.switches.LimitSwitch;
+import com.thegongoliers.input.switches.Switch;
 import com.thegongoliers.output.FRCSolenoid;
 import com.thegongoliers.output.Piston;
 import com.thegongoliers.output.interfaces.IPiston;
 import com.thegongoliers.talonsrx.GTalonSRX;
+import com.thegongoliers.talonsrx.ITalonSRX;
 
 /**
  *
@@ -26,14 +28,28 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
     
     public double shootingSpeed = DEFAULT_SPEED; 
 
-    private Piston cargoPiston1;
-    private Piston cargoPiston2;
+    private IPiston cargoPiston1;
+    private IPiston cargoPiston2;
 
-    private LimitSwitch cargoLimitSwitch;
+    private Switch cargoLimitSwitch;
     private Potentiometer cargoPotentiometer;
 
-    private GTalonSRX cargoSpeedControllerWrist;
-    private GTalonSRX cargoSpeedControllerRoller;
+    private ITalonSRX cargoSpeedControllerWrist;
+    private ITalonSRX cargoSpeedControllerRoller;
+
+    /**
+     * Create a CargoManipulator with passed in components - used for testing purposes
+     */
+    public CargoManipulator(IPiston piston1, IPiston piston2, Switch cargoSwitch, Potentiometer potentiometer, ITalonSRX wristTalon, ITalonSRX rollerTalon) {
+        super(0.02, 0, 0);
+
+        this.cargoPiston1 = piston1;
+        this.cargoPiston2 = piston2;
+        this.cargoLimitSwitch = cargoSwitch;
+        this.cargoPotentiometer = potentiometer;
+        this.cargoSpeedControllerRoller = rollerTalon;
+        this.cargoSpeedControllerWrist = wristTalon;
+    }
 
     public CargoManipulator() {
         super(0.02, 0, 0); // TODO: Test to find ideal PID values

@@ -19,12 +19,21 @@ public class HABClimber extends Subsystem implements IPiston {
      */
     private boolean safety = true;
 
-    private Piston climberPiston;
-    private Piston skidPiston1;
-    private Piston skidPiston2;
+    private IPiston climberPiston;
+    private IPiston skidPiston1;
+    private IPiston skidPiston2;
+
+    /**
+     * Create a HABClimber with passed in components - used for testing purposes
+     */
+    public HABClimber(IPiston bigPiston, IPiston piston1, IPiston piston2) {
+        climberPiston = bigPiston;
+        skidPiston1 = piston1;
+        skidPiston2 = piston2;
+    }
 
     public HABClimber() {
-        climberPiston = new Piston(new FRCSolenoid(0, RobotMap.climberPiston1)); 
+        climberPiston = new Piston(new FRCSolenoid(0, RobotMap.climberPiston)); 
         
         skidPiston1 = new Piston(new FRCSolenoid(0, RobotMap.skidPiston1));
         skidPiston1 = new Piston(new FRCSolenoid(0, RobotMap.skidPiston2));
@@ -93,8 +102,8 @@ public class HABClimber extends Subsystem implements IPiston {
             Robot.oi.driverController.stopVibration();
         }
         else {
-            Robot.oi.manipulatorController.vibrate(0.8F);
-            Robot.oi.driverController.vibrate(.4F);
+            Robot.oi.manipulatorController.vibrate(0.5F);
+            Robot.oi.driverController.vibrate(0.2F);
         }
     }
     
