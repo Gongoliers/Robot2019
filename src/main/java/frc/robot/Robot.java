@@ -1,5 +1,7 @@
 package frc.robot;
 
+import com.kylecorry.frc.vision.targeting.Target;
+
 import org.opencv.core.Mat;
 
 import edu.wpi.cscore.CvSink;
@@ -33,6 +35,7 @@ public class Robot extends TimedRobot {
     public static VideoSink cameraServer;
     public static Vision vision;
     public static CvSink cameraSink;
+    public static Target lastFoundTarget;
     private static Mat image;
 
     /**

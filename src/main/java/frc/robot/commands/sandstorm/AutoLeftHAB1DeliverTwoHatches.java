@@ -1,7 +1,9 @@
 package frc.robot.commands.sandstorm;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.robot.commands.AlignToFrontTarget;
 import frc.robot.commands.DepositHatch;
+import frc.robot.commands.DisableTargetMode;
 import frc.robot.commands.FollowPathDrivetrain;
 import frc.robot.paths.returnToSideHatch.PathBackupFromLeftStation;
 import frc.robot.paths.returnToSideHatch.PathReturnToLeftSideHatch;
@@ -20,15 +22,31 @@ public class AutoLeftHAB1DeliverTwoHatches extends CommandGroup {
    */
   public AutoLeftHAB1DeliverTwoHatches() {
 
+    // Drive from HAB to cargo bay
     addSequential(new FollowPathDrivetrain(PathLeftHAB1ToFrontLeftHatch.leftPoints, PathLeftHAB1ToFrontLeftHatch.rightPoints));
-    // TODO: Add some vision alignment
+    
+    // Align and deposit hatch
+    addSequential(new AlignToFrontTarget());
     addSequential(new DepositHatch());
+    
+    // Drive from cargo bay to station
     addSequential(new FollowPathDrivetrain(PathBackupFromFrontLeftHatch.leftPoints, PathBackupFromFrontLeftHatch.rightPoints));
     addSequential(new FollowPathDrivetrain(PathToLeftStation.leftPoints, PathToLeftStation.rightPoints));
+
+    // Align with station and grab hatch
+    addSequential(new AlignToFrontTarget());
+    // TODO: Drive slightly forwards to "grab hatch"
+
+    // Drive from station to cargo bay
     addSequential(new FollowPathDrivetrain(PathBackupFromLeftStation.leftPoints, PathBackupFromLeftStation.rightPoints));
     addSequential(new FollowPathDrivetrain(PathReturnToLeftSideHatch.leftPoints, PathReturnToLeftSideHatch.rightPoints));
-    // TODO: Add some vision alignment
+    
+    // Align and depsoit hatch
+    addSequential(new AlignToFrontTarget());
     addSequential(new DepositHatch());
+
+    // Disable target mode
+    addSequential(new DisableTargetMode());
 
   }
 }
