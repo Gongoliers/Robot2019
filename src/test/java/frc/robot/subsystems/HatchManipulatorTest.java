@@ -2,14 +2,11 @@ package frc.robot.subsystems;
 
 import org.junit.Test;
 
-import edu.wpi.first.wpilibj.interfaces.Potentiometer;
-
 import static org.junit.Assert.*;
 
 import com.thegongoliers.mockHardware.output.MockSolenoid;
 import com.thegongoliers.output.Piston;
 import com.thegongoliers.output.interfaces.IPiston;
-import com.thegongoliers.talonsrx.ITalonSRX;
 import com.thegongoliers.talonsrx.MockTalonSRX;
 
 import org.junit.Before;
