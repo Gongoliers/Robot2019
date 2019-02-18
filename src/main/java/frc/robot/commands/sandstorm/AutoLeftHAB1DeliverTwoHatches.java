@@ -4,9 +4,11 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.AlignToFrontTarget;
 import frc.robot.commands.DepositHatch;
 import frc.robot.commands.DisableTargetMode;
+import frc.robot.commands.EnableTargetMode;
 import frc.robot.commands.FollowPathDrivetrain;
+import frc.robot.commands.ForwardDrivetrain;
 import frc.robot.paths.returnToSideHatch.PathBackupFromLeftStation;
-import frc.robot.paths.returnToSideHatch.PathReturnToLeftSideHatch;
+import frc.robot.paths.returnToSideHatch.PathToLeftSideHatch;
 import frc.robot.paths.toFrontHatch.PathLeftHAB1ToFrontLeftHatch;
 import frc.robot.paths.toPlayerStation.PathBackupFromFrontLeftHatch;
 import frc.robot.paths.toPlayerStation.PathToLeftStation;
@@ -22,11 +24,15 @@ public class AutoLeftHAB1DeliverTwoHatches extends CommandGroup {
    */
   public AutoLeftHAB1DeliverTwoHatches() {
 
+    // Enable target mode
+    addSequential(new EnableTargetMode());
+
     // Drive from HAB to cargo bay
     addSequential(new FollowPathDrivetrain(PathLeftHAB1ToFrontLeftHatch.leftPoints, PathLeftHAB1ToFrontLeftHatch.rightPoints));
     
     // Align and deposit hatch
     addSequential(new AlignToFrontTarget());
+    addSequential(new ForwardDrivetrain(), 1); // TODO: Calibrate how far this needs to go
     addSequential(new DepositHatch());
     
     // Drive from cargo bay to station
@@ -35,14 +41,15 @@ public class AutoLeftHAB1DeliverTwoHatches extends CommandGroup {
 
     // Align with station and grab hatch
     addSequential(new AlignToFrontTarget());
-    // TODO: Drive slightly forwards to "grab hatch"
+    addSequential(new ForwardDrivetrain(), 1); // TODO: Calibrate how far this needs to go
 
     // Drive from station to cargo bay
     addSequential(new FollowPathDrivetrain(PathBackupFromLeftStation.leftPoints, PathBackupFromLeftStation.rightPoints));
-    addSequential(new FollowPathDrivetrain(PathReturnToLeftSideHatch.leftPoints, PathReturnToLeftSideHatch.rightPoints));
+    addSequential(new FollowPathDrivetrain(PathToLeftSideHatch.leftPoints, PathToLeftSideHatch.rightPoints));
     
     // Align and depsoit hatch
     addSequential(new AlignToFrontTarget());
+    addSequential(new ForwardDrivetrain(), 1); // TODO: Calibrate how far this needs to go
     addSequential(new DepositHatch());
 
     // Disable target mode

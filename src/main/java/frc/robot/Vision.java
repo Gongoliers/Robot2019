@@ -106,7 +106,7 @@ public class Vision {
     public void enableTargetMode(UsbCamera camera) {
         camera.setBrightness(0);
         camera.setExposureManual(0);
-        // camera.setWhiteBalanceManual(value); TODO
+        // camera.setWhiteBalanceManual(value); TODO: Test to see if this is necessary or not
     }
 
     public void disableTargetMode(UsbCamera camera) {

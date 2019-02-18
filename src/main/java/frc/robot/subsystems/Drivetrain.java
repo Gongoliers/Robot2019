@@ -34,20 +34,6 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
     private DifferentialDrive robotDrive;
     private AHRS navX;
 
-    /**
-     * The number of milliseconds since the last time the hatch manipulator arm was fully raised and activating the limit switch.
-     * It is possible that the limit switch could become deactivated during a bounce.
-     * The drivetrain will stop if the hatch manipulator has been not fully upright for more than the number of milliseconds in DEBOUNCE_DURATION_MILLIS.
-     * The drivetrain will deactivate if the hatch manipulator is down to prevent the hook tape from sticking to the carpet.
-     */
-    private long lastTimeAtTop = 0;
-    /**
-     * The drivetrain will stop if the hatch manipulator has been not fully upright for more than this number of milliseconds.
-     * It is possible that the limit switch could become deactivated during a bounce.
-     * The drivetrain will deactivate if the hatch manipulator is down to prevent the hook tape from sticking to the carpet.
-     */
-    private static final int DEBOUNCE_DURATION_MILLIS = 300;
-
     private boolean turbo = false;
 
     public Drivetrain() {
@@ -176,25 +162,22 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
         SmartDashboard.putNumber("Encoder Distance", Odometry.getDistance(getLeftDistance(), getRightDistance()));
         SmartDashboard.putNumber("Gyro Angle", navX.getAngle());
 
-        if (!Robot.hatchManipulator.isAtTop() && System.currentTimeMillis() - lastTimeAtTop > DEBOUNCE_DURATION_MILLIS) {
-            stop();
+        double speed = driverController.getTriggerAxis(Hand.kRight) - driverController.getTriggerAxis(Hand.kLeft);
+        double rotation = driverController.getX(Hand.kLeft);
+
+        if (turbo) {
+            speed *= MAX_TURBO_SPEED;
+            rotation *= MAX_TURBO_SPEED;
+        } else {
+            speed *= MAX_PRECISE_SPEED;
+            rotation *= MAX_PRECISE_SPEED;
         }
-        else {
-            if (Robot.hatchManipulator.isAtTop()) {
-                lastTimeAtTop = System.currentTimeMillis();
-            }
 
-            double speed = driverController.getTriggerAxis(Hand.kRight) - driverController.getTriggerAxis(Hand.kLeft);
-            double rotation = driverController.getX(Hand.kLeft);
+        speed *= 1 - (Robot.hatchManipulator.getPosition() / HatchManipulator.BOTTOM_ANGLE);
 
-            if (turbo) {
-                robotDrive.arcadeDrive(MAX_TURBO_SPEED * speed, MAX_TURBO_SPEED * rotation);
-            } else {
-                robotDrive.arcadeDrive(MAX_PRECISE_SPEED * speed, MAX_PRECISE_SPEED * rotation);
-            }
+        robotDrive.arcadeDrive(speed, rotation);
 
     }
-}
 
     /**
      * Returns the navX angle

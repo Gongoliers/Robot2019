@@ -6,7 +6,6 @@ import frc.robot.commands.sandstorm.*;
 import frc.robot.paths.returnToSideHatch.*;
 import frc.robot.paths.toFrontHatch.*;
 import frc.robot.paths.toPlayerStation.*;
-import frc.robot.paths.toSideHatch.*;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -111,6 +110,12 @@ public class OI {
         SmartDashboard.putData("Extend Climber", new ExtendClimber());
         SmartDashboard.putData("Retract Climber", new RetractClimber());
 
+        // Vision
+        SmartDashboard.putData("Vision: Align to Front Target", new AlignToFrontTarget());
+        SmartDashboard.putData("Vision: Align to Rear Target", new AlignToRearTarget());
+        SmartDashboard.putData("Vision: Disable Target Mode", new DisableTargetMode());
+        SmartDashboard.putData("Vision: Enable Target Mode", new EnableTargetMode());
+
         // SmartDashboard Autonomous Command Groups
         SmartDashboard.putData("Auto: Left HAB1 Deliver Two Hatches", new AutoLeftHAB1DeliverTwoHatches());
         SmartDashboard.putData("Auto: Middle HAB1 Deliver Two Hatches", new AutoMiddleHAB1DeliverTwoHatches());
@@ -121,10 +126,6 @@ public class OI {
         SmartDashboard.putData("Path: Middle HAB1 To FrontLeft Hatch", new FollowPathDrivetrain(PathMiddleHAB1ToFrontLeftHatch.leftPoints, PathMiddleHAB1ToFrontLeftHatch.rightPoints));
         SmartDashboard.putData("Path: Right HAB1 To FrontRight Hatch", new FollowPathDrivetrain(PathRightHAB1ToFrontRightHatch.leftPoints, PathRightHAB1ToFrontRightHatch.rightPoints));
 
-        SmartDashboard.putData("Path: Left HAB1 To LeftSide Hatch", new FollowPathDrivetrain(PathLeftHAB1ToLeftSideHatch.leftPoints, PathLeftHAB1ToLeftSideHatch.rightPoints));
-        SmartDashboard.putData("Path: Middle HAB1 To LeftSide Hatch", new FollowPathDrivetrain(PathMiddleHAB1ToLeftSideHatch.leftPoints, PathMiddleHAB1ToLeftSideHatch.rightPoints));
-        SmartDashboard.putData("Path: Right HAB1 To RightSide Hatch", new FollowPathDrivetrain(PathRightHAB1ToRightSideHatch.leftPoints, PathRightHAB1ToRightSideHatch.rightPoints));
-
         SmartDashboard.putData("Path: Backup from Left Station", new FollowPathDrivetrain(PathBackupFromLeftStation.leftPoints, PathBackupFromLeftStation.rightPoints));
         SmartDashboard.putData("Path: Backup from Right Station", new FollowPathDrivetrain(PathBackupFromRightStation.leftPoints, PathBackupFromRightStation.rightPoints));
         SmartDashboard.putData("Path: Backup from Front Left Hatch", new FollowPathDrivetrain(PathBackupFromFrontLeftHatch.leftPoints, PathBackupFromFrontLeftHatch.rightPoints));
@@ -132,8 +133,8 @@ public class OI {
 
         SmartDashboard.putData("Path: To Left Station", new FollowPathDrivetrain(PathToLeftStation.leftPoints, PathToLeftStation.rightPoints));
         SmartDashboard.putData("Path: To Right Station", new FollowPathDrivetrain(PathToRightStation.leftPoints, PathToRightStation.rightPoints));
-        SmartDashboard.putData("Path: Return to Left Side Hatch", new FollowPathDrivetrain(PathReturnToLeftSideHatch.leftPoints, PathReturnToLeftSideHatch.rightPoints));
-        SmartDashboard.putData("Path: Return to Right Side Hatch", new FollowPathDrivetrain(PathReturnToRightSideHatch.leftPoints, PathReturnToRightSideHatch.rightPoints));
+        SmartDashboard.putData("Path: To Left Side Hatch", new FollowPathDrivetrain(PathToLeftSideHatch.leftPoints, PathToLeftSideHatch.rightPoints));
+        SmartDashboard.putData("Path: To Right Side Hatch", new FollowPathDrivetrain(PathToRightSideHatch.leftPoints, PathToRightSideHatch.rightPoints));
 
     }
 
