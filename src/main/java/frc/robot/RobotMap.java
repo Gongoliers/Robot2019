@@ -18,8 +18,7 @@ public class RobotMap {
   public static final int rightSlave2 = 6;
 
   // Cargo Subsystem
-  public static final int cargoPiston1 = 0;
-  public static final int cargoPiston2 = 1;
+  public static final int cargoPiston = 1;
 
   public static final int cargoWristMotor = 7;
   public static final int cargoRollerMotor = 8;
@@ -33,8 +32,7 @@ public class RobotMap {
   public static final int skidPiston2 = 4;
 
   // Hatch Subsystem
-  public static final int hatchPiston1 = 5;
-  public static final int hatchPiston2 = 6;
+  public static final int hatchPiston = 0;
 
   public static final int hatchMotor = 9;
 

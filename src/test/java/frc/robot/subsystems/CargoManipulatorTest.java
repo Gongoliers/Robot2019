@@ -18,7 +18,7 @@ import org.junit.Before;
 public class CargoManipulatorTest {
 
     private CargoManipulator cargoManipulator;
-    private IPiston piston1, piston2;
+    private IPiston piston;
     private MockTalonSRX rollerTalon;
     private MockTalonSRX wristTalon;
     private MockPotentiometer potentiometer;
@@ -26,14 +26,13 @@ public class CargoManipulatorTest {
 
     @Before
     public void setup(){
-        piston1 = new Piston(new MockSolenoid());
-        piston2 = new Piston(new MockSolenoid());
+        piston = new Piston(new MockSolenoid());
         rollerTalon = new MockTalonSRX();
         wristTalon = new MockTalonSRX();
         potentiometer = new MockPotentiometer(); // This should have been in the Library of Gongolierium, it's on my todo list though
         cargoSwitch = new MockSwitch();
 
-        cargoManipulator = new CargoManipulator(piston1, piston2, cargoSwitch, potentiometer, wristTalon, rollerTalon);
+        cargoManipulator = new CargoManipulator(piston, cargoSwitch, potentiometer, wristTalon, rollerTalon);
     }
 
     @Test
@@ -59,8 +58,7 @@ public class CargoManipulatorTest {
         cargoManipulator.extend();
         
         // The pistons should be extended
-        assertTrue(piston1.isExtended());
-        assertTrue(piston2.isExtended());
+        assertTrue(piston.isExtended());
 
         // And it should read as extended
         assertTrue(cargoManipulator.isExtended());
@@ -73,8 +71,7 @@ public class CargoManipulatorTest {
         cargoManipulator.retract();
 
         // The pistons should be retracted
-        assertTrue(piston1.isRetracted());
-        assertTrue(piston2.isRetracted());
+        assertTrue(piston.isRetracted());
 
         // And it should read as retracted
         assertTrue(cargoManipulator.isRetracted());
@@ -86,8 +83,7 @@ public class CargoManipulatorTest {
         cargoManipulator.setInverted(true);
 
         // The pistons should be inverted
-        assertTrue(piston1.isInverted());
-        assertTrue(piston2.isInverted());
+        assertTrue(piston.isInverted());
 
         // And it should read as inverted
         assertTrue(cargoManipulator.isInverted());

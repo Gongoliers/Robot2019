@@ -17,17 +17,16 @@ import org.junit.Before;
 public class HatchManipulatorTest {
 
     private HatchManipulator hatchManipulator;
-    private IPiston piston1, piston2;
+    private IPiston piston;
     private MockTalonSRX talon;
     private MockPotentiometer potentiometer;
 
     @Before
     public void setup(){
-        piston1 = new Piston(new MockSolenoid());
-        piston2 = new Piston(new MockSolenoid());
+        piston = new Piston(new MockSolenoid());
         talon = new MockTalonSRX();
         potentiometer = new MockPotentiometer(); // This should have been in the Library of Gongolierium, it's on my todo list though
-        hatchManipulator = new HatchManipulator(piston1, piston2, talon, potentiometer);
+        hatchManipulator = new HatchManipulator(piston, talon, potentiometer);
     }
 
     @Test
@@ -49,8 +48,7 @@ public class HatchManipulatorTest {
         hatchManipulator.extend();
         
         // The pistons should be extended
-        assertTrue(piston1.isExtended());
-        assertTrue(piston2.isExtended());
+        assertTrue(piston.isExtended());
 
         // And it should read as extended
         assertTrue(hatchManipulator.isExtended());
@@ -62,8 +60,7 @@ public class HatchManipulatorTest {
         hatchManipulator.retract();
 
         // The pistons should be retracted
-        assertTrue(piston1.isRetracted());
-        assertTrue(piston2.isRetracted());
+        assertTrue(piston.isRetracted());
 
         // And it should read as retracted
         assertTrue(hatchManipulator.isRetracted());
@@ -75,8 +72,7 @@ public class HatchManipulatorTest {
         hatchManipulator.setInverted(true);
 
         // The pistons should be inverted
-        assertTrue(piston1.isInverted());
-        assertTrue(piston2.isInverted());
+        assertTrue(piston.isInverted());
 
         // And it should read as inverted
         assertTrue(hatchManipulator.isInverted());

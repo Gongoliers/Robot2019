@@ -28,8 +28,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
     
     public double shootingSpeed = DEFAULT_SPEED; 
 
-    private IPiston cargoPiston1;
-    private IPiston cargoPiston2;
+    private IPiston cargoPiston;
 
     private Switch cargoLimitSwitch;
     private Potentiometer cargoPotentiometer;
@@ -40,11 +39,10 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
     /**
      * Create a CargoManipulator with passed in components - used for testing purposes
      */
-    public CargoManipulator(IPiston piston1, IPiston piston2, Switch cargoSwitch, Potentiometer potentiometer, ITalonSRX wristTalon, ITalonSRX rollerTalon) {
+    public CargoManipulator(IPiston piston, Switch cargoSwitch, Potentiometer potentiometer, ITalonSRX wristTalon, ITalonSRX rollerTalon) {
         super(0.02, 0, 0);
 
-        this.cargoPiston1 = piston1;
-        this.cargoPiston2 = piston2;
+        this.cargoPiston = piston;
         this.cargoLimitSwitch = cargoSwitch;
         this.cargoPotentiometer = potentiometer;
         this.cargoSpeedControllerRoller = rollerTalon;
@@ -56,8 +54,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
         setAbsoluteTolerance(5);
         getPIDController().setContinuous(false);
 
-        cargoPiston1 = new Piston(new FRCSolenoid(0, RobotMap.cargoPiston1));
-        cargoPiston2 = new Piston(new FRCSolenoid(0, RobotMap.cargoPiston2));
+        cargoPiston = new Piston(new FRCSolenoid(0, RobotMap.cargoPiston));
         
         cargoLimitSwitch = new LimitSwitch(RobotMap.cargoLimitSwitch);
         cargoPotentiometer = new AnalogPotentiometer(RobotMap.cargoPotentiometer);
@@ -92,8 +89,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
      */ 
     @Override
     public void extend() {
-        cargoPiston1.extend();
-        cargoPiston2.extend();
+        cargoPiston.extend();
     }
 
     /**
@@ -101,8 +97,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
      */
     @Override
     public void retract() {
-        cargoPiston1.retract();
-        cargoPiston2.retract();
+        cargoPiston.retract();
     }
 
     /**
@@ -110,7 +105,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
      */
     @Override
     public boolean isExtended() {
-        return cargoPiston1.isExtended();
+        return cargoPiston.isExtended();
     }
 
     /**
@@ -118,7 +113,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
      */
     @Override
     public boolean isRetracted() {
-        return cargoPiston2.isRetracted();
+        return cargoPiston.isRetracted();
     }
 
     /**
@@ -126,14 +121,13 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
      */    
     @Override
     public void setInverted(boolean inverted) {
-        cargoPiston1.setInverted(inverted);
-        cargoPiston2.setInverted(inverted);
+        cargoPiston.setInverted(inverted);
     }
         
 
     @Override
     public boolean isInverted() {
-        return cargoPiston1.isInverted();
+        return cargoPiston.isInverted();
     }
     
     /**
@@ -187,7 +181,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
 
 	public void operate(XboxController manipulatorController) {
         cargoSpeedControllerWrist.set(manipulatorController.getY(Hand.kLeft) * MAXIMUM_SPEED);
-	}     
+	}
 
     public void rotateWristToPosition(double position) {
         cargoSpeedControllerWrist.setPosition(position);

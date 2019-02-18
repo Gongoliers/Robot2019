@@ -22,8 +22,7 @@ public class HatchManipulator extends PIDSubsystem implements IPiston {
     public static final double BOTTOM_ANGLE = 90; // TODO: Find this
     public static final double TOLERANCE = 10;
 
-    private IPiston hatchPiston1;
-    private IPiston hatchPiston2;
+    private IPiston hatchPiston;
     private ITalonSRX hatchSpeedController;
 
     private Potentiometer hatchPotentiometer;
@@ -33,8 +32,7 @@ public class HatchManipulator extends PIDSubsystem implements IPiston {
         setAbsoluteTolerance(5);
         getPIDController().setContinuous(false);
 
-        hatchPiston1 = new Piston(new FRCSolenoid(0, RobotMap.hatchPiston1));
-        hatchPiston2 = new Piston(new FRCSolenoid(0, RobotMap.hatchPiston2));
+        hatchPiston = new Piston(new FRCSolenoid(0, RobotMap.hatchPiston));
 
         hatchSpeedController = new GTalonSRX(RobotMap.hatchMotor);
         hatchSpeedController.setInverted(false);
@@ -47,10 +45,9 @@ public class HatchManipulator extends PIDSubsystem implements IPiston {
     /**
      * Create a HatchManipulator with passed in components - used for testing purposes
      */ 
-    public HatchManipulator(IPiston piston1, IPiston piston2, ITalonSRX talon, Potentiometer potentiometer){
+    public HatchManipulator(IPiston piston, ITalonSRX talon, Potentiometer potentiometer){
         super(0.02, 0, 0); // This doesn't matter
-        this.hatchPiston1 = piston1;
-        this.hatchPiston2 = piston2;
+        this.hatchPiston = piston;
         this.hatchSpeedController = talon;
         this.hatchPotentiometer = potentiometer;
     }
@@ -72,8 +69,7 @@ public class HatchManipulator extends PIDSubsystem implements IPiston {
      */
     @Override
     public void extend() {
-        hatchPiston1.extend();
-        hatchPiston2.extend();
+        hatchPiston.extend();
     }
 
     /**
@@ -81,8 +77,7 @@ public class HatchManipulator extends PIDSubsystem implements IPiston {
      */
     @Override
     public void retract() {
-        hatchPiston1.retract();
-        hatchPiston2.retract();
+        hatchPiston.retract();
     }
 
     /**
@@ -90,7 +85,7 @@ public class HatchManipulator extends PIDSubsystem implements IPiston {
      */
     @Override
     public boolean isExtended() {
-        return hatchPiston1.isExtended();
+        return hatchPiston.isExtended();
     }
 
     /**
@@ -99,7 +94,7 @@ public class HatchManipulator extends PIDSubsystem implements IPiston {
                 
     @Override
     public boolean isRetracted() {
-        return hatchPiston1.isRetracted();
+        return hatchPiston.isRetracted();
     }
 
     /**
@@ -107,8 +102,7 @@ public class HatchManipulator extends PIDSubsystem implements IPiston {
      */
     @Override
     public void setInverted(boolean inverted) {
-        hatchPiston1.setInverted(inverted);
-        hatchPiston2.setInverted(inverted);
+        hatchPiston.setInverted(inverted);
     }
 
     /**
@@ -116,7 +110,7 @@ public class HatchManipulator extends PIDSubsystem implements IPiston {
     */
     @Override
     public boolean isInverted() {
-        return hatchPiston1.isInverted();
+        return hatchPiston.isInverted();
     }
 
     /**
