@@ -7,11 +7,7 @@ import frc.robot.commands.DisableTargetMode;
 import frc.robot.commands.EnableTargetMode;
 import frc.robot.commands.FollowPathDrivetrain;
 import frc.robot.commands.ForwardDrivetrain;
-import frc.robot.paths.returnToSideHatch.PathBackupFromLeftStation;
-import frc.robot.paths.returnToSideHatch.PathToRightSideHatch;
-import frc.robot.paths.toFrontHatch.PathRightHAB1ToFrontRightHatch;
-import frc.robot.paths.toPlayerStation.PathBackupFromFrontRightHatch;
-import frc.robot.paths.toPlayerStation.PathToRightStation;
+import frc.robot.paths.*;
 
 public class AutoRightHAB1DeliverTwoHatches extends CommandGroup {
   /**

@@ -3,9 +3,7 @@ package frc.robot;
 import frc.robot.commands.*;
 import frc.robot.commands.sandstorm.*;
 
-import frc.robot.paths.returnToSideHatch.*;
-import frc.robot.paths.toFrontHatch.*;
-import frc.robot.paths.toPlayerStation.*;
+import frc.robot.paths.*;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
