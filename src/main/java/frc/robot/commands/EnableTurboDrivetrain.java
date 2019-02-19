@@ -19,12 +19,7 @@ public class EnableTurboDrivetrain extends Command {
     protected void initialize() {
         Robot.drivetrain.setTurbo(true);
         Robot.oi.driverController.vibrate(0.7F);
-        setTimeout(0.2);
-    }
-
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    protected void execute() {
+        setTimeout(0.1);
     }
 
     // Make this return true when this Command no longer needs to run execute()

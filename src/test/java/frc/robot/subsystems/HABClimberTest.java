@@ -42,4 +42,38 @@ public class HABClimberTest {
         assertTrue(piston2.isRetracted());
     }
 
+    @Test
+    public void testExtendingWithSafetyOn() {
+        // Safety Enabled
+        habClimber.setClimberSafety(true);
+
+        // Try deploying skids and extending piston
+        habClimber.deploySkids();
+        habClimber.extend();
+
+        // Should not be deployed or extended
+        assertFalse(habClimber.isExtended());
+        assertTrue(habClimber.isRetracted());
+        assertTrue(piston1.isRetracted());
+        assertTrue(piston2.isRetracted());
+        assertTrue(bigPiston.isRetracted());
+    }
+
+    @Test
+    public void testExtendingWithSafetyOff() {
+        // Safety Disabled
+        habClimber.setClimberSafety(false);
+
+        // Try deploying skids and extending piston
+        habClimber.deploySkids();
+        habClimber.extend();
+
+        // Should be deployed or extended
+        assertTrue(habClimber.isExtended());
+        assertFalse(habClimber.isRetracted());
+        assertFalse(piston1.isRetracted());
+        assertFalse(piston2.isRetracted());
+        assertFalse(bigPiston.isRetracted());
+    }
+
 }

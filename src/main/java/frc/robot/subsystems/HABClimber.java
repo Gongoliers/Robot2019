@@ -1,7 +1,6 @@
  package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 import com.thegongoliers.output.FRCSolenoid;
@@ -97,14 +96,6 @@ public class HABClimber extends Subsystem implements IPiston {
      */
 	public void setClimberSafety(boolean safety) {
         this.safety = safety;
-        if(safety) {
-            Robot.oi.manipulatorController.stopVibration();
-            Robot.oi.driverController.stopVibration();
-        }
-        else {
-            Robot.oi.manipulatorController.vibrate(0.5F);
-            Robot.oi.driverController.vibrate(0.2F);
-        }
     }
     
     /**

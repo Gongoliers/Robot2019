@@ -16,5 +16,7 @@ public class EnableClimberSafety extends InstantCommand {
     @Override
     protected void initialize() {
         Robot.habClimber.setClimberSafety(true);
+        Robot.oi.manipulatorController.vibrate(0.5F);
+        Robot.oi.driverController.vibrate(0.2F);
     }
 }
