@@ -17,7 +17,6 @@ public class DepositCargo extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.oi.manipulatorController.vibrate(0.2F);
         setTimeout(1);
     }
 
@@ -37,7 +36,6 @@ public class DepositCargo extends Command {
     @Override
     protected void end() {
         Robot.cargoManipulator.stopRollers();
-        Robot.oi.manipulatorController.stopVibration();
     }
 
     // Called when another command which requires one or more of the same

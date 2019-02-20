@@ -18,20 +18,17 @@ public class EnableTurboDrivetrain extends Command {
     @Override
     protected void initialize() {
         Robot.drivetrain.setTurbo(true);
-        Robot.oi.driverController.vibrate(0.7F);
-        setTimeout(0.1);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return isTimedOut();
+        return true;
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.oi.driverController.stopVibration();
     }
 
     // Called when another command which requires one or more of the same

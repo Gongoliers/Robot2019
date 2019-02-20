@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.Robot;
 
 /**
  * Performs an emergency stop on all subsystems.
@@ -14,8 +13,6 @@ public class StopEverything extends CommandGroup {
         addParallel(new StopCargoManipulator()); 
         addParallel(new StopDrivetrain());
         addParallel(new StopHatchManipulator());
-
-        Robot.oi.manipulatorController.stopVibration();
 
     } 
 } 

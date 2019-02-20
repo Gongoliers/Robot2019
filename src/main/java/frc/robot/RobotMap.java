@@ -9,21 +9,21 @@ package frc.robot;
 public class RobotMap {
 
   // Drivetrain Subsystem
-  public static final int leftMotor = 1;
-  public static final int leftSlave1 = 2;
-  public static final int leftSlave2 = 3;
+  public static final int leftMotor = 4;
+  public static final int leftSlave1 = 5;
+  public static final int leftSlave2 = 6;
 
-  public static final int rightMotor = 4;
-  public static final int rightSlave1 = 5;
-  public static final int rightSlave2 = 6;
+  public static final int rightMotor = 1;
+  public static final int rightSlave1 = 2;
+  public static final int rightSlave2 = 3;
 
   // Cargo Subsystem
   public static final int cargoPiston = 1;
 
-  public static final int cargoWristMotor = 7;
-  public static final int cargoRollerMotor = 8;
+  public static final int cargoWristMotor = 8;
+  public static final int cargoRollerMotor = 9;
 
-  public static final int cargoLimitSwitch = 0;
+  public static final int cargoLimitSwitch = 2;
   public static final int cargoPotentiometer = 0;
 
   // HAB Climber Subsystem
@@ -34,7 +34,7 @@ public class RobotMap {
   // Hatch Subsystem
   public static final int hatchPiston = 0;
 
-  public static final int hatchMotor = 9;
+  public static final int hatchMotor = 7;
 
   public static final int hatchPotentiometer = 1;
 

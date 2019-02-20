@@ -17,7 +17,7 @@ import com.thegongoliers.talonsrx.ITalonSRX;
  */
 public class HatchManipulator extends PIDSubsystem implements IPiston {
 
-    public static final double DEFAULT_SPEED = 0.5;
+    public static final double DEFAULT_SPEED = 0.1;
     public static final double TOP_ANGLE = 0;
     public static final double BOTTOM_ANGLE = 90; // TODO: Find this
     public static final double TOLERANCE = 10;
@@ -55,7 +55,7 @@ public class HatchManipulator extends PIDSubsystem implements IPiston {
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        setDefaultCommand(new ResetHatchManipulator());
+        // setDefaultCommand(new ResetHatchManipulator()); TODO
     }
 
     @Override

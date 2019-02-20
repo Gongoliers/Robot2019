@@ -54,15 +54,15 @@ public class OI {
         // Driver controller is plugged into port 0
         driverController = new EnhancedXboxController(0);
 
+        // Manipulator controler is plugged into port 1
+        manipulatorController = new EnhancedXboxController(1);
+
         driverController.BACK.whenPressed(new StopEverything()); // SELECT to stop everything
         driverController.RB.whenPressed(new EnableTurboDrivetrain()); // RB to turbo
         driverController.LB.whenPressed(new DisableTurboDrivetrain()); // LB to precise
 
         driverController.A.whenPressed(new AlignToFrontTarget()); // A to align front
         driverController.B.whenPressed(new AlignToRearTarget()); // B to align rear
-
-        // Manipulator controler is plugged into port 1
-        manipulatorController = new EnhancedXboxController(1);
 
         manipulatorController.BACK.whenPressed(new StopEverything()); // SELECT to stop everything
         manipulatorController.START.whenPressed(new DisableClimberSafety()); // allow HAB commands to work (while holding PAUSE)
