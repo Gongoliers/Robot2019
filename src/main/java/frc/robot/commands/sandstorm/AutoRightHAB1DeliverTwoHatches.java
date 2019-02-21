@@ -1,6 +1,9 @@
 package frc.robot.commands.sandstorm;
 
+import com.thegongoliers.commands.RotateToAngle;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.robot.Robot;
 import frc.robot.commands.AlignToFrontTarget;
 import frc.robot.commands.DepositHatch;
 import frc.robot.commands.DisableTargetMode;
@@ -28,24 +31,26 @@ public class AutoRightHAB1DeliverTwoHatches extends CommandGroup {
     
     // Align and deposit hatch
     addSequential(new AlignToFrontTarget());
-    addSequential(new ForwardDrivetrain(), 1); // TODO: Calibrate how far this needs to go
+    addSequential(new ForwardDrivetrain(), 1); // TODO: Switch this to a path that drives 2.5 feet
     addSequential(new DepositHatch());
     
     // Drive from cargo bay to station
     addSequential(new FollowPathDrivetrain(PathBackupFromFrontRightHatch.leftPoints, PathBackupFromFrontRightHatch.rightPoints));
+    addSequential(new RotateToAngle(Robot.drivetrain, 90));
     addSequential(new FollowPathDrivetrain(PathToRightStation.leftPoints, PathToRightStation.rightPoints));
     
     // Align with station and grab hatch
     addSequential(new AlignToFrontTarget());
-    addSequential(new ForwardDrivetrain(), 1); // TODO: Calibrate how far this needs to go
+    addSequential(new ForwardDrivetrain(), 1); // TODO: Switch this to a path that drives 2.5 feet
 
     // Drive from station to cargo bay
     addSequential(new FollowPathDrivetrain(PathBackupFromLeftStation.leftPoints, PathBackupFromLeftStation.rightPoints));
+    addSequential(new RotateToAngle(Robot.drivetrain, 90));
     addSequential(new FollowPathDrivetrain(PathToRightSideHatch.leftPoints, PathToRightSideHatch.rightPoints));
     
     // Align and depsoit hatch
     addSequential(new AlignToFrontTarget());
-    addSequential(new ForwardDrivetrain(), 1); // TODO: Calibrate how far this needs to go
+    addSequential(new ForwardDrivetrain(), 1); // TODO: Switch this to a path that drives 2.5 feet
     addSequential(new DepositHatch());
 
     // Disable target mode

@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
 import frc.robot.Robot;
 
 /**
@@ -8,27 +9,24 @@ import frc.robot.Robot;
  */
 public class EnableTurboDrivetrain extends Command {
 
-    public EnableTurboDrivetrain() {
-
-        requires(Robot.drivetrain);
-
-    }
-
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
         Robot.drivetrain.setTurbo(true);
+        OI.driverController.vibrate(0.6F);
+        setTimeout(0.1);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return true;
+        return isTimedOut();
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        OI.driverController.stopVibration();
     }
 
     // Called when another command which requires one or more of the same

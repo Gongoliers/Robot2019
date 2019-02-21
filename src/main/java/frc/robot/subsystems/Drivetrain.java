@@ -35,6 +35,7 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
     private AHRS navX;
 
     private boolean turbo = false;
+    private boolean inverted = false;
 
     public Drivetrain() {
         super(0.02, 0, 0); // TODO: Test to find ideal values
@@ -165,6 +166,11 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
         double speed = driverController.getTriggerAxis(Hand.kRight) - driverController.getTriggerAxis(Hand.kLeft);
         double rotation = driverController.getX(Hand.kLeft);
 
+        if (inverted) {
+            speed *= -1;
+            rotation *= -1;
+        }
+
         if (turbo) {
             speed *= MAX_TURBO_SPEED;
             rotation *= MAX_TURBO_SPEED;
@@ -214,8 +220,29 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
         this.turbo = turbo;
     }
 
+    /**
+     * @return Whether the drivetrain is in turbo or precise mode
+     */
     public boolean isTurboEnabled() {
         return turbo;
+    }
+
+    /**
+     * The hatch manipulator is on the front of the robot.
+     * The cargo manipulator is on the back, therefore it is easier to 
+     * control the cargo manipulator when the controls are inverted.
+     * 
+     * @param inverted Sets the inverted value
+     */
+    public void setInverted(boolean inverted) {
+        this.inverted = inverted;
+    }
+
+    /**
+     * @return Whether the drivetrain controls are inverted
+     */
+    public boolean isInverted() {
+        return inverted;
     }
 
     @Override

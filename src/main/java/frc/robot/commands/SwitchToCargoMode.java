@@ -5,40 +5,29 @@ import frc.robot.OI;
 import frc.robot.Robot;
 
 /**
- * Deposits the Cargo into the Cargo Ship
+ * Sets the drivetrain controls to be inverted, which is ideal for cargo
+ * gameplay.
  */
-public class DepositCargo extends Command {
-
-    public DepositCargo() {
-
-        requires(Robot.cargoManipulator);
-
-    }
+public class SwitchToCargoMode extends Command {
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        OI.manipulatorController.vibrate(0.3F);
-        setTimeout(1);
-    }
-
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    protected void execute() {
-        Robot.cargoManipulator.outtake(Robot.cargoManipulator.shootingSpeed);
+        Robot.drivetrain.setInverted(true);
+        OI.driverController.vibrate(0.6F);
+        setTimeout(0.1);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return isTimedOut() && !Robot.cargoManipulator.hasCargo();
+        return isTimedOut();
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.cargoManipulator.stopRollers();
-        OI.manipulatorController.stopVibration();
+        OI.driverController.stopVibration();
     }
 
     // Called when another command which requires one or more of the same
