@@ -1,12 +1,12 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 /**
- * Brings the Cargo arm to the floor, which runs instantly because of the InstantCommand function
+ * Brings the Cargo arm to the floor
  */
-public class BringCargoArmToFloor extends InstantCommand {
+public class BringCargoArmToFloor extends Command {
     public BringCargoArmToFloor() {
 
         requires(Robot.cargoManipulator);
@@ -17,5 +17,11 @@ public class BringCargoArmToFloor extends InstantCommand {
     @Override
     protected void initialize() {
         Robot.cargoManipulator.extend();
+        setTimeout(Robot.PISTON_TIMEOUT);
+    }
+
+    @Override
+    protected boolean isFinished() {
+        return isTimedOut();
     }
 }

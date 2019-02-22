@@ -1,12 +1,12 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 /**
  * Retracting the pistons that would expel the hatch from the manipulator.
  */
-public class RetractHatchPistons extends InstantCommand {
+public class RetractHatchPistons extends Command {
 
     public RetractHatchPistons() {
 
@@ -18,5 +18,12 @@ public class RetractHatchPistons extends InstantCommand {
     @Override
     protected void initialize() {
         Robot.hatchManipulator.retract();
+        setTimeout(Robot.PISTON_TIMEOUT);
     }
+
+    @Override
+    protected boolean isFinished() {
+        return isTimedOut();
+    }
+
 }

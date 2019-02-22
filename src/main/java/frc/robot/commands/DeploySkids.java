@@ -1,12 +1,12 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 /**
  * Deploys the skids for Endgame
  */
-public class DeploySkids extends InstantCommand {
+public class DeploySkids extends Command {
 
     public DeploySkids() {
 
@@ -18,6 +18,12 @@ public class DeploySkids extends InstantCommand {
     @Override
     protected void initialize() {
         Robot.habClimber.deploySkids();
+        setTimeout(Robot.PISTON_TIMEOUT);
+    }
+
+    @Override
+    protected boolean isFinished() {
+        return isTimedOut();
     }
 
 }

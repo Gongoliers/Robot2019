@@ -1,12 +1,12 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 /**
  * Retracts the HAB climber piston to inside the robot.
  */
-public class RetractClimber extends InstantCommand {
+public class RetractClimber extends Command {
 
     public RetractClimber() {
 
@@ -18,5 +18,11 @@ public class RetractClimber extends InstantCommand {
     @Override
     protected void initialize() {
         Robot.habClimber.retract();
+        setTimeout(Robot.PISTON_TIMEOUT);
+    }
+
+    @Override
+    protected boolean isFinished() {
+        return isTimedOut();
     }
 }

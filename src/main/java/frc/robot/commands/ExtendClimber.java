@@ -1,12 +1,12 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 /**
  * Extends the giant piston in order to lift the robot onto level 3 HAB.
  */
-public class ExtendClimber extends InstantCommand {
+public class ExtendClimber extends Command {
 
     public ExtendClimber() {
 
@@ -18,5 +18,11 @@ public class ExtendClimber extends InstantCommand {
     @Override
     protected void initialize() {
         Robot.habClimber.extend();
+        setTimeout(Robot.PISTON_TIMEOUT);
+    }
+
+    @Override
+    protected boolean isFinished() {
+        return isTimedOut();
     }
 }

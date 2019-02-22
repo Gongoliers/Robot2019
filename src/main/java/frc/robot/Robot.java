@@ -20,6 +20,8 @@ import frc.robot.subsystems.*;
 
 public class Robot extends TimedRobot {
 
+    public static final double PISTON_TIMEOUT = 0.2;
+
     Command autonomousCommand;
     SendableChooser<Command> chooser = new SendableChooser<>();
 
