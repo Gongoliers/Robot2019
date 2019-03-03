@@ -23,7 +23,7 @@ public class RobotMap {
   public static final int cargoWristMotor = 8;
   public static final int cargoRollerMotor = 9;
 
-  public static final int cargoLimitSwitch = 2;
+  public static final int cargoLimitSwitch = 0;
   public static final int cargoPotentiometer = 0;
 
   // HAB Climber Subsystem

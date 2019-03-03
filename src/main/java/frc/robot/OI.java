@@ -4,7 +4,8 @@ import frc.robot.commands.*;
 import frc.robot.commands.sandstorm.*;
 
 import frc.robot.paths.*;
-
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.thegongoliers.input.operator.EnhancedXboxController;
@@ -24,15 +25,29 @@ public class OI {
      * Manipulator Xbox controller is responsible for control of hatch/cargo/climbing subsystems.
      */
     public static EnhancedXboxController manipulatorController;
+    /**
+     * Manipulator joystick is responsible for control of hatch/cargo/climbing subsytems.
+     * Designed for easy one-handed use.
+     */
+    public static Joystick manipulatorJoystick;
+
+    private JoystickButton b1;
+    private JoystickButton b2;
+    private JoystickButton b3;
+    private JoystickButton b4;
+    private JoystickButton b5;
+    private JoystickButton b6;
+    private JoystickButton b7;
+    private JoystickButton b8;
 
     public OI() {
         /*
-         * Driver
-         * ------
-         * LB (pressed) -> enable precise
-         * RB (pressed) -> enable turbo 
-         * LT (held) -> brake/reverse
-         * RT (held) -> forward
+         * Driver (Xbox)
+         * -----------
+         * LB (pressed) -> Enable Precise
+         * RB (pressed) -> Enable Turbo 
+         * LT (held) -> Brake/Reverse
+         * RT (held) -> Forward
          * Left Thumbstick -> Steer L/R
          * Select Button (pressed) (Small Button on top left of controller) -> Stop Everything
          * A (pressed) -> Align to Front Target
@@ -40,7 +55,7 @@ public class OI {
          * DPAD Down (pressed) -> Switch to Cargo Mode (invert drivetrain controls)
          * DPAD Up (pressed) -> Switch to Hatch Mode (uninvert drivetrain controls)
          * 
-         * Manipulator
+         * Manipulator (Xbox)
          * -----------
          * LB (pressed) -> Pickup Cargo
          * RB (pressed) -> Pickup Hatch
@@ -48,9 +63,20 @@ public class OI {
          * RT (pressed) -> Deposit Hatch
          * SELECT Button (pressed) (Small Button on top left of controller) -> Stop Everything
          * PAUSE Button (held) (Small Button on top right of controller) -> Disables Climber Safety
-         * PAUSE + Y (pressed) -> drop skids
-         * PAUSE + B (pressed) -> retract lift piston
+         * PAUSE + Y (pressed) -> Drop Skids
+         * PAUSE + B (pressed) -> Retract Lift Piston
          * PAUSE + A (pressed) -> Lift Robot
+         * 
+         * Manipulator (Joystick)
+         * -----------
+         * B1 (pressed) (back trigger) -> Deposit Hatch
+         * B2 (pressed) (bottom button) -> Deposit Cargo
+         * B3 (pressed) (center button) -> Pickup Cargo
+         * B4 (pressed) (left button) -> Pickup Hatch
+         * B5 (pressed) (right button) -> Stop Everything
+         * B6 (pressed) -> Lift Robot
+         * B7 (pressed) -> Retract Lift Piston
+         * B8 (pressed) -> Drop Skids
          */
 
         // Driver controller is plugged into port 0
@@ -58,6 +84,9 @@ public class OI {
 
         // Manipulator controler is plugged into port 1
         manipulatorController = new EnhancedXboxController(1);
+
+        // Manipulator joystick is plugged into port 2
+        manipulatorJoystick = new Joystick(2);
 
         driverController.BACK.whenPressed(new StopEverything()); // SELECT to stop everything
         driverController.RB.whenPressed(new EnableTurboDrivetrain()); // RB to turbo
@@ -83,6 +112,24 @@ public class OI {
         manipulatorController.LB.whenPressed(new PickupCargo()); // LB to automatically pickup cargo from floor
         manipulatorController.RB.whenPressed(new BringToFloorHatch()); // RB to automatically pickup hatch from floor
         
+        b1 = new JoystickButton(manipulatorJoystick, 1);
+        b2 = new JoystickButton(manipulatorJoystick, 2);
+        b3 = new JoystickButton(manipulatorJoystick, 3);
+        b4 = new JoystickButton(manipulatorJoystick, 4);
+        b5 = new JoystickButton(manipulatorJoystick, 5);
+        b6 = new JoystickButton(manipulatorJoystick, 6);
+        b7 = new JoystickButton(manipulatorJoystick, 7);
+        b8 = new JoystickButton(manipulatorJoystick, 8);
+        
+        b1.whenPressed(new DepositHatch());
+        b2.whenPressed(new DepositCargo());
+        b3.whenPressed(new PickupCargo());
+        b4.whenPressed(new BringToFloorHatch());
+        b5.whenPressed(new StopEverything());
+        b6.whenPressed(new ExtendClimber());
+        b7.whenPressed(new RetractClimber());
+        b8.whenPressed(new DeploySkids());
+
         // ~~ SmartDashboard Buttons ~~
 
         // Stops
