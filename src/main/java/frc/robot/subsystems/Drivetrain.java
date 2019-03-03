@@ -21,7 +21,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 
 /**
- * Runs the drivetrain subsystem
+ * The Drivetrain subsystem is composed of six motors (three on each side).
+ * Each side has an encoder and a navX is used to track rotation.
  */
 public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
 

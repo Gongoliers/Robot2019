@@ -182,6 +182,8 @@ public class OI {
         SmartDashboard.putData("Auto: Right HAB1 Deliver Two Hatches", new AutoRightHAB1DeliverTwoHatches());
 
         // Autonomous Paths
+        SmartDashboard.putData("Path: Drive Forwards 3.6 feet", new FollowPathDrivetrain(PathDriveForwards.leftPoints, PathDriveForwards.rightPoints));
+
         SmartDashboard.putData("Path: Left HAB1 To FrontLeft Hatch", new FollowPathDrivetrain(PathLeftHAB1ToFrontLeftHatch.leftPoints, PathLeftHAB1ToFrontLeftHatch.rightPoints));
         SmartDashboard.putData("Path: Middle HAB1 To FrontLeft Hatch", new FollowPathDrivetrain(PathMiddleHAB1ToFrontLeftHatch.leftPoints, PathMiddleHAB1ToFrontLeftHatch.rightPoints));
         SmartDashboard.putData("Path: Right HAB1 To FrontRight Hatch", new FollowPathDrivetrain(PathRightHAB1ToFrontRightHatch.leftPoints, PathRightHAB1ToFrontRightHatch.rightPoints));

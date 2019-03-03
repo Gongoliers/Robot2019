@@ -8,7 +8,8 @@ import com.thegongoliers.output.Piston;
 import com.thegongoliers.output.interfaces.IPiston;
 
 /**
- *
+ * The HAB Climber is composed of two small pistons that deploy skids that allow the robot to be lifted.
+ * One giant lift piston then lifts the robot onto HAB Level 3.
  */
 public class HABClimber extends Subsystem implements IPiston {
 

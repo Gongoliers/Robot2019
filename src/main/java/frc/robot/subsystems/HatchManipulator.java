@@ -12,7 +12,8 @@ import com.thegongoliers.talonsrx.GTalonSRX;
 import com.thegongoliers.talonsrx.ITalonSRX;
 
 /**
- *
+ * The hatch manipulator is composed of vertically mounted passive hook tape and two pistons for depositing.
+ * There is also a "hatchula" arm mechanism that goes down to the floor and back to pick up hatches from floor.
  */
 public class HatchManipulator extends PIDSubsystem implements IPiston {
 

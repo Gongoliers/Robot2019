@@ -9,7 +9,6 @@ import frc.robot.commands.DepositHatch;
 import frc.robot.commands.DisableTargetMode;
 import frc.robot.commands.EnableTargetMode;
 import frc.robot.commands.FollowPathDrivetrain;
-import frc.robot.commands.ForwardDrivetrain;
 import frc.robot.paths.*;
 
 public class AutoRightHAB1DeliverTwoHatches extends CommandGroup {
@@ -31,7 +30,7 @@ public class AutoRightHAB1DeliverTwoHatches extends CommandGroup {
     
     // Align and deposit hatch
     addSequential(new AlignToFrontTarget());
-    addSequential(new ForwardDrivetrain(), 1); // TODO: Switch this to a path that drives 2.5 feet
+    addSequential(new FollowPathDrivetrain(PathDriveForwards.leftPoints, PathDriveForwards.rightPoints));
     addSequential(new DepositHatch());
     
     // Drive from cargo bay to station
@@ -41,7 +40,7 @@ public class AutoRightHAB1DeliverTwoHatches extends CommandGroup {
     
     // Align with station and grab hatch
     addSequential(new AlignToFrontTarget());
-    addSequential(new ForwardDrivetrain(), 1); // TODO: Switch this to a path that drives 2.5 feet
+    addSequential(new FollowPathDrivetrain(PathDriveForwards.leftPoints, PathDriveForwards.rightPoints));
 
     // Drive from station to cargo bay
     addSequential(new FollowPathDrivetrain(PathBackupFromLeftStation.leftPoints, PathBackupFromLeftStation.rightPoints));
@@ -50,7 +49,7 @@ public class AutoRightHAB1DeliverTwoHatches extends CommandGroup {
     
     // Align and depsoit hatch
     addSequential(new AlignToFrontTarget());
-    addSequential(new ForwardDrivetrain(), 1); // TODO: Switch this to a path that drives 2.5 feet
+    addSequential(new FollowPathDrivetrain(PathDriveForwards.leftPoints, PathDriveForwards.rightPoints));
     addSequential(new DepositHatch());
 
     // Disable target mode

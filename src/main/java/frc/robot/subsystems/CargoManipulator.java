@@ -16,7 +16,8 @@ import com.thegongoliers.talonsrx.GTalonSRX;
 import com.thegongoliers.talonsrx.ITalonSRX;
 
 /**
- *
+ * The cargo manipulator is composed of two pistons that lower the "cargo arm."
+ * The "cargo wrist" is controlled by a motor and another motor is used for controlling the rollers.
  */
 public class CargoManipulator extends PIDSubsystem implements IPiston {
 
