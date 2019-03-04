@@ -38,4 +38,6 @@ public class RobotMap {
 
   public static final int hatchPotentiometer = 1;
 
+  public static final int POTENTIOMETER_RANGE_DEGREES = 3600;
+
 }
