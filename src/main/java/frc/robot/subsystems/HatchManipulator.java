@@ -19,7 +19,7 @@ public class HatchManipulator extends PIDSubsystem implements IPiston {
 
     public static final double DEFAULT_SPEED = 0.1;
     public static final double TOP_ANGLE = 0;
-    public static final double BOTTOM_ANGLE = 90; // TODO: Find this
+    public static final double BOTTOM_ANGLE = 112; // TODO: The robot was on the tote for this measurement, we need to test it on the floor though to get an accurate measurement
     public static final double TOLERANCE = 10;
 
     private IPiston hatchPiston;
@@ -38,7 +38,7 @@ public class HatchManipulator extends PIDSubsystem implements IPiston {
         hatchSpeedController.setInverted(false);
         hatchSpeedController.useBrakeMode();
 
-        hatchPotentiometer = new AnalogPotentiometer(RobotMap.hatchPotentiometer, 360*10, 0);
+        hatchPotentiometer = new AnalogPotentiometer(RobotMap.hatchPotentiometer, RobotMap.POTENTIOMETER_RANGE_DEGREES, 1562); // TODO: the resting angle is somewhere around 1562 degrees, but this estimate can be improved in testing
         
     }
 
@@ -55,7 +55,7 @@ public class HatchManipulator extends PIDSubsystem implements IPiston {
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        // setDefaultCommand(new ResetHatchManipulator()); TODO
+        // setDefaultCommand(new ResetHatchManipulator()); TODO enable this when testing
     }
 
     @Override
