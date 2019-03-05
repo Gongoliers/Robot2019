@@ -73,6 +73,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
      */
     @Override
     public void initDefaultCommand() {
+        // setDefaultCommand(new OperateCargoWrist());
         // setDefaultCommand(new ResetCargoManipulator()); TODO enable this during testing
     }
 

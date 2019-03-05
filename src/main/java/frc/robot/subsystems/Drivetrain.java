@@ -93,6 +93,7 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
     public void periodic() {
         SmartDashboard.putNumber("Encoder Distance", Odometry.getDistance(getLeftDistance(), getRightDistance()));
         SmartDashboard.putNumber("Gyro Angle", navX.getAngle());
+        SmartDashboard.putNumber("Compass Heading", navX.getCompassHeading());
         SmartDashboard.putNumber("Drivetrain Speed", (driveLeft.getVelocity() + driveRight.getVelocity()) / 2);
 
         if (Math.abs(driveLeft.get()) > .5) {
