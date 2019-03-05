@@ -21,8 +21,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 
 /**
- * The Drivetrain subsystem is composed of six motors (three on each side).
- * Each side has an encoder and a navX is used to track rotation.
+ * The Drivetrain subsystem is composed of six motors (three on each side). Each
+ * side has an encoder and a navX is used to track rotation.
  */
 public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
 
@@ -46,7 +46,7 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
         driveRight.setPID(0.02, 0, 0, 1); // TODO: Test to find ideal values
         driveRight.setRamp(0.5); // TODO: Test to find ideal value
         driveRight.setNeutralDeadband(0.05);
-        
+
         GTalonSRX rightSlave1 = new GTalonSRX(RobotMap.rightMotor, RobotMap.rightSlave1);
         GTalonSRX rightSlave2 = new GTalonSRX(RobotMap.rightMotor, RobotMap.rightSlave2);
 
@@ -59,7 +59,7 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
         driveLeft.setPID(0.02, 0, 0, 1); // TODO: Test to find ideal values
         driveLeft.setRamp(0.5); // TODO: Test to find ideal value
         driveLeft.setNeutralDeadband(0.05);
-        
+
         GTalonSRX leftSlave1 = new GTalonSRX(RobotMap.leftMotor, RobotMap.leftSlave1);
         GTalonSRX leftSlave2 = new GTalonSRX(RobotMap.leftMotor, RobotMap.leftSlave2);
 
@@ -68,7 +68,7 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
         leftSlave2.setInverted(true);
 
         robotDrive = new DifferentialDrive(driveLeft, driveRight);
-        
+
         robotDrive.setSafetyEnabled(true);
         robotDrive.setExpiration(0.1);
         robotDrive.setMaxOutput(1.0);
@@ -91,8 +91,15 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
 
     @Override
     public void periodic() {
-        // Put code here to be run every loop
+        SmartDashboard.putNumber("Encoder Distance", Odometry.getDistance(getLeftDistance(), getRightDistance()));
+        SmartDashboard.putNumber("Gyro Angle", navX.getAngle());
+        SmartDashboard.putNumber("Drivetrain Speed", (driveLeft.getVelocity() + driveRight.getVelocity()) / 2);
 
+        if (Math.abs(driveLeft.get()) > .5) {
+            Robot.compressor.stop();
+        } else {
+            Robot.compressor.start();
+        }
     }
 
     /**
@@ -160,9 +167,7 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
      * 
      * @param driverController The Xbox controller to be used for driving
      */
-	public void operate(XboxController driverController) {
-        SmartDashboard.putNumber("Encoder Distance", Odometry.getDistance(getLeftDistance(), getRightDistance()));
-        SmartDashboard.putNumber("Gyro Angle", navX.getAngle());
+    public void operate(XboxController driverController) {
 
         double speed = driverController.getTriggerAxis(Hand.kRight) - driverController.getTriggerAxis(Hand.kLeft);
         double rotation = driverController.getX(Hand.kLeft);
@@ -190,7 +195,8 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
      * Returns the navX angle
      */
     public double getHeading() {
-        if (navX == null) return 0;
+        if (navX == null)
+            return 0;
         return navX.getAngle();
     }
 
@@ -198,7 +204,8 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
      * Returns the navX compass angle
      */
     public double getCompassHeading() {
-        if (navX == null) return 0;
+        if (navX == null)
+            return 0;
         return navX.getCompassHeading();
     }
 
@@ -206,14 +213,14 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
      * Resets the navX
      */
     public void resetHeading() {
-        if (navX == null) return;
+        if (navX == null)
+            return;
         navX.reset();
     }
 
     /**
-     * Enables/disables turbo drivetrain mode.
-     * Turbo drivetrain mode allows movement at full speed.
-     * Precise drivetrain mode contrains movement to 50% max speed.
+     * Enables/disables turbo drivetrain mode. Turbo drivetrain mode allows movement
+     * at full speed. Precise drivetrain mode contrains movement to 50% max speed.
      * 
      * @param turbo Sets the turbo mode value
      */
@@ -229,9 +236,9 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
     }
 
     /**
-     * The hatch manipulator is on the front of the robot.
-     * The cargo manipulator is on the back, therefore it is easier to 
-     * control the cargo manipulator when the controls are inverted.
+     * The hatch manipulator is on the front of the robot. The cargo manipulator is
+     * on the back, therefore it is easier to control the cargo manipulator when the
+     * controls are inverted.
      * 
      * @param inverted Sets the inverted value
      */
@@ -248,7 +255,7 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
 
     @Override
     protected double returnPIDInput() {
-        return navX.getAngle(); // TODO: Implement PID (gyro angle) 
+        return navX.getAngle(); // TODO: Implement PID (gyro angle)
     }
 
     @Override
@@ -258,16 +265,25 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
 
     /**
      * Starts a motion profile to follow an autonomous path
-     * @param leftPath an array of double arrays generated by Pathweaver for left side wheels
-     * @param rightPath an array of double arrays generated by Pathweaver for right side wheels
+     * 
+     * @param leftPath  an array of double arrays generated by Pathweaver for left
+     *                  side wheels
+     * @param rightPath an array of double arrays generated by Pathweaver for right
+     *                  side wheels
      */
     public void followPath(double[][] leftPath, double[][] rightPath) {
-        driveLeft.startMotionProfile(TrajectoryCreator.createTrajectory(leftPath, 1, 1)); // TODO: Convert number of ticks it takes to move 1 foot
-        driveRight.startMotionProfile(TrajectoryCreator.createTrajectory(rightPath, 1, 1)); // TODO: Convert number of ticks it takes to move 1 foot
+        driveLeft.startMotionProfile(TrajectoryCreator.createTrajectory(leftPath, 1, 1)); // TODO: Convert number of
+                                                                                          // ticks it takes to move 1
+                                                                                          // foot
+        driveRight.startMotionProfile(TrajectoryCreator.createTrajectory(rightPath, 1, 1)); // TODO: Convert number of
+                                                                                            // ticks it takes to move 1
+                                                                                            // foot
     }
 
     /**
-     * Returns whether or not the motion profile autonomous path has completed its journey
+     * Returns whether or not the motion profile autonomous path has completed its
+     * journey
+     * 
      * @return true if finished with path, false otherwise
      */
     public boolean isDoneFollowingPath() {

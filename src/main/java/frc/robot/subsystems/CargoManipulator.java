@@ -2,10 +2,9 @@ package frc.robot.subsystems;
 
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.thegongoliers.input.switches.LimitSwitch;
 import com.thegongoliers.input.switches.Switch;
@@ -82,7 +81,10 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
      */
     @Override
     public void periodic() {
-
+        SmartDashboard.putNumber("Cargo Wrist Angle", cargoPotentiometer.get());
+        SmartDashboard.putBoolean("Has Cargo?", cargoLimitSwitch.isTriggered());
+        SmartDashboard.putBoolean("Cargo Arm Extended?", cargoPiston.isExtended());
+        SmartDashboard.putNumber("Cargo Roller Speed", cargoSpeedControllerRoller.get());
     }
 
     /**
@@ -179,10 +181,6 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
     public void stopWrist(){
         cargoSpeedControllerWrist.stopMotor();
     }
-
-	public void operate(XboxController manipulatorController) {
-        cargoSpeedControllerWrist.set(manipulatorController.getY(Hand.kLeft) * MAXIMUM_SPEED);
-	}
 
     public void rotateWristToPosition(double position) {
         cargoSpeedControllerWrist.setPosition(position);

@@ -8,6 +8,7 @@ import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -32,6 +33,8 @@ public class Robot extends TimedRobot {
     public static CargoManipulator cargoManipulator;
     public static HABClimber habClimber;
 
+    public static Compressor compressor;
+
     public static UsbCamera frontCamera;
     public static UsbCamera rearCamera;
     public static VideoSink cameraServer;
@@ -51,6 +54,9 @@ public class Robot extends TimedRobot {
         hatchManipulator = new HatchManipulator();
         cargoManipulator = new CargoManipulator();
         habClimber = new HABClimber();
+
+        compressor = new Compressor();
+        compressor.start();
 
         frontCamera = CameraServer.getInstance().startAutomaticCapture(0);
         rearCamera = CameraServer.getInstance().startAutomaticCapture(1);

@@ -4,6 +4,7 @@ import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.thegongoliers.output.FRCSolenoid;
 import com.thegongoliers.output.Piston;
@@ -61,7 +62,8 @@ public class HatchManipulator extends PIDSubsystem implements IPiston {
     @Override
     public void periodic() {
         // Put code here to be run every loop
-
+        SmartDashboard.putNumber("Hatchula Angle", hatchPotentiometer.get());
+        SmartDashboard.putBoolean("Hatch Piston Extended?", hatchPiston.isExtended());
     }
 
     /**
