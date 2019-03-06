@@ -1,6 +1,12 @@
 package frc.robot;
 
 import frc.robot.commands.*;
+import frc.robot.commands.cargo.*;
+import frc.robot.commands.compressor.*;
+import frc.robot.commands.drivetrain.*;
+import frc.robot.commands.hab.*;
+import frc.robot.commands.hatch.*;
+import frc.robot.commands.vision.*;
 import frc.robot.commands.sandstorm.*;
 
 import frc.robot.paths.*;
@@ -39,6 +45,8 @@ public class OI {
     private JoystickButton b6;
     private JoystickButton b7;
     private JoystickButton b8;
+    private JoystickButton b10;
+    private JoystickButton b11;
 
     public OI() {
         /*
@@ -66,6 +74,8 @@ public class OI {
          * PAUSE + Y (pressed) -> Drop Skids
          * PAUSE + B (pressed) -> Retract Lift Piston
          * PAUSE + A (pressed) -> Lift Robot
+         * DPAD Up (pressed) -> Enable Compressor
+         * DPAD Down (pressed) -> Disable Compressor
          * 
          * Manipulator (Joystick)
          * -----------
@@ -77,6 +87,8 @@ public class OI {
          * B6 (pressed) -> Lift Robot
          * B7 (pressed) -> Retract Lift Piston
          * B8 (pressed) -> Drop Skids
+         * B10 (pressed) -> Enable Compressor
+         * B11 (pressed) -> Disable Compressor
          */
 
         // Driver controller is plugged into port 0
@@ -111,6 +123,9 @@ public class OI {
 
         manipulatorController.LB.whenPressed(new PickupCargo()); // LB to automatically pickup cargo from floor
         manipulatorController.RB.whenPressed(new BringToFloorHatch()); // RB to automatically pickup hatch from floor
+
+        manipulatorController.DPAD_UP.whenPressed(new StartCompressor()); // DPAD Up for compressor on 
+        manipulatorController.DPAD_DOWN.whenPressed(new StopCompressor()); // DPAD Down for compressor off
         
         b1 = new JoystickButton(manipulatorJoystick, 1);
         b2 = new JoystickButton(manipulatorJoystick, 2);
@@ -120,6 +135,8 @@ public class OI {
         b6 = new JoystickButton(manipulatorJoystick, 6);
         b7 = new JoystickButton(manipulatorJoystick, 7);
         b8 = new JoystickButton(manipulatorJoystick, 8);
+        b10 = new JoystickButton(manipulatorJoystick, 10);
+        b11 = new JoystickButton(manipulatorJoystick, 11);
         
         b1.whenPressed(new DepositHatch());
         b2.whenPressed(new DepositCargo());
@@ -129,6 +146,8 @@ public class OI {
         b6.whenPressed(new ExtendClimber());
         b7.whenPressed(new RetractClimber());
         b8.whenPressed(new DeploySkids());
+        b10.whenPressed(new StartCompressor());
+        b11.whenPressed(new StopCompressor());
 
         // ~~ SmartDashboard Buttons ~~
 

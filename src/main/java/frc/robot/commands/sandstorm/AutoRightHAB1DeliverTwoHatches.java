@@ -4,12 +4,10 @@ import com.thegongoliers.commands.RotateToAngle;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Robot;
-import frc.robot.commands.AlignToFrontTarget;
-import frc.robot.commands.DepositHatch;
-import frc.robot.commands.DisableTargetMode;
-import frc.robot.commands.EnableTargetMode;
-import frc.robot.commands.FollowPathDrivetrain;
 import frc.robot.paths.*;
+import frc.robot.commands.vision.*;
+import frc.robot.commands.drivetrain.*;
+import frc.robot.commands.hatch.*;
 
 public class AutoRightHAB1DeliverTwoHatches extends CommandGroup {
   /**
