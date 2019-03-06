@@ -39,7 +39,7 @@ public class HatchManipulator extends PIDSubsystem implements IPiston {
         hatchSpeedController.setInverted(false);
         hatchSpeedController.useBrakeMode();
 
-        hatchPotentiometer = new AnalogPotentiometer(RobotMap.hatchPotentiometer, RobotMap.POTENTIOMETER_RANGE_DEGREES, 1562); // TODO: the resting angle is somewhere around 1562 degrees, but this estimate can be improved in testing
+        hatchPotentiometer = new AnalogPotentiometer(RobotMap.hatchPotentiometer, RobotMap.POTENTIOMETER_RANGE_DEGREES, -1567);
         
     }
 

@@ -24,7 +24,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
     public static final double MAXIMUM_SPEED = 0.9;
     public static final double INTAKE_SPEED = 0.7; // TODO: Test to find ideal intake speed value.
     public static final double RESTING_ANGLE = 0;
-    public static final double MAXIMUM_ANGLE = 11; // TODO: This is inaccurate, and is probably greater than 11 degrees in reality
+    public static final double MAXIMUM_ANGLE = 72;
     
     public double shootingSpeed = DEFAULT_SPEED; 
 
@@ -57,7 +57,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
         cargoPiston = new Piston(new FRCSolenoid(0, RobotMap.cargoPiston));
         
         cargoLimitSwitch = new LimitSwitch(RobotMap.cargoLimitSwitch);
-        cargoPotentiometer = new AnalogPotentiometer(RobotMap.cargoPotentiometer, RobotMap.POTENTIOMETER_RANGE_DEGREES, 990); // TODO: the resting angle is somewhere around 990 degrees, but this estimate can be improved in testing
+        cargoPotentiometer = new AnalogPotentiometer(RobotMap.cargoPotentiometer, RobotMap.POTENTIOMETER_RANGE_DEGREES, -1006);
         
         cargoSpeedControllerWrist = new GTalonSRX(RobotMap.cargoWristMotor);
         cargoSpeedControllerWrist.setInverted(false);
