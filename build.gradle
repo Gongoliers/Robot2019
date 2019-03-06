@@ -54,7 +54,7 @@ dependencies {
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
     testCompile 'junit:junit:4.12'
-    compile 'com.github.Gongoliers:Library-of-Gongolierium:v3.0.1'
+    compile 'com.github.Gongoliers:Library-of-Gongolierium:v3.1.0'
     compile 'com.github.kylecorry31:Robot-Vision-API:v1.1.2'
     compile 'com.github.Gongoliers:Gongoliers-TalonSRX:v1.2.0'
 }

@@ -1,11 +1,11 @@
 package frc.robot.subsystems;
 
 import frc.robot.RobotMap;
-import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import com.thegongoliers.input.rotation.GPotentiometer;
 import com.thegongoliers.output.FRCSolenoid;
 import com.thegongoliers.output.Piston;
 import com.thegongoliers.output.interfaces.IPiston;
@@ -39,7 +39,7 @@ public class HatchManipulator extends PIDSubsystem implements IPiston {
         hatchSpeedController.setInverted(false);
         hatchSpeedController.useBrakeMode();
 
-        hatchPotentiometer = new AnalogPotentiometer(RobotMap.hatchPotentiometer, RobotMap.POTENTIOMETER_RANGE_DEGREES, -1567);
+        hatchPotentiometer = new GPotentiometer(RobotMap.hatchPotentiometer, RobotMap.POTENTIOMETER_RANGE_DEGREES, 1567);
         
     }
 
