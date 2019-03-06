@@ -94,7 +94,7 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
         SmartDashboard.putNumber("Encoder Distance", Odometry.getDistance(getLeftDistance(), getRightDistance()));
         SmartDashboard.putNumber("Gyro Angle", navX.getAngle());
         SmartDashboard.putNumber("Compass Heading", navX.getCompassHeading());
-        SmartDashboard.putNumber("Drivetrain Speed", (driveLeft.getVelocity() + driveRight.getVelocity()) / 2);
+        SmartDashboard.putNumber("Drivetrain Speed", (driveLeft.getVelocity() + driveRight.getVelocity()) / 2 * 13404.1287*600);
 
         if (Math.abs(driveLeft.get()) > .5) {
             Robot.compressor.stop();
@@ -151,11 +151,11 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
     }
 
     public double getLeftDistance() {
-        return driveLeft.getPosition();
+        return driveLeft.getPosition() * 13404.1287;
     }
 
     public double getRightDistance() {
-        return driveRight.getPosition();
+        return driveRight.getPosition() * 13404.1287;
     }
 
     public void resetDistance() {
@@ -273,12 +273,8 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
      *                  side wheels
      */
     public void followPath(double[][] leftPath, double[][] rightPath) {
-        driveLeft.startMotionProfile(TrajectoryCreator.createTrajectory(leftPath, 1, 1)); // TODO: Convert number of
-                                                                                          // ticks it takes to move 1
-                                                                                          // foot
-        driveRight.startMotionProfile(TrajectoryCreator.createTrajectory(rightPath, 1, 1)); // TODO: Convert number of
-                                                                                            // ticks it takes to move 1
-                                                                                            // foot
+        driveLeft.startMotionProfile(TrajectoryCreator.createTrajectory(leftPath, 1/13404.1287, 1/13404.1287/600)); 
+        driveRight.startMotionProfile(TrajectoryCreator.createTrajectory(rightPath, 1/13404.1287, 1/13404.1287/600)); 
     }
 
     /**
