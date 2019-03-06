@@ -1,13 +1,5 @@
 package frc.robot;
 
-import com.kylecorry.frc.vision.targeting.Target;
-
-import org.opencv.core.Mat;
-
-import edu.wpi.cscore.CvSink;
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.cscore.VideoSink;
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -33,15 +25,9 @@ public class Robot extends TimedRobot {
     public static CargoManipulator cargoManipulator;
     public static HABClimber habClimber;
 
-    public static Compressor compressor;
-
-    public static UsbCamera frontCamera;
-    public static UsbCamera rearCamera;
-    public static VideoSink cameraServer;
     public static Vision vision;
-    public static CvSink cameraSink;
-    public static Target lastFoundTarget;
-    private static Mat image;
+
+    public static Compressor compressor;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -58,12 +44,6 @@ public class Robot extends TimedRobot {
         compressor = new Compressor();
         compressor.start();
 
-        frontCamera = CameraServer.getInstance().startAutomaticCapture(0);
-        rearCamera = CameraServer.getInstance().startAutomaticCapture(1);
-        image = new Mat();
-        cameraServer = CameraServer.getInstance().getServer();
-        cameraServer.setSource(frontCamera);
-        cameraSink = CameraServer.getInstance().getVideo();
         vision = new Vision();
 
         oi = new OI();
@@ -114,25 +94,6 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-    }
-
-    /**
-     * Switches the CameraServer stream to the front camera (hatch targeting)
-     */
-    public static void switchToFrontCamera() {
-        cameraServer.setSource(frontCamera);
-    }
-
-    /**
-     * Switches the CameraServer steeam to the rear camera (cargo targeting)
-     */
-    public static void switchToRearCamera() {
-        cameraServer.setSource(rearCamera);
-    }
-
-    public static Mat getImage() {
-        cameraSink.grabFrame(image);
-        return image;
     }
 
 }

@@ -11,8 +11,8 @@ public class EnableTargetMode extends InstantCommand {
     // Called once when the command executes
     @Override
     protected void initialize() {
-        Robot.vision.disableTargetMode(Robot.frontCamera);
-        Robot.vision.disableTargetMode(Robot.rearCamera);
+        Robot.vision.disableTargetMode(Robot.vision.frontCamera);
+        Robot.vision.disableTargetMode(Robot.vision.rearCamera);
     }
 
 }

@@ -11,13 +11,13 @@ public class LocateRearTarget extends InstantCommand {
     
     @Override
     protected void initialize() {
-        Robot.switchToRearCamera();
-        Robot.vision.enableTargetMode(Robot.rearCamera);
-        List<Target> targets = Robot.vision.detectTargets(Robot.getImage());
+        Robot.vision.switchToRearCamera();
+        Robot.vision.enableTargetMode(Robot.vision.rearCamera);
+        List<Target> targets = Robot.vision.detectTargets(Robot.vision.getImage());
         if (!targets.isEmpty()) {
-            Robot.lastFoundTarget = targets.get(0);
+            Robot.vision.lastFoundTarget = targets.get(0);
         } else {
-            Robot.lastFoundTarget = null;
+            Robot.vision.lastFoundTarget = null;
         }
     }
 

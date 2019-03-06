@@ -13,7 +13,7 @@ public class RotateDrivetrainToFrontTarget extends Command {
 	protected void initialize() {
         double targetAngle = 0;
 
-        if (Robot.lastFoundTarget != null) targetAngle = Robot.lastFoundTarget.getHorizontalAngle();
+        if (Robot.vision.lastFoundTarget != null) targetAngle = Robot.vision.lastFoundTarget.getHorizontalAngle();
 
 		Robot.drivetrain.enable();
 		Robot.drivetrain.setSetpointRelative(targetAngle);

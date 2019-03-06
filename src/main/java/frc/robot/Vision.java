@@ -19,12 +19,22 @@ import com.kylecorry.frc.vision.targeting.TargetFinder;
 
 import org.opencv.core.Mat;
 
+import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoSink;
+import edu.wpi.first.cameraserver.CameraServer;
 
 /**
  * The target finding vision system is controlled from within this class.
  */
 public class Vision {
+
+    public UsbCamera frontCamera;
+    public UsbCamera rearCamera;
+    public VideoSink cameraServer;
+    public CvSink cameraSink;
+    public Target lastFoundTarget;
+    private Mat image;
 
     private TargetFilter filter;
     private ContourFilter contourFilter;
@@ -32,6 +42,13 @@ public class Vision {
     private TargetFinder targetFinder;
 
     public Vision() {
+        frontCamera = CameraServer.getInstance().startAutomaticCapture(0);
+        rearCamera = CameraServer.getInstance().startAutomaticCapture(1);
+        image = new Mat();
+        cameraServer = CameraServer.getInstance().getServer();
+        cameraServer.setSource(frontCamera);
+        cameraSink = CameraServer.getInstance().getVideo();
+
         // Contour filter parameters
         Range area = new Range(0.03, 100);
         Range fullness = new Range(0, 100);
@@ -113,6 +130,25 @@ public class Vision {
         camera.setBrightness(50);
         camera.setExposureAuto();
         camera.setWhiteBalanceAuto();
+    }
+
+    /**
+     * Switches the CameraServer stream to the front camera (hatch targeting)
+     */
+    public void switchToFrontCamera() {
+        cameraServer.setSource(frontCamera);
+    }
+
+    /**
+     * Switches the CameraServer steeam to the rear camera (cargo targeting)
+     */
+    public void switchToRearCamera() {
+        cameraServer.setSource(rearCamera);
+    }
+
+    public Mat getImage() {
+        cameraSink.grabFrame(image);
+        return image;
     }
 
 }
