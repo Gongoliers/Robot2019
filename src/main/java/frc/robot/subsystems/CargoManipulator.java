@@ -51,7 +51,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
     }
 
     public CargoManipulator() {
-        super(0.02, 0, 0); // TODO: Test to find ideal PID values
+        super(0.002, 0, 0); // TODO: Test to find ideal PID values
         setAbsoluteTolerance(5);
         getPIDController().setContinuous(false);
 
@@ -65,7 +65,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
         cargoSpeedControllerWrist.useBrakeMode();
         
         cargoSpeedControllerRoller = new GTalonSRX(RobotMap.cargoRollerMotor);
-        cargoSpeedControllerRoller.setInverted(false);
+        cargoSpeedControllerRoller.setInverted(true);
         
     }
 

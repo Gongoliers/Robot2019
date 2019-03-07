@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.RobotMap;
+import frc.robot.commands.hatch.ResetHatchManipulator;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,7 +21,7 @@ public class HatchManipulator extends PIDSubsystem implements IPiston {
 
     public static final double DEFAULT_SPEED = 0.1;
     public static final double TOP_ANGLE = 0;
-    public static final double BOTTOM_ANGLE = 112; // TODO: The robot was on the tote for this measurement, we need to test it on the floor though to get an accurate measurement
+    public static final double BOTTOM_ANGLE = 112;
     public static final double TOLERANCE = 10;
 
     private IPiston hatchPiston;
@@ -29,17 +30,17 @@ public class HatchManipulator extends PIDSubsystem implements IPiston {
     private Potentiometer hatchPotentiometer;
 
     public HatchManipulator() {
-        super(0.02, 0, 0); // TODO: Test to find ideal PID values
+        super(0.06, 0, 0); // TODO: Find I term 
         setAbsoluteTolerance(5);
         getPIDController().setContinuous(false);
 
         hatchPiston = new Piston(new FRCSolenoid(0, RobotMap.hatchPiston));
 
         hatchSpeedController = new GTalonSRX(RobotMap.hatchMotor);
-        hatchSpeedController.setInverted(false);
+        hatchSpeedController.setInverted(true);
         hatchSpeedController.useBrakeMode();
 
-        hatchPotentiometer = new GPotentiometer(RobotMap.hatchPotentiometer, RobotMap.POTENTIOMETER_RANGE_DEGREES, 1567);
+        hatchPotentiometer = new GPotentiometer(RobotMap.hatchPotentiometer, RobotMap.POTENTIOMETER_RANGE_DEGREES, 1627);
         
     }
 
@@ -56,7 +57,7 @@ public class HatchManipulator extends PIDSubsystem implements IPiston {
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        // setDefaultCommand(new ResetHatchManipulator()); TODO enable this when testing
+        setDefaultCommand(new ResetHatchManipulator());
     }
 
     @Override

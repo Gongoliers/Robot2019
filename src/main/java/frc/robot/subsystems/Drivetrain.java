@@ -29,6 +29,7 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
     public static final double DEFAULT_SPEED = 0.5;
     private static final double MAX_TURBO_SPEED = 0.9;
     private static final double MAX_PRECISE_SPEED = 0.5;
+    private static final double TURNING_SPEED_FACTOR = 0.75;
 
     private ITalonSRX driveRight;
     private ITalonSRX driveLeft;
@@ -172,10 +173,10 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
 
         if (turbo) {
             speed *= MAX_TURBO_SPEED;
-            rotation *= MAX_TURBO_SPEED;
+            rotation *= MAX_TURBO_SPEED * TURNING_SPEED_FACTOR;
         } else {
             speed *= MAX_PRECISE_SPEED;
-            rotation *= MAX_PRECISE_SPEED;
+            rotation *= MAX_PRECISE_SPEED * TURNING_SPEED_FACTOR;
         }
 
         speed *= 1 - (Robot.hatchManipulator.getPosition() / HatchManipulator.BOTTOM_ANGLE);

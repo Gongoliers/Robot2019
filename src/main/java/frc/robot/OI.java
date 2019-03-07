@@ -152,48 +152,48 @@ public class OI {
         // ~~ SmartDashboard Buttons ~~
 
         // Stops
-        SmartDashboard.putData("Stop Drivetrain", new StopDrivetrain());
-        SmartDashboard.putData("Stop Cargo Manipulator", new StopCargoManipulator());
-        SmartDashboard.putData("Stop Hatch Manipulator", new StopHatchManipulator());
-        SmartDashboard.putData("** STOP EVERYTHING **", new StopEverything());
+        // SmartDashboard.putData("Stop Drivetrain", new StopDrivetrain());
+        // SmartDashboard.putData("Stop Cargo Manipulator", new StopCargoManipulator());
+        // SmartDashboard.putData("Stop Hatch Manipulator", new StopHatchManipulator());
+        // SmartDashboard.putData("** STOP EVERYTHING **", new StopEverything());
         
         // Drivetrain
-        SmartDashboard.putData("Enable Turbo Drivetrain", new EnableTurboDrivetrain());
-        SmartDashboard.putData("Disable Turbo Drivetrain", new DisableTurboDrivetrain());
+        // SmartDashboard.putData("Enable Turbo Drivetrain", new EnableTurboDrivetrain());
+        // SmartDashboard.putData("Disable Turbo Drivetrain", new DisableTurboDrivetrain());
         SmartDashboard.putData("Rotate To 90° Angle Drivetrain", new RotateToAngle(Robot.drivetrain, 90));
         SmartDashboard.putData("Rotate To 180° Angle Drivetrain", new RotateToAngle(Robot.drivetrain, 180));
         
         // Hatch
-        SmartDashboard.putData("Bring To Floor Hatch", new BringToFloorHatch());
-        SmartDashboard.putData("Bring To Standard Position Hatch", new BringToStandardPositionHatch());
-        SmartDashboard.putData("Eject Hatch", new EjectHatch());
-        SmartDashboard.putData("Retract Hatch Pistons", new RetractHatchPistons());
-        SmartDashboard.putData("Deposit Hatch", new DepositHatch());
-        SmartDashboard.putData("Reset Hatch Manipulator", new ResetHatchManipulator());
+        // SmartDashboard.putData("Bring To Floor Hatch", new BringToFloorHatch());
+        // SmartDashboard.putData("Bring To Standard Position Hatch", new BringToStandardPositionHatch());
+        // SmartDashboard.putData("Eject Hatch", new EjectHatch());
+        // SmartDashboard.putData("Retract Hatch Pistons", new RetractHatchPistons());
+        // SmartDashboard.putData("Deposit Hatch", new DepositHatch());
+        // SmartDashboard.putData("Reset Hatch Manipulator", new ResetHatchManipulator());
         
         // Cargo
-        SmartDashboard.putData("Bring Cargo Arm To Floor", new BringCargoArmToFloor());
-        SmartDashboard.putData("Intake Cargo", new IntakeCargo());
-        SmartDashboard.putData("Deposit Cargo", new DepositCargo());
-        SmartDashboard.putData("Pickup Cargo", new PickupCargo());
-        SmartDashboard.putData("Stop Cargo Intake", new StopCargoIntake());
-        SmartDashboard.putData("Retract Cargo Arm", new RetractCargoArm());
-        SmartDashboard.putData("Reset Cargo Manipulator", new ResetCargoManipulator());
+        // SmartDashboard.putData("Bring Cargo Arm To Floor", new BringCargoArmToFloor());
+        // SmartDashboard.putData("Intake Cargo", new IntakeCargo());
+        // SmartDashboard.putData("Deposit Cargo", new DepositCargo());
+        // SmartDashboard.putData("Pickup Cargo", new PickupCargo());
+        // SmartDashboard.putData("Stop Cargo Intake", new StopCargoIntake());
+        // SmartDashboard.putData("Retract Cargo Arm", new RetractCargoArm());
+        // SmartDashboard.putData("Reset Cargo Manipulator", new ResetCargoManipulator());
         
         // Endgame / HAB Climber
-        SmartDashboard.putData("Deploy Skids", new DeploySkids());
-        SmartDashboard.putData("Extend Climber", new ExtendClimber());
-        SmartDashboard.putData("Retract Climber", new RetractClimber());
+        // SmartDashboard.putData("Deploy Skids", new DeploySkids());
+        // SmartDashboard.putData("Extend Climber", new ExtendClimber());
+        // SmartDashboard.putData("Retract Climber", new RetractClimber());
 
         // Drivetrain controller mode
-        SmartDashboard.putData("Switch to Cargo Mode", new SwitchToCargoMode());
-        SmartDashboard.putData("Switch to Hatch Mode", new SwitchToHatchMode());
+        // SmartDashboard.putData("Switch to Cargo Mode", new SwitchToCargoMode());
+        // SmartDashboard.putData("Switch to Hatch Mode", new SwitchToHatchMode());
 
         // Vision
-        SmartDashboard.putData("Vision: Align to Front Target", new AlignToFrontTarget());
-        SmartDashboard.putData("Vision: Align to Rear Target", new AlignToRearTarget());
-        SmartDashboard.putData("Vision: Disable Target Mode", new DisableTargetMode());
-        SmartDashboard.putData("Vision: Enable Target Mode", new EnableTargetMode());
+        // SmartDashboard.putData("Vision: Align to Front Target", new AlignToFrontTarget());
+        // SmartDashboard.putData("Vision: Align to Rear Target", new AlignToRearTarget());
+        // SmartDashboard.putData("Vision: Disable Target Mode", new DisableTargetMode());
+        // SmartDashboard.putData("Vision: Enable Target Mode", new EnableTargetMode());
 
         // Autonomous Command Groups
         SmartDashboard.putData("Auto: Left HAB1 Deliver Two Hatches", new AutoLeftHAB1DeliverTwoHatches());
@@ -203,19 +203,19 @@ public class OI {
         // Autonomous Paths
         SmartDashboard.putData("Path: Drive Forwards 3.6 feet", new FollowPathDrivetrain(PathDriveForwards.leftPoints, PathDriveForwards.rightPoints));
 
-        SmartDashboard.putData("Path: Left HAB1 To FrontLeft Hatch", new FollowPathDrivetrain(PathLeftHAB1ToFrontLeftHatch.leftPoints, PathLeftHAB1ToFrontLeftHatch.rightPoints));
-        SmartDashboard.putData("Path: Middle HAB1 To FrontLeft Hatch", new FollowPathDrivetrain(PathMiddleHAB1ToFrontLeftHatch.leftPoints, PathMiddleHAB1ToFrontLeftHatch.rightPoints));
-        SmartDashboard.putData("Path: Right HAB1 To FrontRight Hatch", new FollowPathDrivetrain(PathRightHAB1ToFrontRightHatch.leftPoints, PathRightHAB1ToFrontRightHatch.rightPoints));
+        // SmartDashboard.putData("Path: Left HAB1 To FrontLeft Hatch", new FollowPathDrivetrain(PathLeftHAB1ToFrontLeftHatch.leftPoints, PathLeftHAB1ToFrontLeftHatch.rightPoints));
+        // SmartDashboard.putData("Path: Middle HAB1 To FrontLeft Hatch", new FollowPathDrivetrain(PathMiddleHAB1ToFrontLeftHatch.leftPoints, PathMiddleHAB1ToFrontLeftHatch.rightPoints));
+        // SmartDashboard.putData("Path: Right HAB1 To FrontRight Hatch", new FollowPathDrivetrain(PathRightHAB1ToFrontRightHatch.leftPoints, PathRightHAB1ToFrontRightHatch.rightPoints));
 
-        SmartDashboard.putData("Path: Backup from Left Station", new FollowPathDrivetrain(PathBackupFromLeftStation.leftPoints, PathBackupFromLeftStation.rightPoints));
-        SmartDashboard.putData("Path: Backup from Right Station", new FollowPathDrivetrain(PathBackupFromRightStation.leftPoints, PathBackupFromRightStation.rightPoints));
-        SmartDashboard.putData("Path: Backup from Front Left Hatch", new FollowPathDrivetrain(PathBackupFromFrontLeftHatch.leftPoints, PathBackupFromFrontLeftHatch.rightPoints));
-        SmartDashboard.putData("Path: Backup from Front Right Hatch", new FollowPathDrivetrain(PathBackupFromFrontRightHatch.leftPoints, PathBackupFromFrontRightHatch.rightPoints));
+        // SmartDashboard.putData("Path: Backup from Left Station", new FollowPathDrivetrain(PathBackupFromLeftStation.leftPoints, PathBackupFromLeftStation.rightPoints));
+        // SmartDashboard.putData("Path: Backup from Right Station", new FollowPathDrivetrain(PathBackupFromRightStation.leftPoints, PathBackupFromRightStation.rightPoints));
+        // SmartDashboard.putData("Path: Backup from Front Left Hatch", new FollowPathDrivetrain(PathBackupFromFrontLeftHatch.leftPoints, PathBackupFromFrontLeftHatch.rightPoints));
+        // SmartDashboard.putData("Path: Backup from Front Right Hatch", new FollowPathDrivetrain(PathBackupFromFrontRightHatch.leftPoints, PathBackupFromFrontRightHatch.rightPoints));
 
-        SmartDashboard.putData("Path: To Left Station", new FollowPathDrivetrain(PathToLeftStation.leftPoints, PathToLeftStation.rightPoints));
-        SmartDashboard.putData("Path: To Right Station", new FollowPathDrivetrain(PathToRightStation.leftPoints, PathToRightStation.rightPoints));
-        SmartDashboard.putData("Path: To Left Side Hatch", new FollowPathDrivetrain(PathToLeftSideHatch.leftPoints, PathToLeftSideHatch.rightPoints));
-        SmartDashboard.putData("Path: To Right Side Hatch", new FollowPathDrivetrain(PathToRightSideHatch.leftPoints, PathToRightSideHatch.rightPoints));
+        // SmartDashboard.putData("Path: To Left Station", new FollowPathDrivetrain(PathToLeftStation.leftPoints, PathToLeftStation.rightPoints));
+        // SmartDashboard.putData("Path: To Right Station", new FollowPathDrivetrain(PathToRightStation.leftPoints, PathToRightStation.rightPoints));
+        // SmartDashboard.putData("Path: To Left Side Hatch", new FollowPathDrivetrain(PathToLeftSideHatch.leftPoints, PathToLeftSideHatch.rightPoints));
+        // SmartDashboard.putData("Path: To Right Side Hatch", new FollowPathDrivetrain(PathToRightSideHatch.leftPoints, PathToRightSideHatch.rightPoints));
 
     }
 
