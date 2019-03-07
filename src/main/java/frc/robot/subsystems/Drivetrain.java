@@ -45,20 +45,28 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
         driveRight = new GTalonSRX(RobotMap.rightMotor);
         driveRight.setSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
         driveRight.setPID(0.02, 0, 0, 1); // TODO: Test to find ideal values
-        driveRight.setRamp(0.5); // TODO: Test to find ideal value
+        driveRight.setRamp(0.5);
         driveRight.setNeutralDeadband(0.05);
 
         GTalonSRX rightSlave1 = new GTalonSRX(RobotMap.rightMotor, RobotMap.rightSlave1);
         GTalonSRX rightSlave2 = new GTalonSRX(RobotMap.rightMotor, RobotMap.rightSlave2);
 
+        driveRight.setInverted(false);
+        rightSlave1.setInverted(false);
+        rightSlave2.setInverted(false);
+
         driveLeft = new GTalonSRX(RobotMap.leftMotor);
         driveLeft.setSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
         driveLeft.setPID(0.02, 0, 0, 1); // TODO: Test to find ideal values
-        driveLeft.setRamp(0.5); // TODO: Test to find ideal value
+        driveLeft.setRamp(0.5);
         driveLeft.setNeutralDeadband(0.05);
 
         GTalonSRX leftSlave1 = new GTalonSRX(RobotMap.leftMotor, RobotMap.leftSlave1);
         GTalonSRX leftSlave2 = new GTalonSRX(RobotMap.leftMotor, RobotMap.leftSlave2);
+
+        driveLeft.setInverted(false);
+        leftSlave1.setInverted(false);
+        leftSlave2.setInverted(false);
 
         robotDrive = new DifferentialDrive(driveLeft, driveRight);
 

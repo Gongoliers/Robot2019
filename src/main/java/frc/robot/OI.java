@@ -45,6 +45,7 @@ public class OI {
     private JoystickButton b6;
     private JoystickButton b7;
     private JoystickButton b8;
+    private JoystickButton b9;
     private JoystickButton b10;
     private JoystickButton b11;
 
@@ -74,6 +75,7 @@ public class OI {
          * PAUSE + Y (pressed) -> Drop Skids
          * PAUSE + B (pressed) -> Retract Lift Piston
          * PAUSE + A (pressed) -> Lift Robot
+         * X (held) -> Manually Lower Hatchula
          * DPAD Up (pressed) -> Enable Compressor
          * DPAD Down (pressed) -> Disable Compressor
          * 
@@ -87,6 +89,7 @@ public class OI {
          * B6 (pressed) -> Lift Robot
          * B7 (pressed) -> Retract Lift Piston
          * B8 (pressed) -> Drop Skids
+         * B9 (held) -> Manually Lower Hatchula
          * B10 (pressed) -> Enable Compressor
          * B11 (pressed) -> Disable Compressor
          */
@@ -117,6 +120,7 @@ public class OI {
         manipulatorController.Y.whenPressed(new DeploySkids()); // press Y while holding PAUSE to deploy skids for climbing
         manipulatorController.B.whenPressed(new RetractClimber()); // press B while holding PAUSE to retract climbing piston
         manipulatorController.A.whenPressed(new ExtendClimber()); // press A while holding PAUSE to extend climbing piston
+        manipulatorController.X.whileHeld(new ManualLowerHatchula()); // hold X to manually lower hatchula
         
         manipulatorController.LT.whenPressed(new DepositCargo()); // LT to deposit cargo
         manipulatorController.RT.whenPressed(new DepositHatch()); // RT to deposit hatch
@@ -135,6 +139,7 @@ public class OI {
         b6 = new JoystickButton(manipulatorJoystick, 6);
         b7 = new JoystickButton(manipulatorJoystick, 7);
         b8 = new JoystickButton(manipulatorJoystick, 8);
+        b9 = new JoystickButton(manipulatorJoystick, 9);
         b10 = new JoystickButton(manipulatorJoystick, 10);
         b11 = new JoystickButton(manipulatorJoystick, 11);
         
@@ -146,6 +151,7 @@ public class OI {
         b6.whenPressed(new ExtendClimber());
         b7.whenPressed(new RetractClimber());
         b8.whenPressed(new DeploySkids());
+        b9.whileHeld(new ManualLowerHatchula());
         b10.whenPressed(new StartCompressor());
         b11.whenPressed(new StopCompressor());
 

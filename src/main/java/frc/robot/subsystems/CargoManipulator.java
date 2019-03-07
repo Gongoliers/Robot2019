@@ -21,9 +21,9 @@ import com.thegongoliers.talonsrx.ITalonSRX;
  */
 public class CargoManipulator extends PIDSubsystem implements IPiston {
 
-    public static final double DEFAULT_SPEED = 0.5;
+    public static final double DEFAULT_SPEED = 0.8;
     public static final double MAXIMUM_SPEED = 0.9;
-    public static final double INTAKE_SPEED = 0.7; // TODO: Test to find ideal intake speed value.
+    public static final double INTAKE_SPEED = 0.6;
     public static final double RESTING_ANGLE = 0;
     public static final double MAXIMUM_ANGLE = 72;
     

@@ -19,10 +19,10 @@ import com.thegongoliers.talonsrx.ITalonSRX;
  */
 public class HatchManipulator extends PIDSubsystem implements IPiston {
 
-    public static final double DEFAULT_SPEED = 0.1;
+    public static final double DEFAULT_SPEED = 0.2;
     public static final double TOP_ANGLE = 0;
     public static final double BOTTOM_ANGLE = 112;
-    public static final double TOLERANCE = 10;
+    public static final double TOLERANCE = 5;
 
     private IPiston hatchPiston;
     private ITalonSRX hatchSpeedController;
@@ -30,8 +30,8 @@ public class HatchManipulator extends PIDSubsystem implements IPiston {
     private Potentiometer hatchPotentiometer;
 
     public HatchManipulator() {
-        super(0.06, 0, 0); // TODO: Find I term 
-        setAbsoluteTolerance(5);
+        super(0.06, 0, 0); // TODO: Find I term of PID
+        setAbsoluteTolerance(TOLERANCE);
         getPIDController().setContinuous(false);
 
         hatchPiston = new Piston(new FRCSolenoid(0, RobotMap.hatchPiston));
