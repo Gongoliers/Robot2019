@@ -5,9 +5,9 @@ import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.subsystems.CargoManipulator;
 
-public class OperateCargoWrist extends Command {
+public class OperateCargo extends Command {
 	
-	public OperateCargoWrist() {
+	public OperateCargo() {
 		requires(Robot.cargoManipulator);
 	}
 
@@ -20,7 +20,10 @@ public class OperateCargoWrist extends Command {
 	protected void execute() {
 		double y = -OI.manipulatorController.getRightY() * CargoManipulator.MAXIMUM_ANGLE;
 		y = Math.max(0, y);
-		Robot.cargoManipulator.setSetpoint(y);
+        Robot.cargoManipulator.setSetpoint(y);
+        
+        if (Robot.cargoManipulator.hasCargo() && OI.manipulatorController.getLeftY() > 0) return;
+        Robot.cargoManipulator.intake(OI.manipulatorController.getLeftY());
 	}
 
 	@Override
@@ -32,6 +35,7 @@ public class OperateCargoWrist extends Command {
 	protected void end() {
         Robot.cargoManipulator.disable();
         Robot.cargoManipulator.stopWrist();
+        Robot.cargoManipulator.stopRollers();
 	}
 
 	@Override
