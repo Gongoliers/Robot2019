@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.RobotMap;
+import frc.robot.commands.cargo.OperateCargoWrist;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -73,7 +74,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
      */
     @Override
     public void initDefaultCommand() {
-        // setDefaultCommand(new OperateCargoWrist());
+        setDefaultCommand(new OperateCargoWrist());
         // setDefaultCommand(new ResetCargoManipulator()); TODO enable this during testing
     }
 
