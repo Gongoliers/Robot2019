@@ -57,6 +57,7 @@ dependencies {
     compile 'com.github.Gongoliers:Library-of-Gongolierium:v3.1.0'
     compile 'com.github.kylecorry31:Robot-Vision-API:v1.1.2'
     compile 'com.github.Gongoliers:Gongoliers-TalonSRX:v1.2.0'
+    compile 'com.github.kylecorry31:CoordinateFrames:v0.6.3'
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')

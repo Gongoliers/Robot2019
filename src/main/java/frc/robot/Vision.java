@@ -10,12 +10,19 @@ import com.kylecorry.frc.vision.camera.FOV;
 import com.kylecorry.frc.vision.camera.Resolution;
 import com.kylecorry.frc.vision.contourFilters.ContourFilter;
 import com.kylecorry.frc.vision.contourFilters.StandardContourFilter;
+import com.kylecorry.frc.vision.distance.AreaCameraDistanceEstimator;
+import com.kylecorry.frc.vision.distance.DistanceEstimator;
+import com.kylecorry.frc.vision.distance.AreaCameraDistanceEstimator.AreaDistancePair;
 import com.kylecorry.frc.vision.filters.HSVFilter;
 import com.kylecorry.frc.vision.filters.TargetFilter;
 import com.kylecorry.frc.vision.targetConverters.TargetGrouping;
 import com.kylecorry.frc.vision.targetConverters.TargetUtils;
 import com.kylecorry.frc.vision.targeting.Target;
 import com.kylecorry.frc.vision.targeting.TargetFinder;
+import com.kylecorry.geometry.Point;
+import com.kylecorry.geometry.Pose;
+import com.kylecorry.geometry.Quaternion;
+import com.kylecorry.tf.TransformationMap;
 
 import org.opencv.core.Mat;
 
@@ -28,6 +35,8 @@ import edu.wpi.first.cameraserver.CameraServer;
  * The target finding vision system is controlled from within this class.
  */
 public class Vision {
+
+    public static final double CARGO_SHIP_VISION_TARGET_HEIGHT = 1; // TODO: fill this in (feet)
 
     public UsbCamera frontCamera;
     public UsbCamera rearCamera;
@@ -149,6 +158,42 @@ public class Vision {
     public Mat getImage() {
         cameraSink.grabFrame(image);
         return image;
+    }
+
+    /**
+     * Calculate the distance to the target.
+     * @param target The target detected by the camera.
+     * @return The distance to the target in feet.
+     */
+    public double getDistance(Target target){
+        // TODO: The other distance estimator may be more accurate than the area distance estimator. (FixedHeightDistanceEstimator)
+        DistanceEstimator distanceEstimator = new AreaCameraDistanceEstimator(new AreaDistancePair(100, 1), new AreaDistancePair(50, 5)); // TODO: tune these values (percent area, feet)
+        return distanceEstimator.getDistance(target);
+    }
+
+    /**
+     * Adjust the angle to the target detected by the hatch camera to account for the offset.
+     * @param target The target detected by the hatch-side camera.
+     * @return The adjusted target.
+     */
+    public Target adjustHatchCameraAngle(Target target){
+
+        // Get the horizontal angle and distance to the target from the camera
+        double horizontalAngle = target.getHorizontalAngle();
+        double distance = getDistance(target);
+
+        // Create a mapping of where the camera is relative to the horizontal center of the robot.
+        TransformationMap tf = new TransformationMap();
+        tf.put("hatch_camera", new Pose(new Point(2.175, 0, 0), Quaternion.zero));
+
+        // Transform the target from the camera's coordinates to the robot's coordinates
+        Point fromOrigin = tf.transformToOrigin(Point.fromCylindrical(distance, horizontalAngle, CARGO_SHIP_VISION_TARGET_HEIGHT), "hatch_camera");
+        
+        // Convert that point back to an angle
+        double angle = Math.atan2(fromOrigin.y, fromOrigin.x);
+
+        // Convert it back to a target
+        return new Target(Math.toDegrees(angle), target.getVerticalAngle(), target.getPercentArea(), target.getSkew(), target.getBoundary());
     }
 
 }
