@@ -44,7 +44,7 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
 
         driveRight = new GTalonSRX(RobotMap.rightMotor);
         driveRight.setSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
-        driveRight.setPID(0.02, 0, 0, 1); // TODO: Test to find ideal values
+        driveRight.setPID(0.2, 0, 0, 1); // TODO: Test to find ideal values
         driveRight.setRamp(0.5);
         driveRight.setNeutralDeadband(0.05);
 
@@ -57,7 +57,7 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
 
         driveLeft = new GTalonSRX(RobotMap.leftMotor);
         driveLeft.setSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
-        driveLeft.setPID(0.02, 0, 0, 1); // TODO: Test to find ideal values
+        driveLeft.setPID(0.2, 0, 0, 1); // TODO: Test to find ideal values
         driveLeft.setRamp(0.5);
         driveLeft.setNeutralDeadband(0.05);
 
@@ -95,7 +95,7 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
         SmartDashboard.putNumber("Encoder Distance", Odometry.getDistance(getLeftDistance(), getRightDistance()));
         SmartDashboard.putNumber("Gyro Angle", navX.getAngle());
         SmartDashboard.putNumber("Compass Heading", navX.getCompassHeading());
-        SmartDashboard.putNumber("Drivetrain Speed", (driveLeft.getVelocity() + driveRight.getVelocity()) / 2 * 13404.1287*600);
+        SmartDashboard.putNumber("Drivetrain Speed", (driveLeft.getVelocity() + driveRight.getVelocity()) * 2 / 13404.1287*600);
 
         if (Math.abs(driveLeft.get()) > .5) {
             Robot.compressor.stop();
@@ -152,11 +152,11 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
     }
 
     public double getLeftDistance() {
-        return driveLeft.getPosition() * 13404.1287;
+        return driveLeft.getPosition() / 13404.1287;
     }
 
     public double getRightDistance() {
-        return driveRight.getPosition() * 13404.1287;
+        return driveRight.getPosition() / 13404.1287;
     }
 
     public void resetDistance() {

@@ -41,7 +41,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
      * Create a CargoManipulator with passed in components - used for testing purposes
      */
     public CargoManipulator(IPiston piston, Switch cargoSwitch, Potentiometer potentiometer, ITalonSRX wristTalon, ITalonSRX rollerTalon) {
-        super(0.02, 0, 0);
+        super(0.002, 0, 0);
 
         this.cargoPiston = piston;
         this.cargoLimitSwitch = cargoSwitch;
@@ -51,17 +51,17 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
     }
 
     public CargoManipulator() {
-        super(0.002, 0, 0); // TODO: Test to find ideal PID values
+        super(0.008, 0, 0); // TODO: Test to find ideal PID values
         setAbsoluteTolerance(5);
         getPIDController().setContinuous(false);
 
-        cargoPiston = new Piston(new FRCSolenoid(0, RobotMap.cargoPiston));
+        cargoPiston = new Piston(new FRCSolenoid(RobotMap.cargoPiston));
         
-        cargoLimitSwitch = new LimitSwitch(RobotMap.cargoLimitSwitch);
+        cargoLimitSwitch = new LimitSwitch(RobotMap.cargoLimitSwitch).invert();
         cargoPotentiometer = new GPotentiometer(RobotMap.cargoPotentiometer, RobotMap.POTENTIOMETER_RANGE_DEGREES, 1006);
         
         cargoSpeedControllerWrist = new GTalonSRX(RobotMap.cargoWristMotor);
-        cargoSpeedControllerWrist.setInverted(false);
+        cargoSpeedControllerWrist.setInverted(true);
         cargoSpeedControllerWrist.useBrakeMode();
         
         cargoSpeedControllerRoller = new GTalonSRX(RobotMap.cargoRollerMotor);

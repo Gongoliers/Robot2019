@@ -40,7 +40,7 @@ public class HatchManipulator extends PIDSubsystem implements IPiston {
         hatchSpeedController.setInverted(true);
         hatchSpeedController.useBrakeMode();
 
-        hatchPotentiometer = new GPotentiometer(RobotMap.hatchPotentiometer, RobotMap.POTENTIOMETER_RANGE_DEGREES, 1627);
+        hatchPotentiometer = new GPotentiometer(RobotMap.hatchPotentiometer, RobotMap.POTENTIOMETER_RANGE_DEGREES, 1625);
         
     }
 

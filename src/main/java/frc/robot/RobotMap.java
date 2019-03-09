@@ -8,6 +8,8 @@ package frc.robot;
  */
 public class RobotMap {
 
+  public static final int POTENTIOMETER_RANGE_DEGREES = 3600;
+
   // Drivetrain Subsystem
   public static final int leftMotor = 4;
   public static final int leftSlave1 = 5;
@@ -18,7 +20,7 @@ public class RobotMap {
   public static final int rightSlave2 = 3;
 
   // Cargo Subsystem
-  public static final int cargoPiston = 1;
+  public static final int cargoPiston = 2;
 
   public static final int cargoWristMotor = 8;
   public static final int cargoRollerMotor = 9;
@@ -27,9 +29,9 @@ public class RobotMap {
   public static final int cargoPotentiometer = 0;
 
   // HAB Climber Subsystem
-  public static final int climberPiston = 2;
-  public static final int skidPiston1 = 3;
-  public static final int skidPiston2 = 4;
+  public static final int climberPiston = 3;
+  public static final int skidPiston1 = 4;
+  public static final int skidPiston2 = 5;
 
   // Hatch Subsystem
   public static final int hatchPiston = 0;
@@ -37,7 +39,5 @@ public class RobotMap {
   public static final int hatchMotor = 7;
 
   public static final int hatchPotentiometer = 1;
-
-  public static final int POTENTIOMETER_RANGE_DEGREES = 3600;
 
 }

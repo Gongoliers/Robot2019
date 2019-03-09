@@ -18,7 +18,7 @@ public class DepositCargo extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        OI.manipulatorController.vibrate(0.3F);
+        OI.manipulatorController.vibrate(0.5F);
         setTimeout(1);
     }
 
