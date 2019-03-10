@@ -45,7 +45,8 @@ public class Vision extends Subsystem {
 
     public Vision() {
         frontCamera = CameraServer.getInstance().startAutomaticCapture(0);
-        rearCamera = CameraServer.getInstance().startAutomaticCapture(1);
+        frontCamera.setResolution(640, 480);
+        // rearCamera = CameraServer.getInstance().startAutomaticCapture(1);
         image = new Mat();
         cameraServer = CameraServer.getInstance().getServer();
         cameraServer.setSource(frontCamera);
@@ -74,6 +75,7 @@ public class Vision extends Subsystem {
     public void periodic() {
         if (lastFoundTarget != null){
             SmartDashboard.putNumber("Target Angle", lastFoundTarget.getHorizontalAngle());
+            SmartDashboard.putNumber("Target Skew", lastFoundTarget.getSkew());
         }
     }
 
@@ -130,12 +132,18 @@ public class Vision extends Subsystem {
     }
 
     public void enableTargetMode(UsbCamera camera) {
+        if (camera == null){
+            return;
+        }
         camera.setBrightness(0);
         camera.setExposureManual(0);
         // camera.setWhiteBalanceManual(value); TODO: Test to see if this is necessary or not
     }
 
     public void disableTargetMode(UsbCamera camera) {
+        if (camera == null){
+            return;
+        }
         camera.setBrightness(50);
         camera.setExposureAuto();
         camera.setWhiteBalanceAuto();
@@ -152,7 +160,7 @@ public class Vision extends Subsystem {
      * Switches the CameraServer steeam to the rear camera (cargo targeting)
      */
     public void switchToRearCamera() {
-        cameraServer.setSource(rearCamera);
+        // cameraServer.setSource(rearCamera);
     }
 
     public Mat getImage() {
