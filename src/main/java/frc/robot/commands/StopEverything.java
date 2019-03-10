@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.OI;
 import frc.robot.commands.cargo.RetractCargoArm;
 import frc.robot.commands.cargo.StopCargoManipulator;
+import frc.robot.commands.drivetrain.DisableTurboDrivetrain;
 import frc.robot.commands.drivetrain.StopDrivetrain;
 import frc.robot.commands.hatch.StopHatchManipulator;
 
@@ -18,6 +19,7 @@ public class StopEverything extends CommandGroup {
         addParallel(new StopCargoManipulator()); 
         addParallel(new StopDrivetrain());
         addParallel(new StopHatchManipulator());
+        addParallel(new DisableTurboDrivetrain());
         addSequential(new RetractCargoArm());
 
         addParallel(new VibrateStop(OI.manipulatorController));

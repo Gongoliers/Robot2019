@@ -25,7 +25,7 @@ public class DriveToDistance extends Command {
      */
     public DriveToDistance(double distance) {
         requires(Robot.drivetrain);
-        this.distance = distance;
+        this.distance = Odometry.getDistance(Robot.drivetrain.getLeftDistance(), Robot.drivetrain.getRightDistance()) + distance;
     }
 
     // Called just before this Command runs the first time

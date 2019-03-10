@@ -124,8 +124,8 @@ public class OI {
 
         driverSide.whenPressed(new AlignToFrontTarget());
 
-        driverTopLeft.whenPressed(new SwitchToCargoMode());
-        driverTopRight.whenPressed(new SwitchToHatchMode());
+        driverTopLeft.whenPressed(new DisableTargetMode());
+        // driverTopRight.whenPressed(new SwitchToHatchMode());
 
 
         // driverController.BACK.whenPressed(new StopEverything()); // SELECT to stop everything
@@ -183,7 +183,8 @@ public class OI {
         b10 = new JoystickButton(manipulatorJoystick, 10);
         b11 = new JoystickButton(manipulatorJoystick, 11);
         
-        b1.whenPressed(new DepositHatch());
+        b1.whileHeld(new EjectHatch());
+        b2.whenReleased(new RetractHatchPistons());
         b2.whenPressed(new DepositCargo());
         b3.whenPressed(new PickupCargo());
         b4.whenPressed(new DepositCargoIntoRocket());

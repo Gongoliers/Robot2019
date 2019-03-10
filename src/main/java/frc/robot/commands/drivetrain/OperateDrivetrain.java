@@ -20,6 +20,12 @@ public class OperateDrivetrain extends Command {
     protected void initialize() {
         Robot.drivetrain.resetHeading();
         Robot.drivetrain.initialGyro = Robot.drivetrain.getHeading();
+        try {
+            Robot.vision.switchToFrontCamera();
+            Robot.vision.disableTargetMode(Robot.vision.targetingCamera);
+        } catch(Exception e){
+            // Empty
+        }
     }
 
     // Called repeatedly when this Command is scheduled to run

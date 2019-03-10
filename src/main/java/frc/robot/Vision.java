@@ -20,6 +20,7 @@ import com.kylecorry.frc.vision.targeting.TargetFinder;
 import org.opencv.core.Mat;
 
 import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.cameraserver.CameraServer;
@@ -32,9 +33,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Vision extends Subsystem {
 
     public UsbCamera frontCamera;
-    public UsbCamera rearCamera;
+    public UsbCamera targetingCamera;
     public VideoSink cameraServer;
-    public CvSink cameraSink;
+    public CvSink cameraSink, targetingSink;
     public Target lastFoundTarget;
     private Mat image;
 
@@ -46,11 +47,13 @@ public class Vision extends Subsystem {
     public Vision() {
         frontCamera = CameraServer.getInstance().startAutomaticCapture(0);
         frontCamera.setResolution(640, 480);
-        // rearCamera = CameraServer.getInstance().startAutomaticCapture(1);
+        targetingCamera = CameraServer.getInstance().startAutomaticCapture(1);
+        targetingCamera.setResolution(640, 480);
         image = new Mat();
         cameraServer = CameraServer.getInstance().getServer();
         cameraServer.setSource(frontCamera);
         cameraSink = CameraServer.getInstance().getVideo();
+        targetingSink = CameraServer.getInstance().getVideo(targetingCamera);
 
         // Contour filter parameters
         Range area = new Range(0.03, 100);
@@ -65,7 +68,7 @@ public class Vision extends Subsystem {
         int imageArea = resolution.getArea();
 
         // An HSV filter may be better for FRC target detection
-        filter = new HSVFilter(new Range(75*180/255D, 125*180/255D), new Range(175, 255), new Range(65, 255));
+        filter = new HSVFilter(new Range(70*180/255D, 130*180/255D), new Range(130, 255), new Range(65, 255));
         contourFilter = new StandardContourFilter(area, fullness, aspectRatio, imageArea);
         cameraSettings = new CameraSettings(cameraInverted, fov, resolution);
         targetFinder = new TargetFinder(cameraSettings, filter, contourFilter, TargetGrouping.SINGLE);
@@ -160,11 +163,11 @@ public class Vision extends Subsystem {
      * Switches the CameraServer steeam to the rear camera (cargo targeting)
      */
     public void switchToRearCamera() {
-        // cameraServer.setSource(rearCamera);
+        // cameraServer.setSource(targetingCamera);
     }
 
     public Mat getImage() {
-        cameraSink.grabFrame(image);
+        targetingSink.grabFrame(image);
         return image;
     }
 

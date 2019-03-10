@@ -28,7 +28,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
  */
 public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
 
-    private static final double TICKS_PER_FOOT = 13404.1287;
+    private static final double TICKS_PER_FOOT = 208355;
     public static final double DEFAULT_SPEED = 0.5;
     private static final double MAX_TURBO_SPEED = 0.85;
     private static final double MAX_PRECISE_SPEED = 0.50;
@@ -46,15 +46,15 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
     private boolean inverted = false;
 
     public Drivetrain() {
-        super(0.12, 0, 0.06); // TODO: Test to find ideal values
-        setAbsoluteTolerance(0.06);
+        super(0.04, 0.0001, 0.06); // TODO: Test to find ideal values
+        setAbsoluteTolerance(0.5);
         getPIDController().setContinuous(false);
         setOutputRange(-1, 1);
 
         driveRight = new GTalonSRX(RobotMap.rightMotor);
         driveRight.setSensor(FeedbackDevice.QuadEncoder);
-        driveRight.setPID(0.002, 0, 0, (int) Math.round(0.25 * TICKS_PER_FOOT));
-        driveRight.setRamp(0.5);
+        driveRight.setPID(0.01, 0, 0, (int) Math.round(0.25 * TICKS_PER_FOOT));
+        driveRight.setRamp(0.15);
         driveRight.setNeutralDeadband(0.05);
         driveRight.getTalon().setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1);
 
@@ -64,11 +64,12 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
         driveRight.setInverted(false);
         rightSlave1.setInverted(false);
         rightSlave2.setInverted(false);
+        driveRight.setSensorPhase(true);
 
         driveLeft = new GTalonSRX(RobotMap.leftMotor);
         driveLeft.setSensor(FeedbackDevice.QuadEncoder);
-        driveLeft.setPID(0.002, 0, 0, (int) Math.round(0.25 * TICKS_PER_FOOT));
-        driveLeft.setRamp(0.5);
+        driveLeft.setPID(0.01, 0, 0, (int) Math.round(0.25 * TICKS_PER_FOOT));
+        driveLeft.setRamp(0.15);
         driveLeft.setNeutralDeadband(0.05);
         driveLeft.getTalon().setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1);
 
@@ -83,8 +84,8 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
 
         robotDrive = new DifferentialDrive(driveLeft, driveRight);
 
-        robotDrive.setSafetyEnabled(true);
-        robotDrive.setExpiration(0.1);
+        robotDrive.setSafetyEnabled(false);
+        // robotDrive.setExpiration(0.1);
         robotDrive.setMaxOutput(1.0);
 
         try {
@@ -107,7 +108,7 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
     public void periodic() {
         SmartDashboard.putNumber("Encoder Distance", Odometry.getDistance(getLeftDistance(), getRightDistance()));
         SmartDashboard.putNumber("Gyro Angle", navX.getAngle());
-        SmartDashboard.putNumber("Compass Heading", navX.getCompassHeading());
+        SmartDashboard.putNumber("Raw Encoder Distance", driveLeft.getPosition());
         // ticks / 100ms / ticks / foot -> feet / 100ms / 10 -> feet / sec
         SmartDashboard.putNumber("Drivetrain Speed", ((driveLeft.getVelocity() + driveRight.getVelocity()) / 2)  / TICKS_PER_FOOT / 10.0);
 
@@ -184,7 +185,7 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
      */
     public void driveToDistance(double distance){
         driveLeft.setPosition(distance * TICKS_PER_FOOT);
-        driveRight.setPosition(distance * TICKS_PER_FOOT);
+        driveRight.setPosition(-distance * TICKS_PER_FOOT);
     }
 
     /**
