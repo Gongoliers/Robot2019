@@ -18,6 +18,8 @@ public class OperateDrivetrain extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        Robot.drivetrain.resetHeading();
+        Robot.drivetrain.initialGyro = Robot.drivetrain.getHeading();
     }
 
     // Called repeatedly when this Command is scheduled to run

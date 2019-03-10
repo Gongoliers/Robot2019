@@ -33,6 +33,8 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
     private static final double MAX_PRECISE_TURN = 0.60;
     private static final double MAX_TURBO_TURN = 0.75;
 
+    public double initialGyro = 0;
+
     private ITalonSRX driveRight;
     private ITalonSRX driveLeft;
     private DifferentialDrive robotDrive;
@@ -181,21 +183,34 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
         double speed = -driverController.getY(Hand.kLeft);
         double rotation = driverController.getX(Hand.kLeft);
 
+        double speedMultiplier = 1;
+        double rotationMultiplier = 1;
+
         if (inverted) {
-            speed *= -1;
+            speedMultiplier *= -1;
         }
 
         if (turbo) {
-            speed *= MAX_TURBO_SPEED;
-            rotation *= MAX_TURBO_TURN;
+            speedMultiplier *= MAX_TURBO_SPEED;
+            rotationMultiplier *= MAX_TURBO_TURN;
         } else {
-            speed *= MAX_PRECISE_SPEED;
-            rotation *= MAX_PRECISE_TURN;
+            speedMultiplier *= MAX_PRECISE_SPEED;
+            rotationMultiplier *= MAX_PRECISE_TURN;
         }
+
+        if (Math.abs(rotation) >= 0.1) {
+			arcade(speed * speedMultiplier, rotation *rotationMultiplier);
+			initialGyro = getHeading();
+		} else {
+			arcade(speed, -0.01 * (getHeading() - initialGyro));
+		}
+
+
+        
 
         // speed *= 1 - (Robot.hatchManipulator.getPosition() / HatchManipulator.BOTTOM_ANGLE);
 
-        robotDrive.arcadeDrive(speed, rotation);
+        // robotDrive.arcadeDrive(speed * speedMultiplier, rotationMultiplier);
 
     }
 
@@ -223,7 +238,7 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
     public void resetHeading() {
         if (navX == null)
             return;
-        navX.reset();
+        navX.zeroYaw();
     }
 
     /**
