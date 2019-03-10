@@ -12,8 +12,8 @@ public class EnableTargetMode extends Command{
     // Called once when the command executes
     @Override
     protected void initialize() {
-        Robot.vision.disableTargetMode(Robot.vision.frontCamera);
-        Robot.vision.disableTargetMode(Robot.vision.rearCamera);
+        Robot.vision.enableTargetMode(Robot.vision.frontCamera);
+        Robot.vision.enableTargetMode(Robot.vision.rearCamera);
         setTimeout(1);
     }
 

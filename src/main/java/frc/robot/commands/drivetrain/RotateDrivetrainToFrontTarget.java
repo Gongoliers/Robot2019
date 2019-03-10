@@ -31,6 +31,7 @@ public class RotateDrivetrainToFrontTarget extends Command {
 	@Override
 	protected void end() {
 		Robot.drivetrain.disable();
+		Robot.drivetrain.stop();
 	}
 
 	@Override

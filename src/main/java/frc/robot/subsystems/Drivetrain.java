@@ -17,6 +17,7 @@ import com.thegongoliers.talonsrx.ITalonSRX;
 import com.thegongoliers.talonsrx.TrajectoryCreator;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
@@ -27,6 +28,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
  */
 public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
 
+    private static final double TICKS_PER_FOOT = 13404.1287;
     public static final double DEFAULT_SPEED = 0.5;
     private static final double MAX_TURBO_SPEED = 0.85;
     private static final double MAX_PRECISE_SPEED = 0.50;
@@ -44,7 +46,10 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
     private boolean inverted = false;
 
     public Drivetrain() {
-        super(0.02, 0, 0); // TODO: Test to find ideal values
+        super(0.12, 0, 0.06); // TODO: Test to find ideal values
+        setAbsoluteTolerance(0.06);
+        getPIDController().setContinuous(false);
+        setOutputRange(-1, 1);
 
         driveRight = new GTalonSRX(RobotMap.rightMotor);
         driveRight.setSensor(FeedbackDevice.QuadEncoder);
@@ -103,7 +108,8 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
         SmartDashboard.putNumber("Encoder Distance", Odometry.getDistance(getLeftDistance(), getRightDistance()));
         SmartDashboard.putNumber("Gyro Angle", navX.getAngle());
         SmartDashboard.putNumber("Compass Heading", navX.getCompassHeading());
-        SmartDashboard.putNumber("Drivetrain Speed", (driveLeft.getVelocity() + driveRight.getVelocity()) / 2 * 13404.1287*600);
+        // ticks / 100ms / ticks / foot -> feet / 100ms / 10 -> feet / sec
+        SmartDashboard.putNumber("Drivetrain Speed", ((driveLeft.getVelocity() + driveRight.getVelocity()) / 2)  / TICKS_PER_FOOT / 10.0);
 
         if (Math.abs(driveLeft.get()) > .5) {
             Robot.compressor.stop();
@@ -160,11 +166,11 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
     }
 
     public double getLeftDistance() {
-        return driveLeft.getPosition() / 13404.1287;
+        return driveLeft.getPosition() / TICKS_PER_FOOT;
     }
 
     public double getRightDistance() {
-        return driveRight.getPosition() / 13404.1287;
+        return driveRight.getPosition() / TICKS_PER_FOOT;
     }
 
     public void resetDistance() {
@@ -173,15 +179,24 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
     }
 
     /**
-     * Enables the usage of an Xbox controller to move the drivetrain.
-     * 
-     * @param driverController The Xbox controller to be used for driving
+     * Drives to a distance in feet.
+     * @param distance The distance in feet (not relative).
      */
-    public void operate(XboxController driverController) {
+    public void driveToDistance(double distance){
+        driveLeft.setPosition(distance * TICKS_PER_FOOT);
+        driveRight.setPosition(distance * TICKS_PER_FOOT);
+    }
+
+    /**
+     * Enables the usage of a joystick to move the drivetrain.
+     * 
+     * @param driverJoystick The joystick to be used for driving
+     */
+    public void operate(Joystick driverJoystick) {
 
         // double speed = driverController.getTriggerAxis(Hand.kRight) - driverController.getTriggerAxis(Hand.kLeft);
-        double speed = -driverController.getY(Hand.kLeft);
-        double rotation = driverController.getX(Hand.kLeft);
+        double speed = -driverJoystick.getY();//driverController.getY(Hand.kLeft);
+        double rotation = driverJoystick.getZ();
 
         double speedMultiplier = 1;
         double rotationMultiplier = 1;
@@ -199,10 +214,10 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
         }
 
         if (Math.abs(rotation) >= 0.1) {
-			arcade(speed * speedMultiplier, rotation *rotationMultiplier);
+			arcade(speed * speedMultiplier, rotation * rotationMultiplier);
 			initialGyro = getHeading();
 		} else {
-			arcade(speed, -0.01 * (getHeading() - initialGyro));
+			arcade(speed * speedMultiplier, -0.01 * (getHeading() - initialGyro));
 		}
 
 
@@ -295,8 +310,8 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
      *                  side wheels
      */
     public void followPath(double[][] leftPath, double[][] rightPath) {
-        driveLeft.startMotionProfile(TrajectoryCreator.createTrajectory(leftPath, 1/13404.1287, 1/13404.1287/600)); 
-        driveRight.startMotionProfile(TrajectoryCreator.createTrajectory(rightPath, 1/13404.1287, 1/13404.1287/600)); 
+        driveLeft.startMotionProfile(TrajectoryCreator.createTrajectory(leftPath, TICKS_PER_FOOT, TICKS_PER_FOOT * 10)); 
+        driveRight.startMotionProfile(TrajectoryCreator.createTrajectory(rightPath, TICKS_PER_FOOT, TICKS_PER_FOOT * 10)); 
     }
 
     /**

@@ -34,6 +34,9 @@ public class OI {
      * Driver Xbox controller is responsible for movement of the drivetrain.
      */
     public static EnhancedXboxController driverController;
+
+    public static Joystick driverJoystick;
+
     /**
      * Manipulator Xbox controller is responsible for control of hatch/cargo/climbing subsystems.
      */
@@ -103,6 +106,7 @@ public class OI {
 
         // Driver controller is plugged into port 0
         driverController = new EnhancedXboxController(0);
+        driverJoystick = new Joystick(3);
 
         // Manipulator controler is plugged into port 1
         manipulatorController = new EnhancedXboxController(1);
@@ -110,28 +114,42 @@ public class OI {
         // Manipulator joystick is plugged into port 2
         manipulatorJoystick = new Joystick(2);
 
-        driverController.BACK.whenPressed(new StopEverything()); // SELECT to stop everything
-        driverController.RB.whenPressed(new EnableTurboDrivetrain()); // RB to turbo
-        driverController.LB.whenPressed(new DisableTurboDrivetrain()); // LB to precise
+        Button driverTrigger = new JoystickButton(driverJoystick, 1);
+        Button driverSide = new JoystickButton(driverJoystick, 2);
+        Button driverTopLeft = new JoystickButton(driverJoystick, 3);
+        Button driverTopRight = new JoystickButton(driverJoystick, 4);
 
-        driverController.A.whenPressed(new AlignToFrontTarget()); // A to align front
-        // driverController.B.whenPressed(new AlignToRearTarget()); // B to align rear
+        driverTrigger.whenPressed(new EnableTurboDrivetrain());
+        driverTrigger.whenReleased(new DisableTurboDrivetrain());
 
-        driverController.LT.whenPressed(new SwitchToCargoMode()); // DPAD Down for cargo mode
-        driverController.RT.whenPressed(new SwitchToHatchMode()); // DPAD Up for hatch mode
+        driverSide.whenPressed(new AlignToFrontTarget());
+
+        driverTopLeft.whenPressed(new SwitchToCargoMode());
+        driverTopRight.whenPressed(new SwitchToHatchMode());
+
+
+        // driverController.BACK.whenPressed(new StopEverything()); // SELECT to stop everything
+        // driverController.RB.whenPressed(new EnableTurboDrivetrain()); // RB to turbo
+        // driverController.LB.whenPressed(new DisableTurboDrivetrain()); // LB to precise
+
+        // driverController.A.whenPressed(new AlignToFrontTarget()); // A to align front
+        // // driverController.B.whenPressed(new AlignToRearTarget()); // B to align rear
+
+        // driverController.LT.whenPressed(new SwitchToCargoMode()); // DPAD Down for cargo mode
+        // driverController.RT.whenPressed(new SwitchToHatchMode()); // DPAD Up for hatch mode
 
         // driverController.LT.whenPressed(new OperateDrivetrain());
         // driverController.RT.whenPressed(new OperateDrivetrain());
         
-        Button leftStick = Hardware.makeButton(new BooleanSupplier(){
+        Button driveStickMoved = Hardware.makeButton(new BooleanSupplier(){
         
             @Override
             public boolean getAsBoolean() {
-                return Math.abs(driverController.getX(Hand.kLeft)) > 0.1 || Math.abs(driverController.getY(Hand.kLeft)) > 0.1;
+                return Math.abs(driverJoystick.getY()) > 0.3;// || Math.abs(driverJoystick.getZ()) > 0.1;
             }
         });
 
-        leftStick.whenPressed(new OperateDrivetrain());
+        driveStickMoved.whenPressed(new OperateDrivetrain());
         
         /*
         manipulatorController.BACK.whenPressed(new StopEverything()); // SELECT to stop everything
@@ -232,6 +250,8 @@ public class OI {
 
         // Autonomous Paths
         SmartDashboard.putData("Path: Drive Forwards 3.6 feet", new FollowPathDrivetrain(PathDriveForwards.leftPoints, PathDriveForwards.rightPoints));
+        SmartDashboard.putData("Drive Forwards 4 feet", new DriveToDistance(4));
+        SmartDashboard.putData("Back-up from cargo ship", new DriveToDistance(-1));
 
         // SmartDashboard.putData("Path: Left HAB1 To FrontLeft Hatch", new FollowPathDrivetrain(PathLeftHAB1ToFrontLeftHatch.leftPoints, PathLeftHAB1ToFrontLeftHatch.rightPoints));
         // SmartDashboard.putData("Path: Middle HAB1 To FrontLeft Hatch", new FollowPathDrivetrain(PathMiddleHAB1ToFrontLeftHatch.leftPoints, PathMiddleHAB1ToFrontLeftHatch.rightPoints));

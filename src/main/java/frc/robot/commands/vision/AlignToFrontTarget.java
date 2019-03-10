@@ -12,5 +12,6 @@ public class AlignToFrontTarget extends CommandGroup {
         addSequential(new EnableTargetMode());
         addSequential(new LocateFrontTarget());
         addSequential(new RotateDrivetrainToFrontTarget());
+        addSequential(new DisableTargetMode());
     }
 }
