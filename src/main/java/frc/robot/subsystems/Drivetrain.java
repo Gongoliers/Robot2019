@@ -53,7 +53,7 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
 
         driveRight = new GTalonSRX(RobotMap.rightMotor);
         driveRight.setSensor(FeedbackDevice.QuadEncoder);
-        driveRight.setPID(1.0, 0, 0, 1); // TODO: Test to find ideal values
+        driveRight.setPID(0.002, 0, 0, (int) Math.round(0.25 * TICKS_PER_FOOT));
         driveRight.setRamp(0.5);
         driveRight.setNeutralDeadband(0.05);
         driveRight.getTalon().setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1);
@@ -67,7 +67,7 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
 
         driveLeft = new GTalonSRX(RobotMap.leftMotor);
         driveLeft.setSensor(FeedbackDevice.QuadEncoder);
-        driveLeft.setPID(1.0, 0, 0, 1); // TODO: Test to find ideal values
+        driveLeft.setPID(0.002, 0, 0, (int) Math.round(0.25 * TICKS_PER_FOOT));
         driveLeft.setRamp(0.5);
         driveLeft.setNeutralDeadband(0.05);
         driveLeft.getTalon().setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1);
