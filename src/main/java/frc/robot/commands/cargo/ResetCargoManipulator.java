@@ -12,8 +12,8 @@ public class ResetCargoManipulator extends CommandGroup {
     public ResetCargoManipulator() {
 
         addSequential(new StopCargoIntake());
-        addSequential(new MoveCargoIntakeToAngle(CargoManipulator.RESTING_ANGLE));
         addSequential(new RetractCargoArm());
+        addSequential(new MoveCargoIntakeToAngle(CargoManipulator.RESTING_ANGLE));
  
     } 
 }

@@ -23,11 +23,13 @@ import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The target finding vision system is controlled from within this class.
  */
-public class Vision {
+public class Vision extends Subsystem {
 
     public UsbCamera frontCamera;
     public UsbCamera rearCamera;
@@ -66,6 +68,13 @@ public class Vision {
         contourFilter = new StandardContourFilter(area, fullness, aspectRatio, imageArea);
         cameraSettings = new CameraSettings(cameraInverted, fov, resolution);
         targetFinder = new TargetFinder(cameraSettings, filter, contourFilter, TargetGrouping.SINGLE);
+    }
+
+    @Override
+    public void periodic() {
+        if (lastFoundTarget != null){
+            SmartDashboard.putNumber("Target Angle", lastFoundTarget.getHorizontalAngle());
+        }
     }
 
     /**
@@ -149,6 +158,11 @@ public class Vision {
     public Mat getImage() {
         cameraSink.grabFrame(image);
         return image;
+    }
+
+    @Override
+    protected void initDefaultCommand() {
+        // No default command
     }
 
 }

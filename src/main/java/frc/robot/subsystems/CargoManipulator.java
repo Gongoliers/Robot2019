@@ -1,7 +1,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.RobotMap;
-import frc.robot.commands.cargo.OperateCargo;
+import frc.robot.commands.cargo.ResetCargoManipulator;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,11 +21,11 @@ import com.thegongoliers.talonsrx.ITalonSRX;
  */
 public class CargoManipulator extends PIDSubsystem implements IPiston {
 
-    public static final double DEFAULT_SPEED = 0.8;
+    public static final double DEFAULT_SPEED = 1;
     public static final double MAXIMUM_SPEED = 0.9;
     public static final double INTAKE_SPEED = 0.6;
     public static final double RESTING_ANGLE = 0;
-    public static final double MAXIMUM_ANGLE = 72;
+    public static final double MAXIMUM_ANGLE = 82;
     
     public double shootingSpeed = DEFAULT_SPEED; 
 
@@ -41,7 +41,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
      * Create a CargoManipulator with passed in components - used for testing purposes
      */
     public CargoManipulator(IPiston piston, Switch cargoSwitch, Potentiometer potentiometer, ITalonSRX wristTalon, ITalonSRX rollerTalon) {
-        super(0.002, 0, 0);
+        super(0, 0, 0);
 
         this.cargoPiston = piston;
         this.cargoLimitSwitch = cargoSwitch;
@@ -51,7 +51,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
     }
 
     public CargoManipulator() {
-        super(0.008, 0, 0); // TODO: Test to find ideal PID values
+        super(0.008, 0, 0);
         setAbsoluteTolerance(5);
         getPIDController().setContinuous(false);
 
@@ -74,8 +74,8 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
      */
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new OperateCargo());
-        // setDefaultCommand(new ResetCargoManipulator()); TODO enable this during testing
+        // setDefaultCommand(new OperateCargo());
+        setDefaultCommand(new ResetCargoManipulator());
     }
 
     /**

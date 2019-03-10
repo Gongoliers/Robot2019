@@ -11,11 +11,18 @@ import frc.robot.commands.sandstorm.*;
 
 import frc.robot.paths.*;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.thegongoliers.input.operator.EnhancedXboxController;
+
+import java.util.function.BooleanSupplier;
+
 import com.thegongoliers.commands.RotateToAngle;
+import com.thegongoliers.hardware.Hardware;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -108,11 +115,25 @@ public class OI {
         driverController.LB.whenPressed(new DisableTurboDrivetrain()); // LB to precise
 
         driverController.A.whenPressed(new AlignToFrontTarget()); // A to align front
-        driverController.B.whenPressed(new AlignToRearTarget()); // B to align rear
+        // driverController.B.whenPressed(new AlignToRearTarget()); // B to align rear
 
-        driverController.DPAD_DOWN.whenPressed(new SwitchToCargoMode()); // DPAD Down for cargo mode
-        driverController.DPAD_UP.whenPressed(new SwitchToHatchMode()); // DPAD Up for hatch mode
+        driverController.LT.whenPressed(new SwitchToCargoMode()); // DPAD Down for cargo mode
+        driverController.RT.whenPressed(new SwitchToHatchMode()); // DPAD Up for hatch mode
 
+        // driverController.LT.whenPressed(new OperateDrivetrain());
+        // driverController.RT.whenPressed(new OperateDrivetrain());
+        
+        Button leftStick = Hardware.makeButton(new BooleanSupplier(){
+        
+            @Override
+            public boolean getAsBoolean() {
+                return Math.abs(driverController.getX(Hand.kLeft)) > 0.1 || Math.abs(driverController.getY(Hand.kLeft)) > 0.1;
+            }
+        });
+
+        leftStick.whenPressed(new OperateDrivetrain());
+        
+        /*
         manipulatorController.BACK.whenPressed(new StopEverything()); // SELECT to stop everything
         manipulatorController.START.whenPressed(new DisableClimberSafety()); // allow HAB commands to work (while holding PAUSE)
         manipulatorController.START.whenReleased(new EnableClimberSafety()); // prevent HAB commands from working (when PAUSE released)
@@ -122,7 +143,7 @@ public class OI {
         manipulatorController.A.whenPressed(new ExtendClimber()); // press A while holding PAUSE to extend climbing piston
         manipulatorController.X.whileHeld(new ManualLowerHatchula()); // hold X to manually lower hatchula
         
-        manipulatorController.LT.whenPressed(new DepositCargo()); // LT to deposit cargo
+        manipulatorController.LT.whenPressed(new EjectCargo()); // LT to deposit cargo
         manipulatorController.RT.whenPressed(new DepositHatch()); // RT to deposit hatch
 
         manipulatorController.LB.whenPressed(new PickupCargo()); // LB to automatically pickup cargo from floor
@@ -130,7 +151,8 @@ public class OI {
 
         manipulatorController.DPAD_UP.whenPressed(new StartCompressor()); // DPAD Up for compressor on 
         manipulatorController.DPAD_DOWN.whenPressed(new StopCompressor()); // DPAD Down for compressor off
-        
+        */
+
         b1 = new JoystickButton(manipulatorJoystick, 1);
         b2 = new JoystickButton(manipulatorJoystick, 2);
         b3 = new JoystickButton(manipulatorJoystick, 3);
@@ -146,12 +168,12 @@ public class OI {
         b1.whenPressed(new DepositHatch());
         b2.whenPressed(new DepositCargo());
         b3.whenPressed(new PickupCargo());
-        b4.whenPressed(new BringToFloorHatch());
+        b4.whenPressed(new DepositCargoIntoRocket());
         b5.whenPressed(new StopEverything());
-        b6.whenPressed(new ExtendClimber());
-        b7.whenPressed(new RetractClimber());
-        b8.whenPressed(new DeploySkids());
-        b9.whileHeld(new ManualLowerHatchula());
+        // b6.whenPressed(new ExtendClimber());
+        // b7.whenPressed(new RetractClimber());
+        // b8.whenPressed(new DeploySkids());
+        b9.whenPressed(new IntakeCargo());
         b10.whenPressed(new StartCompressor());
         b11.whenPressed(new StopCompressor());
 
@@ -196,6 +218,8 @@ public class OI {
         // SmartDashboard.putData("Switch to Hatch Mode", new SwitchToHatchMode());
 
         // Vision
+        SmartDashboard.putData("Vision: Switch to Cargo camera", new UseCargoCamera());
+        SmartDashboard.putData("Vision: Switch to Hatch camera", new UseHatchCamera());
         // SmartDashboard.putData("Vision: Align to Front Target", new AlignToFrontTarget());
         // SmartDashboard.putData("Vision: Align to Rear Target", new AlignToRearTarget());
         // SmartDashboard.putData("Vision: Disable Target Mode", new DisableTargetMode());

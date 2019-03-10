@@ -16,8 +16,9 @@ public class PickupCargo extends CommandGroup {
         addSequential(new VibrateController(OI.manipulatorController, 0.5F));
 
         addSequential(new BringCargoArmToFloor());
-        addSequential(new MoveCargoIntakeToAngle(CargoManipulator.RESTING_ANGLE));
+        addSequential(new MoveCargoIntakeToAngle(CargoManipulator.RESTING_ANGLE), 2);
         addSequential(new IntakeCargo());
+        addSequential(new ResetCargoManipulator());
 
         addSequential(new VibrateStop(OI.manipulatorController));
 

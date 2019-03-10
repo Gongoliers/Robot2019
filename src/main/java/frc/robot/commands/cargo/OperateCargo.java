@@ -18,12 +18,10 @@ public class OperateCargo extends Command {
 
 	@Override
 	protected void execute() {
-		double y = -OI.manipulatorController.getRightY() * CargoManipulator.MAXIMUM_ANGLE;
+		double y = -(OI.manipulatorJoystick.getY()) * CargoManipulator.MAXIMUM_ANGLE;
 		y = Math.max(0, y);
+		if (y < 0.1) y = 0;
         Robot.cargoManipulator.setSetpoint(y);
-        
-        if (Robot.cargoManipulator.hasCargo() && OI.manipulatorController.getLeftY() > 0) return;
-        Robot.cargoManipulator.intake(OI.manipulatorController.getLeftY());
 	}
 
 	@Override

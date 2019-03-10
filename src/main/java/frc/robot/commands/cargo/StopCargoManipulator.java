@@ -9,9 +9,7 @@ import frc.robot.Robot;
 public class StopCargoManipulator extends InstantCommand {
 
     public StopCargoManipulator() {
-
         requires(Robot.cargoManipulator);
-
     }
 
     // Called just before this Command runs the first time
