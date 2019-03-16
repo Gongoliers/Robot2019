@@ -12,7 +12,7 @@ public class LocateTarget extends InstantCommand {
     @Override
     protected void initialize() {
         try {
-            List<Target> targets = Robot.vision.detectTargets(Robot.vision.getImage());
+            List<Target> targets = Robot.vision.detectTargets();
             if (!targets.isEmpty()) {
                 Robot.vision.lastFoundTarget = targets.get(0);
             } else {

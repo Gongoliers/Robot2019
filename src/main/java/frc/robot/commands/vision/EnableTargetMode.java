@@ -12,14 +12,14 @@ public class EnableTargetMode extends Command{
     // Called once when the command executes
     @Override
     protected void initialize() {
-        Robot.vision.switchToRearCamera();
-        Robot.vision.enableTargetMode(Robot.vision.targetingCamera);
-        setTimeout(1);
+        // Robot.vision.switchToTargetingCamera();
+        // Robot.vision.enableTargetMode(Robot.vision.targetingCamera);
+        // setTimeout(1);
     }
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut();
+        return true;//isTimedOut();
     }
 
 }

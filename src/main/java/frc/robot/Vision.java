@@ -1,6 +1,7 @@
 package frc.robot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -32,10 +33,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Vision extends Subsystem {
 
-    public UsbCamera frontCamera;
+    public UsbCamera driverCamera;
     public UsbCamera targetingCamera;
     public VideoSink cameraServer;
-    public CvSink cameraSink, targetingSink;
+    public CvSink targetingSink;
     public Target lastFoundTarget;
     private Mat image;
 
@@ -44,16 +45,24 @@ public class Vision extends Subsystem {
     private CameraSettings cameraSettings;
     private TargetFinder targetFinder;
 
+    private static final Resolution DRIVER_CAMERA_RESOLUTION = new Resolution(640, 480);
+    private static final Resolution TARGET_CAMERA_RESOLUTION = new Resolution(320, 240);
+    private static final FOV TARGET_CAMERA_VIEW_ANGLES = new FOV(61, 34.3);
+
     public Vision() {
-        frontCamera = CameraServer.getInstance().startAutomaticCapture(0);
-        frontCamera.setResolution(640, 480);
-        targetingCamera = CameraServer.getInstance().startAutomaticCapture(1);
-        targetingCamera.setResolution(640, 480);
+        // Initialize the driver camera
+        driverCamera = CameraServer.getInstance().startAutomaticCapture(RobotMap.driverCamera);
+        driverCamera.setResolution(DRIVER_CAMERA_RESOLUTION.getWidth(), DRIVER_CAMERA_RESOLUTION.getHeight());
+
+        // Initialize the targeting camera
+        targetingCamera = new UsbCamera("Targeting camera", RobotMap.targetingCamera);
+        targetingCamera.setResolution(TARGET_CAMERA_RESOLUTION.getWidth(), TARGET_CAMERA_RESOLUTION.getHeight());
+        targetingSink = new CvSink("Targeting sink");
+        targetingSink.setSource(targetingCamera);
+        enableTargetMode(targetingCamera);
+
         image = new Mat();
-        cameraServer = CameraServer.getInstance().getServer();
-        cameraServer.setSource(frontCamera);
-        cameraSink = CameraServer.getInstance().getVideo();
-        targetingSink = CameraServer.getInstance().getVideo(targetingCamera);
+        
 
         // Contour filter parameters
         Range area = new Range(0.03, 100);
@@ -61,16 +70,14 @@ public class Vision extends Subsystem {
         Range aspectRatio = new Range(0.2, 4);
 
         // Camera settings
-        FOV fov = new FOV(50, 40); // This is the approx. Microsoft LifeCam FOV
-        Resolution resolution = new Resolution(640, 480);
         boolean cameraInverted = false;
 
-        int imageArea = resolution.getArea();
+        int imageArea = TARGET_CAMERA_RESOLUTION.getArea();
 
-        // An HSV filter may be better for FRC target detection
+        // Create the camera filters
         filter = new HSVFilter(new Range(70*180/255D, 130*180/255D), new Range(130, 255), new Range(65, 255));
         contourFilter = new StandardContourFilter(area, fullness, aspectRatio, imageArea);
-        cameraSettings = new CameraSettings(cameraInverted, fov, resolution);
+        cameraSettings = new CameraSettings(cameraInverted, TARGET_CAMERA_VIEW_ANGLES, TARGET_CAMERA_RESOLUTION);
         targetFinder = new TargetFinder(cameraSettings, filter, contourFilter, TargetGrouping.SINGLE);
     }
 
@@ -85,10 +92,12 @@ public class Vision extends Subsystem {
     /**
      * Detects the vision targets.
      * 
-     * @param image The image from the camera.
      * @return The list of vision target groups.
      */
-    public List<Target> detectTargets(Mat image) {
+    public List<Target> detectTargets() {
+
+        targetingSink.grabFrame(image);
+
         // Find the targets
         List<Target> targets = targetFinder.findTargets(image);
 
@@ -111,6 +120,14 @@ public class Vision extends Subsystem {
             }
         }
 
+        // Sort by target size
+        bays.sort(Comparator.comparingDouble(Target::getPercentArea));
+
+        // TODO: Switch to this if needed
+        // Sort by distance to center
+        // bays.sort(Comparator.comparingDouble((target) -> Math.abs(target.getHorizontalAngle())));
+
+        Collections.reverse(bays);
         return bays;
     }
 
@@ -155,20 +172,15 @@ public class Vision extends Subsystem {
     /**
      * Switches the CameraServer stream to the front camera (hatch targeting)
      */
-    public void switchToFrontCamera() {
-        cameraServer.setSource(frontCamera);
+    public void switchToDriverCamera() {
+        cameraServer.setSource(driverCamera);
     }
 
     /**
      * Switches the CameraServer steeam to the rear camera (cargo targeting)
      */
-    public void switchToRearCamera() {
+    public void switchToTargetingCamera() {
         // cameraServer.setSource(targetingCamera);
-    }
-
-    public Mat getImage() {
-        targetingSink.grabFrame(image);
-        return image;
     }
 
     @Override

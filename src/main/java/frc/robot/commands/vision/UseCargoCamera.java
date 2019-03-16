@@ -26,7 +26,7 @@ public class UseCargoCamera extends InstantCommand {
   // Called once when the command executes
   @Override
   protected void initialize() {
-    Robot.vision.switchToRearCamera();
+    Robot.vision.switchToTargetingCamera();
   }
 
 }

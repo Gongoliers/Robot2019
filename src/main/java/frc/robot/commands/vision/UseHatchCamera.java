@@ -26,7 +26,7 @@ public class UseHatchCamera extends InstantCommand {
   // Called once when the command executes
   @Override
   protected void initialize() {
-    Robot.vision.switchToFrontCamera();
+    Robot.vision.switchToDriverCamera();
   }
 
 }

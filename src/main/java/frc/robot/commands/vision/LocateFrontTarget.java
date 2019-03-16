@@ -11,7 +11,7 @@ public class LocateFrontTarget extends InstantCommand {
 
     @Override
     protected void initialize() {
-        List<Target> targets = Robot.vision.detectTargets(Robot.vision.getImage());
+        List<Target> targets = Robot.vision.detectTargets();
         if (!targets.isEmpty()) {
             Robot.vision.lastFoundTarget = targets.get(0);
         } else {

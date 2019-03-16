@@ -40,4 +40,8 @@ public class RobotMap {
 
   public static final int hatchPotentiometer = 1;
 
+  // Vision Subsystem
+  public static final int driverCamera = 0;
+  public static final int targetingCamera = 1;
+
 }

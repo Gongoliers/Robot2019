@@ -21,7 +21,7 @@ public class OperateDrivetrain extends Command {
         Robot.drivetrain.resetHeading();
         Robot.drivetrain.initialGyro = Robot.drivetrain.getHeading();
         try {
-            Robot.vision.switchToFrontCamera();
+            Robot.vision.switchToDriverCamera();
             Robot.vision.disableTargetMode(Robot.vision.targetingCamera);
         } catch(Exception e){
             // Empty
