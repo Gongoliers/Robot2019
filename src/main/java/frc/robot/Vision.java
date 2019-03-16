@@ -45,7 +45,7 @@ public class Vision extends Subsystem {
 
     public Vision() {
         // Initialize the driver camera
-        driverCamera = CameraServer.getInstance().startAutomaticCapture(RobotMap.driverCamera);
+        driverCamera = CameraServer.getInstance().startAutomaticCapture("Driver camera", RobotMap.driverCamera);
         driverCamera.setResolution(DRIVER_CAMERA_RESOLUTION.getWidth(), DRIVER_CAMERA_RESOLUTION.getHeight());
 
         // Initialize the targeting camera
