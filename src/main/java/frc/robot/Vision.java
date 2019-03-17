@@ -1,21 +1,19 @@
 package frc.robot;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.kylecorry.frc.vision.camera.CameraSettings;
 import com.kylecorry.frc.vision.camera.FOV;
 import com.kylecorry.frc.vision.camera.Resolution;
-import com.kylecorry.frc.vision.targeting.Target;
 
-import org.opencv.core.Mat;
-
-import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.vision.CargoBayDetector;
+import frc.robot.vision.TargetFinderFactory;
+import frc.robot.vision.VideoCameraVisionTargetDetector;
+import frc.robot.vision.VisionTarget;
 import frc.robot.vision.VisionTargetDetector;
 
 /**
@@ -34,13 +32,10 @@ public class Vision extends Subsystem {
     public UsbCamera driverCamera;
     public UsbCamera targetingCamera;
 
-    public CvSink targetingSink;
-    private Mat image;
-
     private CameraSettings cameraSettings;
-    private VisionTargetDetector targetDetector;
+    private CargoBayDetector targetDetector;
 
-    public Target lastFoundTarget;
+    public VisionTarget lastFoundTarget;
 
 
     public Vision() {
@@ -51,20 +46,17 @@ public class Vision extends Subsystem {
         // Initialize the targeting camera
         targetingCamera = new UsbCamera("Targeting camera", RobotMap.targetingCamera);
         targetingCamera.setResolution(TARGET_CAMERA_RESOLUTION.getWidth(), TARGET_CAMERA_RESOLUTION.getHeight());
-        targetingSink = new CvSink("Targeting sink");
-        targetingSink.setSource(targetingCamera);
         enableTargetMode(targetingCamera);
         cameraSettings = new CameraSettings(TARGET_CAMERA_INVERTED, TARGET_CAMERA_VIEW_ANGLES, TARGET_CAMERA_RESOLUTION);
-        targetDetector = new CargoBayDetector(cameraSettings);
-
-        image = new Mat();
+        VisionTargetDetector visionTargetDetector = new VideoCameraVisionTargetDetector(targetingCamera, cameraSettings, TargetFinderFactory.getCargoShipTargetFinder(cameraSettings));
+        targetDetector = new CargoBayDetector(visionTargetDetector);
     }
 
     @Override
     public void periodic() {
         if (lastFoundTarget != null){
             SmartDashboard.putNumber("Target Angle", lastFoundTarget.getHorizontalAngle());
-            SmartDashboard.putNumber("Target Skew", lastFoundTarget.getSkew());
+            SmartDashboard.putNumber("Target Distance", lastFoundTarget.getDistance());
         }
     }
 
@@ -73,14 +65,8 @@ public class Vision extends Subsystem {
      * 
      * @return The vision targets sorted by percent area (largest to smallest).
      */
-    public List<Target> detectTargets() {
-
-        if (image == null){
-            return new ArrayList<>();
-        }
-
-        targetingSink.grabFrame(image);
-        return targetDetector.detect(image);
+    public List<VisionTarget> detectTargets() {
+        return targetDetector.getTargets();
     }
 
     /**
