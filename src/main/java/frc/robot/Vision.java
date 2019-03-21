@@ -46,14 +46,14 @@ public class Vision extends Subsystem {
 
     public Vision() {
         frontCamera = CameraServer.getInstance().startAutomaticCapture(0);
-        frontCamera.setResolution(640, 480);
-        targetingCamera = CameraServer.getInstance().startAutomaticCapture(1);
-        targetingCamera.setResolution(640, 480);
+        // frontCamera.setResolution(640, 480);
+        // targetingCamera = CameraServer.getInstance().startAutomaticCapture(1);
+        // targetingCamera.setResolution(640, 480);
         image = new Mat();
         cameraServer = CameraServer.getInstance().getServer();
         cameraServer.setSource(frontCamera);
         cameraSink = CameraServer.getInstance().getVideo();
-        targetingSink = CameraServer.getInstance().getVideo(targetingCamera);
+        // targetingSink = CameraServer.getInstance().getVideo(targetingCamera);
 
         // Contour filter parameters
         Range area = new Range(0.03, 100);
@@ -167,7 +167,8 @@ public class Vision extends Subsystem {
     }
 
     public Mat getImage() {
-        targetingSink.grabFrame(image);
+        // targetingSink.grabFrame(image);
+        cameraSink.grabFrame(image);
         return image;
     }
 

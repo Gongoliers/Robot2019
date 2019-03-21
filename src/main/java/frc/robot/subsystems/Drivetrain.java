@@ -218,7 +218,12 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
 			arcade(speed * speedMultiplier, rotation * rotationMultiplier);
 			initialGyro = getHeading();
 		} else {
-			arcade(speed * speedMultiplier, -0.01 * (getHeading() - initialGyro));
+            if (turbo && inverted){
+                speed *= -1;
+            } else if (!turbo){
+                speed = speed * speedMultiplier;
+            }
+			arcade(speed, -0.01 * (getHeading() - initialGyro));
 		}
 
 

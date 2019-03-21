@@ -122,7 +122,7 @@ public class OI {
         driverTrigger.whenPressed(new EnableTurboDrivetrain());
         driverTrigger.whenReleased(new DisableTurboDrivetrain());
 
-        driverSide.whenPressed(new AlignToFrontTarget());
+        // driverSide.whenPressed(new AlignToFrontTarget());
 
         driverTopLeft.whenPressed(new DisableTargetMode());
         // driverTopRight.whenPressed(new SwitchToHatchMode());
