@@ -33,7 +33,7 @@ public class AutoRightHAB1DeliverTwoHatches extends CommandGroup {
     
     // Drive from cargo bay to station
     addSequential(new FollowPathDrivetrain(PathBackupFromFrontRightHatch.leftPoints, PathBackupFromFrontRightHatch.rightPoints));
-    addSequential(new RotateToAngle(Robot.drivetrain, 90));
+    addSequential(new RotateDrivetrain(90));
     addSequential(new FollowPathDrivetrain(PathToRightStation.leftPoints, PathToRightStation.rightPoints));
     
     // Align with station and grab hatch
@@ -42,7 +42,7 @@ public class AutoRightHAB1DeliverTwoHatches extends CommandGroup {
 
     // Drive from station to cargo bay
     addSequential(new FollowPathDrivetrain(PathBackupFromLeftStation.leftPoints, PathBackupFromLeftStation.rightPoints));
-    addSequential(new RotateToAngle(Robot.drivetrain, 90));
+    addSequential(new RotateDrivetrain(90));
     addSequential(new FollowPathDrivetrain(PathToRightSideHatch.leftPoints, PathToRightSideHatch.rightPoints));
     
     // Align and depsoit hatch

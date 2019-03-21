@@ -1,9 +1,9 @@
 package frc.robot.subsystems;
 
+import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.drivetrain.OperateDrivetrain;
-import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -11,7 +11,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.kauailabs.navx.frc.AHRS;
 import com.thegongoliers.input.odometry.Odometry;
-import com.thegongoliers.output.interfaces.DriveTrainInterface;
+import com.thegongoliers.pathFollowing.SmartDriveTrainSubsystem;
+import com.thegongoliers.pathFollowing.controllers.MotionProfileController;
 import com.thegongoliers.talonsrx.GTalonSRX;
 import com.thegongoliers.talonsrx.ITalonSRX;
 import com.thegongoliers.talonsrx.TrajectoryCreator;
@@ -19,14 +20,12 @@ import com.thegongoliers.talonsrx.TrajectoryCreator;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 
 /**
  * The Drivetrain subsystem is composed of six motors (three on each side). Each
  * side has an encoder and a navX is used to track rotation.
  */
-public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
+public class Drivetrain extends SmartDriveTrainSubsystem {
 
     private static final double TICKS_PER_FOOT = 208355;
     public static final double DEFAULT_SPEED = 0.5;
@@ -46,13 +45,14 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
     private boolean inverted = false;
 
     public Drivetrain() {
-        super(0.04, 0.0001, 0.06); // TODO: Test to find ideal values
-        setAbsoluteTolerance(0.5);
-        getPIDController().setContinuous(false);
-        setOutputRange(-1, 1);
+        // super(0.04, 0.0001, 0.06); // TODO: Test to find ideal values
+        // setAbsoluteTolerance(0.5);
+        // getPIDController().setContinuous(false);
+        // setOutputRange(-1, 1);
 
         driveRight = new GTalonSRX(RobotMap.rightMotor);
         driveRight.setSensor(FeedbackDevice.QuadEncoder);
+        // TODO: not using these
         driveRight.setPID(0.01, 0, 0, (int) Math.round(0.25 * TICKS_PER_FOOT));
         driveRight.setRamp(0.15);
         driveRight.setNeutralDeadband(0.05);
@@ -167,11 +167,11 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
     }
 
     public double getLeftDistance() {
-        return driveLeft.getPosition() / TICKS_PER_FOOT;
+        return driveLeft.getPosition() / TICKS_PER_FOOT * Constants.FEET_TO_METERS;
     }
 
     public double getRightDistance() {
-        return driveRight.getPosition() / TICKS_PER_FOOT;
+        return driveRight.getPosition() / TICKS_PER_FOOT * Constants.FEET_TO_METERS;
     }
 
     public void resetDistance() {
@@ -297,15 +297,15 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
         return inverted;
     }
 
-    @Override
-    protected double returnPIDInput() {
-        return navX.getAngle(); // TODO: Implement PID (gyro angle)
-    }
+    // @Override
+    // protected double returnPIDInput() {
+    //     return navX.getAngle(); // TODO: Implement PID (gyro angle)
+    // }
 
-    @Override
-    protected void usePIDOutput(double output) {
-        rotateRight(output);
-    }
+    // @Override
+    // protected void usePIDOutput(double output) {
+    //     rotateRight(output);
+    // }
 
     /**
      * Starts a motion profile to follow an autonomous path
@@ -329,5 +329,41 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
     public boolean isDoneFollowingPath() {
         return driveLeft.isMotionProfileFinished() && driveRight.isMotionProfileFinished();
     }
+
+    @Override
+    public MotionProfileController getLeftDistanceController() {
+        // TODO: Tune these
+        return new MotionProfileController(9.9 / 12.0, 0, 3.8 / 12.0, 0, 0, 0.05);
+    }
+
+    @Override
+    public MotionProfileController getRightDistanceController() {
+        return new MotionProfileController(9.9 / 12.0, 0, 3.8 / 12.0, 0, 0, 0.05);
+    }
+
+    @Override
+    public MotionProfileController getHeadingController() {
+        return new MotionProfileController(0.04, 0.0001, 0.06, 0, 0, 1);
+    }
+
+    @Override
+    public double getMaxVelocity() {
+        return 0;
+    }
+
+    @Override
+    public double getMaxAcceleration() {
+        return 0;
+    }
+
+    @Override
+    public double getMaxJerk() {
+        return 0;
+    }
+
+    @Override
+    public double getWheelbaseWidth() {
+        return 0;
+	}
 
 }

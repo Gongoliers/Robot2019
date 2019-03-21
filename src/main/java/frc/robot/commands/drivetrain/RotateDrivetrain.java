@@ -1,23 +1,20 @@
 package frc.robot.commands.drivetrain;
 
-import com.thegongoliers.commands.RotateToAngle;
-
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class RotateDrivetrainToFrontTarget extends Command {
+public class RotateDrivetrain extends Command {
 
     private double targetAngle;
 
-    public RotateDrivetrainToFrontTarget() {
+    public RotateDrivetrain(double relativeTargetAngle) {
         requires(Robot.drivetrain);
+        targetAngle = relativeTargetAngle;
     }
 
     @Override
 	protected void initialize() {
-        targetAngle = Robot.drivetrain.getHeading();
-
-        if (Robot.vision.lastFoundTarget != null) targetAngle += Robot.vision.lastFoundTarget.getHorizontalAngle() + 2;
+        targetAngle += Robot.drivetrain.getHeading();
 	}
 
 	@Override
@@ -29,7 +26,8 @@ public class RotateDrivetrainToFrontTarget extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return Robot.drivetrain.getHeadingController().isOnTarget(Robot.drivetrain.getHeading(), targetAngle);
+        double heading = Robot.drivetrain.getHeading();
+		return Robot.drivetrain.getHeadingController().isOnTarget(heading, targetAngle);
 	}
 
 	@Override

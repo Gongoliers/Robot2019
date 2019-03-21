@@ -4,24 +4,18 @@ import frc.robot.commands.*;
 import frc.robot.commands.cargo.*;
 import frc.robot.commands.compressor.*;
 import frc.robot.commands.drivetrain.*;
-import frc.robot.commands.hab.*;
 import frc.robot.commands.hatch.*;
 import frc.robot.commands.vision.*;
-import frc.robot.commands.sandstorm.*;
 
-import frc.robot.paths.*;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.thegongoliers.input.operator.EnhancedXboxController;
 
 import java.util.function.BooleanSupplier;
 
-import com.thegongoliers.commands.RotateToAngle;
 import com.thegongoliers.hardware.Hardware;
 
 /**
@@ -145,7 +139,7 @@ public class OI {
         
             @Override
             public boolean getAsBoolean() {
-                return Math.abs(driverJoystick.getY()) > 0.3;// || Math.abs(driverJoystick.getZ()) > 0.1;
+                return Math.abs(driverJoystick.getY()) > 0.3 || Math.abs(driverJoystick.getZ()) > 0.1;
             }
         });
 
@@ -207,8 +201,8 @@ public class OI {
         // Drivetrain
         // SmartDashboard.putData("Enable Turbo Drivetrain", new EnableTurboDrivetrain());
         // SmartDashboard.putData("Disable Turbo Drivetrain", new DisableTurboDrivetrain());
-        SmartDashboard.putData("Rotate To 90° Angle Drivetrain", new RotateToAngle(Robot.drivetrain, 90));
-        SmartDashboard.putData("Rotate To 180° Angle Drivetrain", new RotateToAngle(Robot.drivetrain, 180));
+        SmartDashboard.putData("Rotate To 90° Angle Drivetrain", new RotateDrivetrain(90));
+        SmartDashboard.putData("Rotate To 180° Angle Drivetrain", new RotateDrivetrain(180));
         
         // Hatch
         // SmartDashboard.putData("Bring To Floor Hatch", new BringToFloorHatch());
@@ -245,14 +239,14 @@ public class OI {
         // SmartDashboard.putData("Vision: Enable Target Mode", new EnableTargetMode());
 
         // Autonomous Command Groups
-        SmartDashboard.putData("Auto: Left HAB1 Deliver Two Hatches", new AutoLeftHAB1DeliverTwoHatches());
-        SmartDashboard.putData("Auto: Middle HAB1 Deliver Two Hatches", new AutoMiddleHAB1DeliverTwoHatches());
-        SmartDashboard.putData("Auto: Right HAB1 Deliver Two Hatches", new AutoRightHAB1DeliverTwoHatches());
+        // SmartDashboard.putData("Auto: Left HAB1 Deliver Two Hatches", new AutoLeftHAB1DeliverTwoHatches());
+        // SmartDashboard.putData("Auto: Middle HAB1 Deliver Two Hatches", new AutoMiddleHAB1DeliverTwoHatches());
+        // SmartDashboard.putData("Auto: Right HAB1 Deliver Two Hatches", new AutoRightHAB1DeliverTwoHatches());
 
         // Autonomous Paths
-        SmartDashboard.putData("Path: Drive Forwards 3.6 feet", new FollowPathDrivetrain(PathDriveForwards.leftPoints, PathDriveForwards.rightPoints));
-        SmartDashboard.putData("Drive Forwards 4 feet", new DriveToDistance(4));
-        SmartDashboard.putData("Back-up from cargo ship", new DriveToDistance(-1));
+        // SmartDashboard.putData("Path: Drive Forwards 3.6 feet", new FollowPathDrivetrain(PathDriveForwards.leftPoints, PathDriveForwards.rightPoints));
+        SmartDashboard.putData("Drive Forwards 3.6 feet", new DriveForward(3.6 * Constants.FEET_TO_METERS));
+        SmartDashboard.putData("Back-up from cargo ship", new DriveForward(-1 * Constants.FEET_TO_METERS));
 
         // SmartDashboard.putData("Path: Left HAB1 To FrontLeft Hatch", new FollowPathDrivetrain(PathLeftHAB1ToFrontLeftHatch.leftPoints, PathLeftHAB1ToFrontLeftHatch.rightPoints));
         // SmartDashboard.putData("Path: Middle HAB1 To FrontLeft Hatch", new FollowPathDrivetrain(PathMiddleHAB1ToFrontLeftHatch.leftPoints, PathMiddleHAB1ToFrontLeftHatch.rightPoints));

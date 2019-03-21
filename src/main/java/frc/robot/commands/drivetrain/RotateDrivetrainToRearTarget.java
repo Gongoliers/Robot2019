@@ -5,32 +5,34 @@ import frc.robot.Robot;
 
 public class RotateDrivetrainToRearTarget extends Command {
 
+    private double targetAngle;
+
     public RotateDrivetrainToRearTarget() {
         requires(Robot.drivetrain);
     }
 
     @Override
 	protected void initialize() {
-        double targetAngle = 0;
+        targetAngle = Robot.drivetrain.getHeading();
 
-        if (Robot.vision.lastFoundTarget != null) targetAngle = Robot.vision.lastFoundTarget.getHorizontalAngle();
-
-		Robot.drivetrain.enable();
-		Robot.drivetrain.setSetpointRelative(targetAngle);
+        if (Robot.vision.lastFoundTarget != null) targetAngle += Robot.vision.lastFoundTarget.getHorizontalAngle() + 2;
 	}
 
 	@Override
 	protected void execute() {
+        double heading = Robot.drivetrain.getHeading();
+        double pwm = Robot.drivetrain.getHeadingController().calculate(heading, targetAngle);// / 12.0;
+        Robot.drivetrain.rotateRight(pwm);
 	}
 
 	@Override
 	protected boolean isFinished() {
-		return Robot.drivetrain.onTarget();
+		return Robot.drivetrain.getHeadingController().isOnTarget(Robot.drivetrain.getHeading(), targetAngle);
 	}
 
 	@Override
 	protected void end() {
-		Robot.drivetrain.disable();
+		Robot.drivetrain.stop();
 	}
 
 	@Override
