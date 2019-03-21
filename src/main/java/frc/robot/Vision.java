@@ -62,7 +62,7 @@ public class Vision extends Subsystem {
 
     /**
      * Detects the vision targets.
-     * 
+     *
      * @return The vision targets sorted by percent area (largest to smallest).
      */
     public List<VisionTarget> detectTargets() {
@@ -97,7 +97,7 @@ public class Vision extends Subsystem {
 
     /**
      * Switches the CameraServer stream to the driving camera
-     * 
+     *
      * CURRENTLY DOES NOTHING
      */
     public void switchToDriverCamera() {
@@ -107,7 +107,7 @@ public class Vision extends Subsystem {
     @Deprecated
     /**
      * Switches the CameraServer stream to the targeting camera
-     * 
+     *
      * CURRENTLY DOES NOTHING
      */
     public void switchToTargetingCamera() {
