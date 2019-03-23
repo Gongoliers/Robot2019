@@ -1,0 +1,4 @@
+1. Increase kp of wrist to make it move faster
+2. Add small ki to wrist
+3. Test vision or switch to cargo camera instead
+4. Speed up the shooting
