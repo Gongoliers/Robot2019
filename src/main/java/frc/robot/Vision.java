@@ -1,5 +1,6 @@
 package frc.robot;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.kylecorry.frc.vision.camera.CameraSettings;
@@ -22,6 +23,10 @@ import frc.robot.vision.VisionTargetDetector;
  */
 public class Vision extends Subsystem {
 
+    public static enum CameraSide {
+        HATCH, CARGO
+    }
+
     // Driver camera
     private static final Resolution DRIVER_CAMERA_RESOLUTION = new Resolution(320, 240);
 
@@ -30,7 +35,7 @@ public class Vision extends Subsystem {
     private static final FOV TARGET_CAMERA_VIEW_ANGLES = new FOV(61, 34.3);
     private static final boolean TARGET_CAMERA_INVERTED = false;
 
-    public UsbCamera driverCamera;
+    public UsbCamera hatchDriverCamera;
     public UsbCamera targetingCamera;
 
     private VideoSink server;
@@ -40,11 +45,13 @@ public class Vision extends Subsystem {
 
     public VisionTarget lastFoundTarget;
 
+    private CameraSide currentCamera;
+
 
     public Vision() {
         // Initialize the driver camera
-        driverCamera = CameraServer.getInstance().startAutomaticCapture("Driver camera", RobotMap.driverCamera);
-        driverCamera.setResolution(DRIVER_CAMERA_RESOLUTION.getWidth(), DRIVER_CAMERA_RESOLUTION.getHeight());
+        hatchDriverCamera = CameraServer.getInstance().startAutomaticCapture("Driver camera", RobotMap.driverCamera);
+        hatchDriverCamera.setResolution(DRIVER_CAMERA_RESOLUTION.getWidth(), DRIVER_CAMERA_RESOLUTION.getHeight());
 
         // Initialize the targeting camera
         targetingCamera = new UsbCamera("Targeting camera", RobotMap.targetingCamera);
@@ -56,6 +63,8 @@ public class Vision extends Subsystem {
 
         // Initialize the server
         server = CameraServer.getInstance().getServer();
+
+        setPrimaryCamera(CameraSide.HATCH);
     }
 
     @Override
@@ -72,6 +81,7 @@ public class Vision extends Subsystem {
      * @return The vision targets sorted by percent area (largest to smallest).
      */
     public List<VisionTarget> detectTargets() {
+        // return new ArrayList<VisionTarget>();
         return targetDetector.getTargets();
     }
 
@@ -106,7 +116,18 @@ public class Vision extends Subsystem {
      *
      */
     public void switchToDriverCamera() {
-        server.setSource(driverCamera);
+        server.setSource(hatchDriverCamera);
+    }
+
+    public void setPrimaryCamera(CameraSide cameraSide){
+        if (cameraSide == CameraSide.HATCH){
+            currentCamera = cameraSide;
+            server.setSource(hatchDriverCamera);
+        } else {
+            currentCamera = cameraSide;
+            // TODO: Set to driver cargo camera
+            // server.setSource(targetingCamera);    
+        }
     }
 
     /**

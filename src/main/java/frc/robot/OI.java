@@ -122,8 +122,7 @@ public class OI {
         driverTrigger.whenPressed(new EnableTurboDrivetrain());
         driverTrigger.whenReleased(new DisableTurboDrivetrain());
 
-        driverSide.whenPressed(new SwitchToCargoMode()); // TODO: also switch cameras
-        driverSide.whenReleased(new SwitchToHatchMode());
+        driverSide.whenPressed(new ToggleDrivingSide());
 
         // driverSide.whenPressed(new AlignToFrontTarget());
 
