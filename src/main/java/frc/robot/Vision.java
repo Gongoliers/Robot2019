@@ -50,8 +50,11 @@ public class Vision extends Subsystem {
 
     public Vision() {
         // Initialize the driver camera
-        hatchDriverCamera = CameraServer.getInstance().startAutomaticCapture("Driver camera", RobotMap.driverCamera);
+        hatchDriverCamera = CameraServer.getInstance().startAutomaticCapture("Driver camera (hatch)", RobotMap.driverCamera);
         hatchDriverCamera.setResolution(DRIVER_CAMERA_RESOLUTION.getWidth(), DRIVER_CAMERA_RESOLUTION.getHeight());
+
+        // cargoDriverCamera = CameraServer.getInstance().startAutomaticCapture("Driver camera (cargo)", RobotMap.cargoDriverCamera);
+        // cargoDriverCamera.setResolution(DRIVER_CAMERA_RESOLUTION.getWidth(), DRIVER_CAMERA_RESOLUTION.getHeight()); 
 
         // Initialize the targeting camera
         targetingCamera = new UsbCamera("Targeting camera", RobotMap.targetingCamera);
