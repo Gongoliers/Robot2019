@@ -69,7 +69,7 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
         driveLeft = new GTalonSRX(RobotMap.leftMotor);
         driveLeft.setSensor(FeedbackDevice.QuadEncoder);
         driveLeft.setPID(0.01, 0, 0, (int) Math.round(0.25 * TICKS_PER_FOOT));
-        driveLeft.setRamp(0.15);
+        driveLeft.setRamp(0.05);
         driveLeft.setNeutralDeadband(0.05);
         driveLeft.getTalon().setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1);
 
