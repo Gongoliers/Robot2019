@@ -143,7 +143,11 @@ public class OI {
             }
         });
 
+        Button driver2 = new JoystickButton(driverJoystick, 2);
+
         driveStickMoved.whenPressed(new OperateDrivetrain());
+        driver2.whenPressed(new SwitchToCargoMode()); // DPAD Down for cargo mode
+        driver2.whenReleased(new SwitchToHatchMode()); // DPAD Up for hatch mode
         
         /*
         manipulatorController.BACK.whenPressed(new StopEverything()); // SELECT to stop everything
@@ -233,7 +237,7 @@ public class OI {
         // Vision
         SmartDashboard.putData("Vision: Switch to Cargo camera", new UseCargoCamera());
         SmartDashboard.putData("Vision: Switch to Hatch camera", new UseHatchCamera());
-        // SmartDashboard.putData("Vision: Align to Front Target", new AlignToFrontTarget());
+        SmartDashboard.putData("Vision: Align to Front Target", new AlignToRearTarget());
         // SmartDashboard.putData("Vision: Align to Rear Target", new AlignToRearTarget());
         // SmartDashboard.putData("Vision: Disable Target Mode", new DisableTargetMode());
         // SmartDashboard.putData("Vision: Enable Target Mode", new EnableTargetMode());
