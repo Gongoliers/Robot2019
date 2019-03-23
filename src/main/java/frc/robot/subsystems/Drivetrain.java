@@ -212,6 +212,8 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
         } else {
             speedMultiplier *= MAX_PRECISE_SPEED;
             rotationMultiplier *= MAX_PRECISE_TURN;
+            // Square rotation if not in turbo mode
+            rotation = Math.copySign(Math.pow(rotation, 2), rotation);
         }
 
         if (Math.abs(rotation) >= 0.1) {
