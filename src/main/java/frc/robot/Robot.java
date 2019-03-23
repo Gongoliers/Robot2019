@@ -98,4 +98,9 @@ public class Robot extends TimedRobot {
         Scheduler.getInstance().run();
     }
 
+    @Override
+    public void testInit() {
+        if (compressor != null) 
+            compressor.start();
+    }
 }

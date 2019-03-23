@@ -22,7 +22,7 @@ import frc.robot.vision.VisionTargetDetector;
 public class Vision extends Subsystem {
 
     // Driver camera
-    private static final Resolution DRIVER_CAMERA_RESOLUTION = new Resolution(640, 480);
+    private static final Resolution DRIVER_CAMERA_RESOLUTION = new Resolution(320, 240);
 
     // Target camera
     private static final Resolution TARGET_CAMERA_RESOLUTION = new Resolution(320, 240);

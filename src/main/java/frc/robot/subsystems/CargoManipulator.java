@@ -51,14 +51,15 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
     }
 
     public CargoManipulator() {
-        super(0.008, 0, 0);
-        setAbsoluteTolerance(5);
+        // super(0.008, 0, 0);
+        super(0.01, 0, 0);
+        setAbsoluteTolerance(1);
         getPIDController().setContinuous(false);
 
         cargoPiston = new Piston(new FRCSolenoid(RobotMap.cargoPiston));
         
         cargoLimitSwitch = new LimitSwitch(RobotMap.cargoLimitSwitch).invert();
-        cargoPotentiometer = new GPotentiometer(RobotMap.cargoPotentiometer, RobotMap.POTENTIOMETER_RANGE_DEGREES, 1006);
+        cargoPotentiometer = new GPotentiometer(RobotMap.cargoPotentiometer, RobotMap.POTENTIOMETER_RANGE_DEGREES, 1025);
         
         cargoSpeedControllerWrist = new GTalonSRX(RobotMap.cargoWristMotor);
         cargoSpeedControllerWrist.setInverted(true);
