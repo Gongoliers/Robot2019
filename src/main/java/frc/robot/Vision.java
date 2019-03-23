@@ -7,6 +7,7 @@ import com.kylecorry.frc.vision.camera.FOV;
 import com.kylecorry.frc.vision.camera.Resolution;
 
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -32,6 +33,8 @@ public class Vision extends Subsystem {
     public UsbCamera driverCamera;
     public UsbCamera targetingCamera;
 
+    private VideoSink server;
+
     private CameraSettings cameraSettings;
     private CargoBayDetector targetDetector;
 
@@ -50,6 +53,9 @@ public class Vision extends Subsystem {
         cameraSettings = new CameraSettings(TARGET_CAMERA_INVERTED, TARGET_CAMERA_VIEW_ANGLES, TARGET_CAMERA_RESOLUTION);
         VisionTargetDetector visionTargetDetector = new VideoCameraVisionTargetDetector(targetingCamera, cameraSettings, TargetFinderFactory.getCargoShipTargetFinder(cameraSettings));
         targetDetector = new CargoBayDetector(visionTargetDetector);
+
+        // Initialize the server
+        server = CameraServer.getInstance().getServer();
     }
 
     @Override
@@ -98,20 +104,17 @@ public class Vision extends Subsystem {
     /**
      * Switches the CameraServer stream to the driving camera
      *
-     * CURRENTLY DOES NOTHING
      */
     public void switchToDriverCamera() {
-        // cameraServer.setSource(driverCamera);
+        server.setSource(driverCamera);
     }
 
-    @Deprecated
     /**
      * Switches the CameraServer stream to the targeting camera
      *
-     * CURRENTLY DOES NOTHING
      */
     public void switchToTargetingCamera() {
-        // cameraServer.setSource(targetingCamera);
+        // server.setSource(targetingCamera);
     }
 
     @Override

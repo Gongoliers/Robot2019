@@ -25,9 +25,14 @@ public final class TargetFinderFactory {
   
         int imageArea = cameraSettings.getResolution().getArea();
 
-        TargetFilter filter = new HSVFilter(new Range(70*180/255D, 130*180/255D), new Range(130, 255), new Range(65, 255));
+        TargetFilter filter = getTargetFilter();
         ContourFilter contourFilter = new StandardContourFilter(area, fullness, aspectRatio, imageArea);
         return new TargetFinder(cameraSettings, filter, contourFilter, TargetGrouping.SINGLE);
+    }
+
+
+    public static TargetFilter getTargetFilter(){
+        return new HSVFilter(new Range(70*180/255D, 130*180/255D), new Range(130, 255), new Range(65, 255));
     }
 
 }

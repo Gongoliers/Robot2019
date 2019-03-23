@@ -9,20 +9,27 @@ import com.kylecorry.frc.vision.camera.CameraSettings;
 import com.kylecorry.frc.vision.targetConverters.TargetUtils;
 import com.kylecorry.frc.vision.targeting.Target;
 import com.kylecorry.frc.vision.targeting.TargetFinder;
+import com.thegongoliers.input.vision.ImageEditor;
 
 import org.opencv.core.Mat;
+import org.opencv.core.Scalar;
 
 import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.VideoCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 
 public class VideoCameraVisionTargetDetector implements VisionTargetDetector {
 
     private CvSink imageSink;
+    private CvSource display;
     private TargetFinder targetFinder;
     private CameraSettings cameraSettings;
     private Mat image;
     private double distanceCoefficient;
     private double distanceOffset;
+
+    private static final boolean shouldDisplay = true;
 
     /**
      * Constructs a video camera vision target detector, using the Robot Vision API.
@@ -35,6 +42,9 @@ public class VideoCameraVisionTargetDetector implements VisionTargetDetector {
     public VideoCameraVisionTargetDetector(final VideoCamera camera, final CameraSettings cameraSettings, final TargetFinder targetFinder, double distanceCoefficient, double distanceOffset){
         imageSink = new CvSink("Targeting sink");
         imageSink.setSource(camera);
+        if (shouldDisplay){
+            display = CameraServer.getInstance().putVideo("Target", 320, 240);
+        }
         this.targetFinder = targetFinder;
         this.cameraSettings = cameraSettings;
         image = new Mat();
@@ -83,6 +93,15 @@ public class VideoCameraVisionTargetDetector implements VisionTargetDetector {
         bays.sort(Comparator.comparingDouble(Target::getPercentArea));
 
         Collections.reverse(bays);
+
+        if (shouldDisplay){
+            System.out.println("CALLED VISION GET TARGETS");
+            Mat im = TargetFinderFactory.getTargetFilter().filter(image);
+            for (Target bay: bays){
+                ImageEditor.drawRectangleToMat(im, bay.getBoundary().boundingRect(), new Scalar(0, 0, 255));
+            }
+            display.putFrame(im);
+        }
 
         List<VisionTarget> visionTargets = new ArrayList<>();
 
