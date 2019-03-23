@@ -34,6 +34,7 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
     private static final double MAX_PRECISE_SPEED = 0.50;
     private static final double MAX_PRECISE_TURN = 0.60;
     private static final double MAX_TURBO_TURN = 0.75;
+    private static final double STABLE_DRIVING_CORRECTION_FACTOR = 0.02;
 
     public double initialGyro = 0;
 
@@ -225,7 +226,7 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
             } else if (!turbo){
                 speed = speed * speedMultiplier;
             }
-			arcade(speed, -0.01 * (getHeading() - initialGyro));
+			arcade(speed, -STABLE_DRIVING_CORRECTION_FACTOR * (getHeading() - initialGyro));
 		}
 
 
