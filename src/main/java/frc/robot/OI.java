@@ -122,10 +122,13 @@ public class OI {
         driverTrigger.whenPressed(new EnableTurboDrivetrain());
         driverTrigger.whenReleased(new DisableTurboDrivetrain());
 
+        driverSide.whenPressed(new SwitchToCargoMode()); // TODO: also switch cameras
+        driverSide.whenReleased(new SwitchToHatchMode());
+
         // driverSide.whenPressed(new AlignToFrontTarget());
 
         driverTopLeft.whenPressed(new DisableTargetMode());
-        // driverTopRight.whenPressed(new SwitchToHatchMode());
+        driverTopRight.whenPressed(new AlignToRearTarget());
 
 
         // driverController.BACK.whenPressed(new StopEverything()); // SELECT to stop everything
@@ -149,11 +152,8 @@ public class OI {
             }
         });
 
-        Button driver2 = new JoystickButton(driverJoystick, 2);
-
         driveStickMoved.whenPressed(new OperateDrivetrain());
-        driver2.whenPressed(new SwitchToCargoMode()); // DPAD Down for cargo mode
-        driver2.whenReleased(new SwitchToHatchMode()); // DPAD Up for hatch mode
+        
         
         /*
         manipulatorController.BACK.whenPressed(new StopEverything()); // SELECT to stop everything
