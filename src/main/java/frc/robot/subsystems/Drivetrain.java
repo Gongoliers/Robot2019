@@ -31,10 +31,10 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
     private static final double TICKS_PER_FOOT = 208355;
     public static final double DEFAULT_SPEED = 0.5;
     private static final double MAX_TURBO_SPEED = 0.85;
-    private static final double MAX_PRECISE_SPEED = 0.50;
-    private static final double MAX_PRECISE_TURN = 0.60;
+    private static final double MAX_PRECISE_SPEED = 0.55;
+    private static final double MAX_PRECISE_TURN = 0.5;
     private static final double MAX_TURBO_TURN = 0.75;
-    private static final double STABLE_DRIVING_CORRECTION_FACTOR = 0.02;
+    private static final double STABLE_DRIVING_CORRECTION_FACTOR = 0.04;
 
     public double initialGyro = 0;
 
@@ -45,6 +45,8 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
 
     private boolean turbo = false;
     private boolean inverted = false;
+    private int stopCount = 0;
+    private final int MAX_COUNT = 25;
 
     public Drivetrain() {
         super(0.04, 0.0001, 0.06); // TODO: Test to find ideal values
@@ -76,6 +78,8 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
 
         GTalonSRX leftSlave1 = new GTalonSRX(RobotMap.leftMotor, RobotMap.leftSlave1);
         GTalonSRX leftSlave2 = new GTalonSRX(RobotMap.leftMotor, RobotMap.leftSlave2);
+        leftSlave1.follow(driveLeft);
+        leftSlave2.follow(driveLeft);
 
         driveLeft.setInverted(false);
         leftSlave1.setInverted(false);
@@ -107,11 +111,11 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Encoder Distance", Odometry.getDistance(getLeftDistance(), getRightDistance()));
-        SmartDashboard.putNumber("Gyro Angle", navX.getAngle());
-        SmartDashboard.putNumber("Raw Encoder Distance", driveLeft.getPosition());
-        // ticks / 100ms / ticks / foot -> feet / 100ms / 10 -> feet / sec
-        SmartDashboard.putNumber("Drivetrain Speed", ((driveLeft.getVelocity() + driveRight.getVelocity()) / 2)  / TICKS_PER_FOOT / 10.0);
+        SmartDashboard.putNumber("Left Distance", getLeftDistance());
+        SmartDashboard.putNumber("Right Distance", getRightDistance());
+        SmartDashboard.putNumber("Left Velocity", driveLeft.getVelocity() / TICKS_PER_FOOT / 10.0);
+        SmartDashboard.putNumber("Right Velocity", driveRight.getVelocity() / TICKS_PER_FOOT / 10.0);
+        SmartDashboard.putNumber("Drivetrain Heading", navX.getAngle());
 
         if (Math.abs(driveLeft.get()) > .5) {
             Robot.compressor.stop();
@@ -200,6 +204,8 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
         double speed = -driverJoystick.getY();//driverController.getY(Hand.kLeft);
         double rotation = driverJoystick.getZ();
 
+        double originalRotation = rotation;
+
         double speedMultiplier = 1;
         double rotationMultiplier = 1;
 
@@ -217,10 +223,15 @@ public class Drivetrain extends PIDSubsystem implements DriveTrainInterface {
             rotation = Math.copySign(Math.pow(rotation, 2), rotation);
         }
 
-        if (Math.abs(rotation) >= 0.1) {
+        if (Math.abs(originalRotation) >= 0.15) {
 			arcade(speed * speedMultiplier, rotation * rotationMultiplier);
-			initialGyro = getHeading();
+            initialGyro = getHeading();
+            stopCount = 0;
 		} else {
+            stopCount++;
+            if (stopCount < MAX_COUNT){
+                initialGyro = getHeading();
+            }
             if (turbo && inverted){
                 speed *= -1;
             } else if (!turbo){

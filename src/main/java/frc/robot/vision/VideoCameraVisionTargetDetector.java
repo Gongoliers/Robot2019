@@ -28,6 +28,7 @@ public class VideoCameraVisionTargetDetector implements VisionTargetDetector {
     private Mat image;
     private double distanceCoefficient;
     private double distanceOffset;
+    private VideoCamera camera;
 
     private static final boolean shouldDisplay = true;
 
@@ -39,7 +40,7 @@ public class VideoCameraVisionTargetDetector implements VisionTargetDetector {
      * @param distanceCoefficient the conversion of 1 - percent area to distance (0 is closest, 1 is furthest). The units of this value are units / percent area. Defaults to 1.
      * @param distanceOffset the distance the target is at when its percent area is 100% (distance = 0). Defaults to 0.
      */
-    public VideoCameraVisionTargetDetector(final VideoCamera camera, final CameraSettings cameraSettings, final TargetFinder targetFinder, double distanceCoefficient, double distanceOffset){
+    public VideoCameraVisionTargetDetector(VideoCamera camera, final CameraSettings cameraSettings, final TargetFinder targetFinder, double distanceCoefficient, double distanceOffset){
         imageSink = new CvSink("Targeting sink");
         imageSink.setSource(camera);
         if (shouldDisplay){
@@ -50,6 +51,7 @@ public class VideoCameraVisionTargetDetector implements VisionTargetDetector {
         image = new Mat();
         this.distanceCoefficient = distanceCoefficient;
         this.distanceOffset = distanceOffset;
+        this.camera = camera;
     }
 
     /**
@@ -67,6 +69,8 @@ public class VideoCameraVisionTargetDetector implements VisionTargetDetector {
      */
     @Override
     public List<VisionTarget> getTargets() {
+        camera.setExposureManual(0);
+        camera.setBrightness(0);
         imageSink.grabFrame(image);
     
         List<Target> targets = targetFinder.findTargets(image);

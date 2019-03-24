@@ -1,6 +1,10 @@
 package frc.robot;
 
 import frc.robot.commands.*;
+import frc.robot.commands.angleIterator.DecreaseRocketAngle;
+import frc.robot.commands.angleIterator.DecreaseShipAngle;
+import frc.robot.commands.angleIterator.IncreaseRocketAngle;
+import frc.robot.commands.angleIterator.IncreaseShipAngle;
 import frc.robot.commands.cargo.*;
 import frc.robot.commands.compressor.*;
 import frc.robot.commands.drivetrain.*;
@@ -195,7 +199,7 @@ public class OI {
         // b6.whenPressed(new ExtendClimber());
         // b7.whenPressed(new RetractClimber());
         // b8.whenPressed(new DeploySkids());
-        b9.whenPressed(new IntakeCargo());
+        b9.whenPressed(new EjectCargo());
         b10.whenPressed(new StartCompressor());
         b11.whenPressed(new StopCompressor());
 
@@ -270,6 +274,11 @@ public class OI {
         // SmartDashboard.putData("Path: To Right Station", new FollowPathDrivetrain(PathToRightStation.leftPoints, PathToRightStation.rightPoints));
         // SmartDashboard.putData("Path: To Left Side Hatch", new FollowPathDrivetrain(PathToLeftSideHatch.leftPoints, PathToLeftSideHatch.rightPoints));
         // SmartDashboard.putData("Path: To Right Side Hatch", new FollowPathDrivetrain(PathToRightSideHatch.leftPoints, PathToRightSideHatch.rightPoints));
+
+        SmartDashboard.putData("Increase Cargo Ship Angle", new IncreaseShipAngle());
+        SmartDashboard.putData("Decrease Cargo Ship Angle", new DecreaseShipAngle());
+        SmartDashboard.putData("Increase Cargo Rocket Angle", new IncreaseRocketAngle());
+        SmartDashboard.putData("Decrease Cargo Rocket Angle", new DecreaseRocketAngle());
 
     }
 

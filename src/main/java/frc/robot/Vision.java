@@ -28,10 +28,10 @@ public class Vision extends Subsystem {
     }
 
     // Driver camera
-    private static final Resolution DRIVER_CAMERA_RESOLUTION = new Resolution(320, 240);
+    private static final Resolution DRIVER_CAMERA_RESOLUTION = new Resolution(160, 120);
 
     // Target camera
-    private static final Resolution TARGET_CAMERA_RESOLUTION = new Resolution(320, 240);
+    private static final Resolution TARGET_CAMERA_RESOLUTION = new Resolution(160, 120);
     private static final FOV TARGET_CAMERA_VIEW_ANGLES = new FOV(61, 34.3);
     private static final boolean TARGET_CAMERA_INVERTED = false;
 
@@ -57,7 +57,7 @@ public class Vision extends Subsystem {
         // cargoDriverCamera.setResolution(DRIVER_CAMERA_RESOLUTION.getWidth(), DRIVER_CAMERA_RESOLUTION.getHeight()); 
 
         // Initialize the targeting camera
-        targetingCamera = new UsbCamera("Targeting camera", RobotMap.targetingCamera);
+        targetingCamera = CameraServer.getInstance().startAutomaticCapture("Targeting camera", RobotMap.targetingCamera);
         targetingCamera.setResolution(TARGET_CAMERA_RESOLUTION.getWidth(), TARGET_CAMERA_RESOLUTION.getHeight());
         enableTargetMode(targetingCamera);
         cameraSettings = new CameraSettings(TARGET_CAMERA_INVERTED, TARGET_CAMERA_VIEW_ANGLES, TARGET_CAMERA_RESOLUTION);
@@ -65,7 +65,9 @@ public class Vision extends Subsystem {
         targetDetector = new CargoBayDetector(visionTargetDetector);
 
         // Initialize the server
-        server = CameraServer.getInstance().getServer();
+        // server = CameraServer.getInstance().getServer();
+        server = CameraServer.getInstance().addSwitchedCamera("Driving camera");
+        
 
         setPrimaryCamera(CameraSide.HATCH);
     }
