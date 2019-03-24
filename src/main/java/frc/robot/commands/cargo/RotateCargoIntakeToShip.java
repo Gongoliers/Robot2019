@@ -6,6 +6,9 @@ import frc.robot.subsystems.CargoManipulator;
 
 public class RotateCargoIntakeToShip extends Command {
 
+    public RotateCargoIntakeToShip() {
+        requires(Robot.cargoManipulator);
+    }
 
     // Called just before this Command runs the first time
     @Override

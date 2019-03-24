@@ -9,10 +9,18 @@ import frc.robot.Robot;
  */
 public class EjectCargo extends Command {
 
+    private double speed;
+
     public EjectCargo() {
 
         requires(Robot.cargoManipulator);
+        speed = Robot.cargoManipulator.shootingSpeed;
+    }
 
+    public EjectCargo(double speed) {
+
+        requires(Robot.cargoManipulator);
+        this.speed = speed;
     }
 
     // Called just before this Command runs the first time
@@ -25,7 +33,7 @@ public class EjectCargo extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.cargoManipulator.outtake(Robot.cargoManipulator.shootingSpeed);
+        Robot.cargoManipulator.outtake(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()

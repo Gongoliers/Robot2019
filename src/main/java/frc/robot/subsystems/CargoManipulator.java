@@ -27,11 +27,11 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
     public static final double RESTING_ANGLE = 0;
     public static final double MAXIMUM_ANGLE = 82; // TODO: maybe change this
 
-    public static int shipAngle = 82;
-    public static int rocketAngle = 15;
+    public static int shipAngle = 82; // 61
+    public static int rocketAngle = 39;
     public static final int ANGLE_INCREMENTER = 2;
     
-    public double shootingSpeed = DEFAULT_SPEED; 
+    public double shootingSpeed = DEFAULT_SPEED; // 0.8
 
     private IPiston cargoPiston;
 
@@ -63,7 +63,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
         cargoPiston = new Piston(new FRCSolenoid(RobotMap.cargoPiston));
         
         cargoLimitSwitch = new LimitSwitch(RobotMap.cargoLimitSwitch).invert();
-        cargoPotentiometer = new GPotentiometer(RobotMap.cargoPotentiometer, RobotMap.POTENTIOMETER_RANGE_DEGREES, 1010);
+        cargoPotentiometer = new GPotentiometer(RobotMap.cargoPotentiometer, RobotMap.POTENTIOMETER_RANGE_DEGREES, 1970);
         
         cargoSpeedControllerWrist = new GTalonSRX(RobotMap.cargoWristMotor);
         cargoSpeedControllerWrist.setInverted(true);

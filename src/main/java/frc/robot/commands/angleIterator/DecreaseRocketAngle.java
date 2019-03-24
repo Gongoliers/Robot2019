@@ -17,7 +17,7 @@ public class DecreaseRocketAngle extends InstantCommand {
 
   @Override
   protected void initialize() {
-    Robot.cargoManipulator.increaseRocketAngle();
+    Robot.cargoManipulator.decreaseRocketAngle();
   }
 
 }

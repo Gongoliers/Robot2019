@@ -198,7 +198,7 @@ public class OI {
         b5.whenPressed(new StopEverything());
         b6.whenPressed(new RotateCargoIntakeToShip());
         b7.whenPressed(new RotateCargoIntakeToRocket());
-        // b8.whenPressed(new DeploySkids());
+        b8.whenPressed(new DriveToDistance(-0.5));
         b9.whenPressed(new EjectCargo());
         b10.whenPressed(new StartCompressor());
         b11.whenPressed(new StopCompressor());
