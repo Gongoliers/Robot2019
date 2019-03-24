@@ -1,7 +1,6 @@
 package frc.robot.commands.hatch;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.OI;
 import frc.robot.Robot;
 
 /**
@@ -10,15 +9,12 @@ import frc.robot.Robot;
 public class EjectHatch extends Command {
 
     public EjectHatch() {
-
         requires(Robot.hatchManipulator);
-
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        OI.manipulatorController.vibrate(0.3F);
         Robot.hatchManipulator.extend();
         setTimeout(Robot.PISTON_TIMEOUT);
     }
@@ -26,11 +22,6 @@ public class EjectHatch extends Command {
     @Override
     protected boolean isFinished() {
         return isTimedOut();
-    }
-
-    @Override
-    protected void end() {
-        OI.manipulatorController.stopVibration();
     }
 
 }
