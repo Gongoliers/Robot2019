@@ -1,15 +1,13 @@
 package frc.robot.commands.drivetrain;
 
-import com.thegongoliers.commands.RotateToAngle;
-
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class RotateDrivetrainToFrontTarget extends Command {
+public class RotateDrivetrainToTarget extends Command {
 
     private double targetAngle;
 
-    public RotateDrivetrainToFrontTarget() {
+    public RotateDrivetrainToTarget() {
         requires(Robot.drivetrain);
     }
 

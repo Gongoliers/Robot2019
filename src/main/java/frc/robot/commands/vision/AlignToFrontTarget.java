@@ -1,7 +1,7 @@
 package frc.robot.commands.vision;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.commands.drivetrain.RotateDrivetrainToFrontTarget;
+import frc.robot.commands.drivetrain.RotateDrivetrainToTarget;
 
 public class AlignToFrontTarget extends CommandGroup {
     /**
@@ -11,7 +11,7 @@ public class AlignToFrontTarget extends CommandGroup {
         addSequential(new UseCargoCamera());
         addSequential(new EnableTargetMode());
         addSequential(new LocateTarget());
-        addSequential(new RotateDrivetrainToFrontTarget());
+        addSequential(new RotateDrivetrainToTarget());
         addSequential(new DisableTargetMode());
     }
 }

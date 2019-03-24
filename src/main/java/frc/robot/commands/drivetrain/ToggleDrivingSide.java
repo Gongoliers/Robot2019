@@ -9,9 +9,6 @@ import frc.robot.Vision.CameraSide;
  */
 public class ToggleDrivingSide extends InstantCommand {
 
-    public ToggleDrivingSide() {
-        }
-
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {

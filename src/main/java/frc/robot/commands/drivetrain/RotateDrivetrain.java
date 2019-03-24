@@ -20,7 +20,7 @@ public class RotateDrivetrain extends Command {
 	@Override
 	protected void execute() {
         double heading = Robot.drivetrain.getHeading();
-        double pwm = Robot.drivetrain.getHeadingController().calculate(heading, targetAngle);// / 12.0;
+        double pwm = Robot.drivetrain.getHeadingController().calculate(heading, targetAngle);
         Robot.drivetrain.rotateRight(pwm);
 	}
 

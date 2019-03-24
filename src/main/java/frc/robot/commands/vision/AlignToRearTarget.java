@@ -1,7 +1,7 @@
 package frc.robot.commands.vision;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.commands.drivetrain.RotateDrivetrainToRearTarget;
+import frc.robot.commands.drivetrain.RotateDrivetrainToTarget;
 
 public class AlignToRearTarget extends CommandGroup {
     /**
@@ -9,6 +9,6 @@ public class AlignToRearTarget extends CommandGroup {
      */
     public AlignToRearTarget() {
         addSequential(new LocateTarget());
-        addSequential(new RotateDrivetrainToRearTarget());
+        addSequential(new RotateDrivetrainToTarget());
     }
 }

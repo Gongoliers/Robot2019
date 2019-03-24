@@ -10,22 +10,14 @@ import frc.robot.Robot;
 public class OperateDrivetrain extends Command {
 
     public OperateDrivetrain() {
-
         requires(Robot.drivetrain);
-
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.drivetrain.resetHeading();
+        // TODO: See if this is needed
         Robot.drivetrain.initialGyro = Robot.drivetrain.getHeading();
-        try {
-            Robot.vision.switchToDriverCamera();
-            Robot.vision.disableTargetMode(Robot.vision.cargoDriverCamera);
-        } catch(Exception e){
-            // Empty
-        }
     }
 
     // Called repeatedly when this Command is scheduled to run
