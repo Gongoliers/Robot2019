@@ -1,5 +1,6 @@
 package frc.robot;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.kylecorry.frc.vision.camera.CameraSettings;
@@ -7,6 +8,7 @@ import com.kylecorry.frc.vision.camera.FOV;
 import com.kylecorry.frc.vision.camera.Resolution;
 
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,35 +23,53 @@ import frc.robot.vision.VisionTargetDetector;
  */
 public class Vision extends Subsystem {
 
+    public static enum CameraSide {
+        HATCH, CARGO
+    }
+
     // Driver camera
-    private static final Resolution DRIVER_CAMERA_RESOLUTION = new Resolution(320, 240);
+    private static final Resolution DRIVER_CAMERA_RESOLUTION = new Resolution(160, 120);
 
     // Target camera
-    private static final Resolution TARGET_CAMERA_RESOLUTION = new Resolution(320, 240);
+    private static final Resolution TARGET_CAMERA_RESOLUTION = new Resolution(160, 120);
     private static final FOV TARGET_CAMERA_VIEW_ANGLES = new FOV(61, 34.3);
     private static final boolean TARGET_CAMERA_INVERTED = false;
 
-    public UsbCamera driverCamera;
-    public UsbCamera targetingCamera;
+    public UsbCamera hatchDriverCamera;
+    public UsbCamera cargoDriverCamera;
+
+    private VideoSink server;
 
     private CameraSettings cameraSettings;
     private CargoBayDetector targetDetector;
 
     public VisionTarget lastFoundTarget;
 
+    private CameraSide currentCamera;
+
 
     public Vision() {
         // Initialize the driver camera
-        driverCamera = CameraServer.getInstance().startAutomaticCapture("Driver camera", RobotMap.driverCamera);
-        driverCamera.setResolution(DRIVER_CAMERA_RESOLUTION.getWidth(), DRIVER_CAMERA_RESOLUTION.getHeight());
+        hatchDriverCamera = CameraServer.getInstance().startAutomaticCapture("Driver camera (hatch)", RobotMap.driverCamera);
+        hatchDriverCamera.setResolution(DRIVER_CAMERA_RESOLUTION.getWidth(), DRIVER_CAMERA_RESOLUTION.getHeight());
+
+        cargoDriverCamera = CameraServer.getInstance().startAutomaticCapture("Driver camera (cargo)", RobotMap.cargoDriverCamera);
+        cargoDriverCamera.setResolution(DRIVER_CAMERA_RESOLUTION.getWidth(), DRIVER_CAMERA_RESOLUTION.getHeight()); 
 
         // Initialize the targeting camera
-        targetingCamera = new UsbCamera("Targeting camera", RobotMap.targetingCamera);
-        targetingCamera.setResolution(TARGET_CAMERA_RESOLUTION.getWidth(), TARGET_CAMERA_RESOLUTION.getHeight());
-        enableTargetMode(targetingCamera);
-        cameraSettings = new CameraSettings(TARGET_CAMERA_INVERTED, TARGET_CAMERA_VIEW_ANGLES, TARGET_CAMERA_RESOLUTION);
-        VisionTargetDetector visionTargetDetector = new VideoCameraVisionTargetDetector(targetingCamera, cameraSettings, TargetFinderFactory.getCargoShipTargetFinder(cameraSettings));
-        targetDetector = new CargoBayDetector(visionTargetDetector);
+        // targetingCamera = CameraServer.getInstance().startAutomaticCapture("Targeting camera", RobotMap.targetingCamera);
+        // targetingCamera.setResolution(TARGET_CAMERA_RESOLUTION.getWidth(), TARGET_CAMERA_RESOLUTION.getHeight());
+        // enableTargetMode(targetingCamera);
+        // cameraSettings = new CameraSettings(TARGET_CAMERA_INVERTED, TARGET_CAMERA_VIEW_ANGLES, TARGET_CAMERA_RESOLUTION);
+        // VisionTargetDetector visionTargetDetector = new VideoCameraVisionTargetDetector(targetingCamera, cameraSettings, TargetFinderFactory.getCargoShipTargetFinder(cameraSettings));
+        // targetDetector = new CargoBayDetector(visionTargetDetector);
+
+        // Initialize the server
+        // server = CameraServer.getInstance().getServer();
+        server = CameraServer.getInstance().addSwitchedCamera("Driving camera");
+        
+
+        setPrimaryCamera(CameraSide.HATCH);
     }
 
     @Override
@@ -66,7 +86,8 @@ public class Vision extends Subsystem {
      * @return The vision targets sorted by percent area (largest to smallest).
      */
     public List<VisionTarget> detectTargets() {
-        return targetDetector.getTargets();
+        return new ArrayList<VisionTarget>();
+        // return targetDetector.getTargets();
     }
 
     /**
@@ -98,20 +119,27 @@ public class Vision extends Subsystem {
     /**
      * Switches the CameraServer stream to the driving camera
      *
-     * CURRENTLY DOES NOTHING
      */
     public void switchToDriverCamera() {
-        // cameraServer.setSource(driverCamera);
+        server.setSource(hatchDriverCamera);
     }
 
-    @Deprecated
+    public void setPrimaryCamera(CameraSide cameraSide){
+        if (cameraSide == CameraSide.HATCH){
+            currentCamera = cameraSide;
+            server.setSource(hatchDriverCamera);
+        } else {
+            currentCamera = cameraSide;
+            server.setSource(cargoDriverCamera);    
+        }
+    }
+
     /**
      * Switches the CameraServer stream to the targeting camera
      *
-     * CURRENTLY DOES NOTHING
      */
     public void switchToTargetingCamera() {
-        // cameraServer.setSource(targetingCamera);
+        // server.setSource(targetingCamera);
     }
 
     @Override

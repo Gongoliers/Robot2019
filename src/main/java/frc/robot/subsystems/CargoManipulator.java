@@ -23,11 +23,15 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
 
     public static final double DEFAULT_SPEED = 1;
     public static final double MAXIMUM_SPEED = 0.9;
-    public static final double INTAKE_SPEED = 0.6;
+    public static final double INTAKE_SPEED = 0.45; 
     public static final double RESTING_ANGLE = 0;
-    public static final double MAXIMUM_ANGLE = 82;
+    public static final double MAXIMUM_ANGLE = 82; // TODO: maybe change this
+
+    public static int shipAngle = 82; // 61
+    public static int rocketAngle = 39;
+    public static final int ANGLE_INCREMENTER = 2;
     
-    public double shootingSpeed = DEFAULT_SPEED; 
+    public double shootingSpeed = DEFAULT_SPEED; // 0.8
 
     private IPiston cargoPiston;
 
@@ -59,7 +63,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
         cargoPiston = new Piston(new FRCSolenoid(RobotMap.cargoPiston));
         
         cargoLimitSwitch = new LimitSwitch(RobotMap.cargoLimitSwitch).invert();
-        cargoPotentiometer = new GPotentiometer(RobotMap.cargoPotentiometer, RobotMap.POTENTIOMETER_RANGE_DEGREES, 1025);
+        cargoPotentiometer = new GPotentiometer(RobotMap.cargoPotentiometer, RobotMap.POTENTIOMETER_RANGE_DEGREES, 1970);
         
         cargoSpeedControllerWrist = new GTalonSRX(RobotMap.cargoWristMotor);
         cargoSpeedControllerWrist.setInverted(true);
@@ -88,6 +92,8 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
         SmartDashboard.putBoolean("Has Cargo?", cargoLimitSwitch.isTriggered());
         SmartDashboard.putBoolean("Cargo Arm Extended?", cargoPiston.isExtended());
         SmartDashboard.putNumber("Cargo Roller Speed", cargoSpeedControllerRoller.get());
+        SmartDashboard.putNumber("Cargo Ship Angle", shipAngle);
+        SmartDashboard.putNumber("Cargo Rocket Angle", rocketAngle);
     }
 
     /**
@@ -197,6 +203,22 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
     @Override
     protected void usePIDOutput(double output) {
         raiseWrist(output);
+    }
+
+    public void increaseRocketAngle(){
+        rocketAngle += ANGLE_INCREMENTER;
+    }
+
+    public void decreaseRocketAngle(){
+        rocketAngle -= ANGLE_INCREMENTER;
+    }
+
+    public void increaseShipAngle(){
+        shipAngle += ANGLE_INCREMENTER;
+    }
+
+    public void decreaseShipAngle(){
+        shipAngle -= ANGLE_INCREMENTER;
     }
 
 }

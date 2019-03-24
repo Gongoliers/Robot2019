@@ -13,6 +13,7 @@ public class SwitchToCargoMode extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        Robot.vision.switchToTargetingCamera();
         Robot.drivetrain.setInverted(true);
         OI.driverController.vibrate(0.6F);
         setTimeout(0.1);

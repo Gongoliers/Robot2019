@@ -30,9 +30,10 @@ public class Drivetrain extends SmartDriveTrainSubsystem {
     private static final double TICKS_PER_FOOT = 208355;
     public static final double DEFAULT_SPEED = 0.5;
     private static final double MAX_TURBO_SPEED = 0.85;
-    private static final double MAX_PRECISE_SPEED = 0.50;
-    private static final double MAX_PRECISE_TURN = 0.60;
+    private static final double MAX_PRECISE_SPEED = 0.55;
+    private static final double MAX_PRECISE_TURN = 0.5;
     private static final double MAX_TURBO_TURN = 0.75;
+    private static final double STABLE_DRIVING_CORRECTION_FACTOR = 0.04;
 
     public double initialGyro = 0;
 
@@ -43,6 +44,8 @@ public class Drivetrain extends SmartDriveTrainSubsystem {
 
     private boolean turbo = false;
     private boolean inverted = false;
+    private int stopCount = 0;
+    private final int MAX_COUNT = 25;
 
     public Drivetrain() {
         // super(0.04, 0.0001, 0.06); // TODO: Test to find ideal values
@@ -52,9 +55,8 @@ public class Drivetrain extends SmartDriveTrainSubsystem {
 
         driveRight = new GTalonSRX(RobotMap.rightMotor);
         driveRight.setSensor(FeedbackDevice.QuadEncoder);
-        // TODO: not using these
-        driveRight.setPID(0.01, 0, 0, (int) Math.round(0.25 * TICKS_PER_FOOT));
-        driveRight.setRamp(0.15);
+        driveRight.setPID(0.01, 0, 0, (int) Math.round(0.1 * TICKS_PER_FOOT));
+        driveRight.setRamp(0.05);
         driveRight.setNeutralDeadband(0.05);
         driveRight.getTalon().setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1);
 
@@ -68,13 +70,15 @@ public class Drivetrain extends SmartDriveTrainSubsystem {
 
         driveLeft = new GTalonSRX(RobotMap.leftMotor);
         driveLeft.setSensor(FeedbackDevice.QuadEncoder);
-        driveLeft.setPID(0.01, 0, 0, (int) Math.round(0.25 * TICKS_PER_FOOT));
-        driveLeft.setRamp(0.15);
+        driveLeft.setPID(0.01, 0, 0, (int) Math.round(0.1 * TICKS_PER_FOOT));
+        driveLeft.setRamp(0.05);
         driveLeft.setNeutralDeadband(0.05);
         driveLeft.getTalon().setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1);
 
         GTalonSRX leftSlave1 = new GTalonSRX(RobotMap.leftMotor, RobotMap.leftSlave1);
         GTalonSRX leftSlave2 = new GTalonSRX(RobotMap.leftMotor, RobotMap.leftSlave2);
+        leftSlave1.follow(driveLeft);
+        leftSlave2.follow(driveLeft);
 
         driveLeft.setInverted(false);
         leftSlave1.setInverted(false);
@@ -106,11 +110,11 @@ public class Drivetrain extends SmartDriveTrainSubsystem {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Encoder Distance", Odometry.getDistance(getLeftDistance(), getRightDistance()));
-        SmartDashboard.putNumber("Gyro Angle", navX.getAngle());
-        SmartDashboard.putNumber("Raw Encoder Distance", driveLeft.getPosition());
-        // ticks / 100ms / ticks / foot -> feet / 100ms / 10 -> feet / sec
-        SmartDashboard.putNumber("Drivetrain Speed", ((driveLeft.getVelocity() + driveRight.getVelocity()) / 2)  / TICKS_PER_FOOT / 10.0);
+        SmartDashboard.putNumber("Left Distance", getLeftDistance());
+        SmartDashboard.putNumber("Right Distance", getRightDistance());
+        SmartDashboard.putNumber("Left Velocity", driveLeft.getVelocity() / TICKS_PER_FOOT / 10.0);
+        SmartDashboard.putNumber("Right Velocity", driveRight.getVelocity() / TICKS_PER_FOOT / 10.0);
+        SmartDashboard.putNumber("Drivetrain Heading", navX.getAngle());
 
         if (Math.abs(driveLeft.get()) > .5) {
             Robot.compressor.stop();
@@ -184,8 +188,8 @@ public class Drivetrain extends SmartDriveTrainSubsystem {
      * @param distance The distance in feet (not relative).
      */
     public void driveToDistance(double distance){
-        driveLeft.setPosition(distance * TICKS_PER_FOOT);
-        driveRight.setPosition(-distance * TICKS_PER_FOOT);
+        driveLeft.setPosition(-distance * TICKS_PER_FOOT);
+        driveRight.setPosition(distance * TICKS_PER_FOOT);
     }
 
     /**
@@ -198,6 +202,8 @@ public class Drivetrain extends SmartDriveTrainSubsystem {
         // double speed = driverController.getTriggerAxis(Hand.kRight) - driverController.getTriggerAxis(Hand.kLeft);
         double speed = -driverJoystick.getY();//driverController.getY(Hand.kLeft);
         double rotation = driverJoystick.getZ();
+
+        double originalRotation = rotation;
 
         double speedMultiplier = 1;
         double rotationMultiplier = 1;
@@ -212,18 +218,25 @@ public class Drivetrain extends SmartDriveTrainSubsystem {
         } else {
             speedMultiplier *= MAX_PRECISE_SPEED;
             rotationMultiplier *= MAX_PRECISE_TURN;
+            // Square rotation if not in turbo mode
+            rotation = Math.copySign(Math.pow(rotation, 2), rotation);
         }
 
-        if (Math.abs(rotation) >= 0.1) {
+        if (Math.abs(originalRotation) >= 0.15) {
 			arcade(speed * speedMultiplier, rotation * rotationMultiplier);
-			initialGyro = getHeading();
+            initialGyro = getHeading();
+            stopCount = 0;
 		} else {
+            stopCount++;
+            if (stopCount < MAX_COUNT){
+                initialGyro = getHeading();
+            }
             if (turbo && inverted){
                 speed *= -1;
             } else if (!turbo){
                 speed = speed * speedMultiplier;
             }
-			arcade(speed, -0.01 * (getHeading() - initialGyro));
+			arcade(speed, -STABLE_DRIVING_CORRECTION_FACTOR * (getHeading() - initialGyro));
 		}
 
 
@@ -326,7 +339,7 @@ public class Drivetrain extends SmartDriveTrainSubsystem {
      * 
      * @return true if finished with path, false otherwise
      */
-    public boolean isDoneFollowingPath() {
+    public boolean isDoneFollowingPath() { 
         return driveLeft.isMotionProfileFinished() && driveRight.isMotionProfileFinished();
     }
 

@@ -13,6 +13,7 @@ public class SwitchToHatchMode extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        Robot.vision.switchToDriverCamera();
         Robot.drivetrain.setInverted(false);
         OI.driverController.vibrate(0.6F);
         setTimeout(0.1);

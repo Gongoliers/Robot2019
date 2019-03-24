@@ -42,6 +42,6 @@ public class RobotMap {
 
   // Vision Subsystem
   public static final int driverCamera = 0;
-  public static final int targetingCamera = 1;
+  public static final int cargoDriverCamera = 1;
 
 }

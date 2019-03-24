@@ -22,7 +22,7 @@ public class OperateDrivetrain extends Command {
         Robot.drivetrain.initialGyro = Robot.drivetrain.getHeading();
         try {
             Robot.vision.switchToDriverCamera();
-            Robot.vision.disableTargetMode(Robot.vision.targetingCamera);
+            Robot.vision.disableTargetMode(Robot.vision.cargoDriverCamera);
         } catch(Exception e){
             // Empty
         }

@@ -1,6 +1,10 @@
 package frc.robot;
 
 import frc.robot.commands.*;
+import frc.robot.commands.angleIterator.DecreaseRocketAngle;
+import frc.robot.commands.angleIterator.DecreaseShipAngle;
+import frc.robot.commands.angleIterator.IncreaseRocketAngle;
+import frc.robot.commands.angleIterator.IncreaseShipAngle;
 import frc.robot.commands.cargo.*;
 import frc.robot.commands.compressor.*;
 import frc.robot.commands.drivetrain.*;
@@ -116,10 +120,12 @@ public class OI {
         driverTrigger.whenPressed(new EnableTurboDrivetrain());
         driverTrigger.whenReleased(new DisableTurboDrivetrain());
 
+        driverSide.whenPressed(new ToggleDrivingSide());
+
         // driverSide.whenPressed(new AlignToFrontTarget());
 
         driverTopLeft.whenPressed(new DisableTargetMode());
-        // driverTopRight.whenPressed(new SwitchToHatchMode());
+        driverTopRight.whenPressed(new AlignToRearTarget());
 
 
         // driverController.BACK.whenPressed(new StopEverything()); // SELECT to stop everything
@@ -143,11 +149,8 @@ public class OI {
             }
         });
 
-        Button driver2 = new JoystickButton(driverJoystick, 2);
-
         driveStickMoved.whenPressed(new OperateDrivetrain());
-        driver2.whenPressed(new SwitchToCargoMode()); // DPAD Down for cargo mode
-        driver2.whenReleased(new SwitchToHatchMode()); // DPAD Up for hatch mode
+        
         
         /*
         manipulatorController.BACK.whenPressed(new StopEverything()); // SELECT to stop everything
@@ -187,10 +190,10 @@ public class OI {
         b3.whenPressed(new PickupCargo());
         b4.whenPressed(new DepositCargoIntoRocket());
         b5.whenPressed(new StopEverything());
-        // b6.whenPressed(new ExtendClimber());
-        // b7.whenPressed(new RetractClimber());
-        // b8.whenPressed(new DeploySkids());
-        b9.whenPressed(new IntakeCargo());
+        b6.whenPressed(new RotateCargoIntakeToShip());
+        b7.whenPressed(new RotateCargoIntakeToRocket());
+        b8.whenPressed(new DriveToDistance(-0.5));
+        b9.whenPressed(new EjectCargo());
         b10.whenPressed(new StartCompressor());
         b11.whenPressed(new StopCompressor());
 
@@ -252,19 +255,11 @@ public class OI {
         SmartDashboard.putData("Drive Forwards 3.6 feet", new DriveForward(3.6 * Constants.FEET_TO_METERS));
         SmartDashboard.putData("Back-up from cargo ship", new DriveForward(-1 * Constants.FEET_TO_METERS));
 
-        // SmartDashboard.putData("Path: Left HAB1 To FrontLeft Hatch", new FollowPathDrivetrain(PathLeftHAB1ToFrontLeftHatch.leftPoints, PathLeftHAB1ToFrontLeftHatch.rightPoints));
-        // SmartDashboard.putData("Path: Middle HAB1 To FrontLeft Hatch", new FollowPathDrivetrain(PathMiddleHAB1ToFrontLeftHatch.leftPoints, PathMiddleHAB1ToFrontLeftHatch.rightPoints));
-        // SmartDashboard.putData("Path: Right HAB1 To FrontRight Hatch", new FollowPathDrivetrain(PathRightHAB1ToFrontRightHatch.leftPoints, PathRightHAB1ToFrontRightHatch.rightPoints));
-
-        // SmartDashboard.putData("Path: Backup from Left Station", new FollowPathDrivetrain(PathBackupFromLeftStation.leftPoints, PathBackupFromLeftStation.rightPoints));
-        // SmartDashboard.putData("Path: Backup from Right Station", new FollowPathDrivetrain(PathBackupFromRightStation.leftPoints, PathBackupFromRightStation.rightPoints));
-        // SmartDashboard.putData("Path: Backup from Front Left Hatch", new FollowPathDrivetrain(PathBackupFromFrontLeftHatch.leftPoints, PathBackupFromFrontLeftHatch.rightPoints));
-        // SmartDashboard.putData("Path: Backup from Front Right Hatch", new FollowPathDrivetrain(PathBackupFromFrontRightHatch.leftPoints, PathBackupFromFrontRightHatch.rightPoints));
-
-        // SmartDashboard.putData("Path: To Left Station", new FollowPathDrivetrain(PathToLeftStation.leftPoints, PathToLeftStation.rightPoints));
-        // SmartDashboard.putData("Path: To Right Station", new FollowPathDrivetrain(PathToRightStation.leftPoints, PathToRightStation.rightPoints));
-        // SmartDashboard.putData("Path: To Left Side Hatch", new FollowPathDrivetrain(PathToLeftSideHatch.leftPoints, PathToLeftSideHatch.rightPoints));
-        // SmartDashboard.putData("Path: To Right Side Hatch", new FollowPathDrivetrain(PathToRightSideHatch.leftPoints, PathToRightSideHatch.rightPoints));
+        // Cargo wrist tuning
+        SmartDashboard.putData("Increase Cargo Ship Angle", new IncreaseShipAngle());
+        SmartDashboard.putData("Decrease Cargo Ship Angle", new DecreaseShipAngle());
+        SmartDashboard.putData("Increase Cargo Rocket Angle", new IncreaseRocketAngle());
+        SmartDashboard.putData("Decrease Cargo Rocket Angle", new DecreaseRocketAngle());
 
     }
 

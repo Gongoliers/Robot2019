@@ -31,7 +31,8 @@ public class DriveToDistance extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.drivetrain.resetDistance();
+        // Robot.drivetrain.resetDistance();
+       distance += Odometry.getDistance(Robot.drivetrain.getLeftDistance(), Robot.drivetrain.getRightDistance());
     }
 
     // Called repeatedly when this Command is scheduled to run
