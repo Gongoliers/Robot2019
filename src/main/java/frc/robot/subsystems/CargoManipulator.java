@@ -10,6 +10,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.thegongoliers.input.rotation.GPotentiometer;
 import com.thegongoliers.input.switches.LimitSwitch;
 import com.thegongoliers.input.switches.Switch;
+import com.thegongoliers.math.ExponentialMovingAverage;
+import com.thegongoliers.math.filter.Filter;
+import com.thegongoliers.math.filter.LowPassFilter;
 import com.thegongoliers.output.FRCSolenoid;
 import com.thegongoliers.output.Piston;
 import com.thegongoliers.output.interfaces.IPiston;
@@ -28,6 +31,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
     public static final double POTENTIOMETER_SOFT_STOP_MAX = 130;
     public static final double POTENTIOMETER_NOMINAL_MIN = -100;
     public static final double POTENTIOMETER_NOMINAL_MAX = 135;
+    public static final double POTENTIOMETER_FILTER_STRENGTH = 0.5;
 
     public static final double DEFAULT_SPEED = 1;
     public static final double MAXIMUM_SPEED = 0.9;
@@ -57,6 +61,8 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
     private ITalonSRX cargoSpeedControllerWrist;
     private ITalonSRX cargoSpeedControllerRoller;
 
+    private Filter potentiometerFilter;
+
     /**
      * Create a CargoManipulator with passed in components - used for testing purposes
      */
@@ -69,6 +75,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
         this.cargoPotentiometer = potentiometer;
         this.cargoSpeedControllerRoller = rollerTalon;
         this.cargoSpeedControllerWrist = wristTalon;
+        potentiometerFilter = new LowPassFilter(POTENTIOMETER_FILTER_STRENGTH);
     }
 
     public CargoManipulator() {
@@ -88,7 +95,8 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
         
         cargoSpeedControllerRoller = new GTalonSRX(RobotMap.cargoRollerMotor);
         cargoSpeedControllerRoller.setInverted(true);
-        
+
+        potentiometerFilter = new LowPassFilter(POTENTIOMETER_FILTER_STRENGTH);
     }
 
     /**
@@ -105,13 +113,14 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
      */
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Cargo Wrist Angle", cargoPotentiometer.get());
+        SmartDashboard.putNumber("Raw Cargo Wrist Angle", cargoPotentiometer.get());
+        SmartDashboard.putNumber("Cargo Wrist Angle", potentiometerFilter.filter(cargoPotentiometer.get()));
         SmartDashboard.putBoolean("Has Cargo?", cargoLimitSwitch.isTriggered());
         SmartDashboard.putBoolean("Cargo Arm Extended?", cargoPiston.isExtended());
         SmartDashboard.putNumber("Cargo Roller Speed", cargoSpeedControllerRoller.get());
         SmartDashboard.putNumber("Cargo Ship Angle", shipAngle);
         SmartDashboard.putNumber("Cargo Rocket Angle", rocketAngle);
-        SmartDashboard.putBoolean("Potentiometer is broken", isPotentiometerAbsolutelyDestroyed());
+        SmartDashboard.putBoolean("Is potentiometer broken?", isPotentiometerAbsolutelyDestroyed());
     }
 
     /**
@@ -215,7 +224,9 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
 
     @Override
     protected double returnPIDInput() {
-        return cargoPotentiometer.get();
+        // return cargoPotentiometer.get();
+        // TODO: make sure this works
+        return potentiometerFilter.filter(cargoPotentiometer.get());
     }
 
     @Override

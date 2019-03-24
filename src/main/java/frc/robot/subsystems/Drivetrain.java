@@ -30,14 +30,20 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 public class Drivetrain extends SmartDriveTrainSubsystem {
 
     private static final double TICKS_PER_FOOT = 208355;
+    
+    // Speeds
     public static final double DEFAULT_SPEED = 0.5;
     private static final double MAX_TURBO_SPEED = 0.85;
     private static final double MAX_PRECISE_SPEED = 0.55;
     private static final double MAX_PRECISE_TURN = 0.5;
     private static final double MAX_TURBO_TURN = 0.75;
-    private static final double STABLE_DRIVING_CORRECTION_FACTOR = 0.04;
 
+    // Stabilization
+    private static final double STABLE_DRIVING_CORRECTION_FACTOR = 0.04;
+    private static final double STABLE_DRIVING_ROTATION_THRESHOLD = 0.15;
     public double initialGyro = 0;
+    private int stopCount = 0;
+    private final int MAX_COUNT = 25; // Seconds = MAX_COUNT * 20ms
 
     private ITalonSRX driveRight;
     private ITalonSRX driveLeft;
@@ -46,15 +52,8 @@ public class Drivetrain extends SmartDriveTrainSubsystem {
 
     private boolean turbo = false;
     private boolean inverted = false;
-    private int stopCount = 0;
-    private final int MAX_COUNT = 25;
-
+    
     public Drivetrain() {
-        // super(0.04, 0.0001, 0.06); // TODO: Test to find ideal values
-        // setAbsoluteTolerance(0.5);
-        // getPIDController().setContinuous(false);
-        // setOutputRange(-1, 1);
-
         driveRight = new GTalonSRX(RobotMap.rightMotor);
         driveRight.setSensor(FeedbackDevice.QuadEncoder);
         driveRight.setPID(0.01, 0, 0, (int) Math.round(0.1 * TICKS_PER_FOOT));
@@ -202,9 +201,7 @@ public class Drivetrain extends SmartDriveTrainSubsystem {
      * @param driverJoystick The joystick to be used for driving
      */
     public void operate(Joystick driverJoystick) {
-
-        // double speed = driverController.getTriggerAxis(Hand.kRight) - driverController.getTriggerAxis(Hand.kLeft);
-        double speed = -driverJoystick.getY();//driverController.getY(Hand.kLeft);
+        double speed = -driverJoystick.getY();
         double rotation = driverJoystick.getZ();
 
         double originalRotation = rotation;
@@ -226,7 +223,7 @@ public class Drivetrain extends SmartDriveTrainSubsystem {
             rotation = Math.copySign(Math.pow(rotation, 2), rotation);
         }
 
-        if (Math.abs(originalRotation) >= 0.15) {
+        if (Math.abs(originalRotation) >= STABLE_DRIVING_ROTATION_THRESHOLD) {
 			arcade(speed * speedMultiplier, rotation * rotationMultiplier);
             initialGyro = getHeading();
             stopCount = 0;
@@ -242,14 +239,6 @@ public class Drivetrain extends SmartDriveTrainSubsystem {
             }
 			arcade(speed, -STABLE_DRIVING_CORRECTION_FACTOR * (getHeading() - initialGyro));
 		}
-
-
-        
-
-        // speed *= 1 - (Robot.hatchManipulator.getPosition() / HatchManipulator.BOTTOM_ANGLE);
-
-        // robotDrive.arcadeDrive(speed * speedMultiplier, rotationMultiplier);
-
     }
 
     /**
@@ -259,15 +248,6 @@ public class Drivetrain extends SmartDriveTrainSubsystem {
         if (navX == null)
             return 0;
         return navX.getAngle();
-    }
-
-    /**
-     * Returns the navX compass angle
-     */
-    public double getCompassHeading() {
-        if (navX == null)
-            return 0;
-        return navX.getCompassHeading();
     }
 
     /**
@@ -314,16 +294,6 @@ public class Drivetrain extends SmartDriveTrainSubsystem {
         return inverted;
     }
 
-    // @Override
-    // protected double returnPIDInput() {
-    //     return navX.getAngle(); // TODO: Implement PID (gyro angle)
-    // }
-
-    // @Override
-    // protected void usePIDOutput(double output) {
-    //     rotateRight(output);
-    // }
-
     /**
      * Starts a motion profile to follow an autonomous path
      * 
@@ -349,13 +319,13 @@ public class Drivetrain extends SmartDriveTrainSubsystem {
 
     @Override
     public MotionProfileController getLeftDistanceController() {
-        // TODO: Tune these
-        return new MotionProfileController(60/*9.9*/ / 12.0, 0, /*3.8*/0 / 12.0, 0, 0, 0.05);
+        // TODO: these were too high
+        return new MotionProfileController(5.0, 0, 0, 0, 0, 0.05);
     }
 
     @Override
     public MotionProfileController getRightDistanceController() {
-        return new MotionProfileController(60 / 12.0, 0, 0 / 12.0, 0, 0, 0.05);
+        return new MotionProfileController(5.0, 0, 0, 0, 0, 0.05);
     }
 
     @Override
