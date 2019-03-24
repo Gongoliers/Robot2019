@@ -17,7 +17,7 @@ public class DriveForward extends CommandGroup {
      */
     public DriveForward(double distanceMeters){
         Path path = new Path(Robot.drivetrain);
-        path.addStraightAway(distanceMeters);
+        path.addStraightAway(distanceMeters, 1.2);
         FollowPathCommand pathCommand = new FollowPathCommand(path);
 
         addSequential(pathCommand);

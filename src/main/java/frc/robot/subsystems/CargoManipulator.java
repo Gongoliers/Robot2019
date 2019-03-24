@@ -28,7 +28,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
     public static final double MAXIMUM_ANGLE = 82; // TODO: maybe change this
 
     public static int shipAngle = 82; // 61
-    public static int rocketAngle = 39;
+    public static int rocketAngle = 45;
     public static final int ANGLE_INCREMENTER = 2;
     
     public double shootingSpeed = DEFAULT_SPEED; // 0.8
@@ -63,7 +63,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
         cargoPiston = new Piston(new FRCSolenoid(RobotMap.cargoPiston));
         
         cargoLimitSwitch = new LimitSwitch(RobotMap.cargoLimitSwitch).invert();
-        cargoPotentiometer = new GPotentiometer(RobotMap.cargoPotentiometer, RobotMap.POTENTIOMETER_RANGE_DEGREES, 1970);
+        cargoPotentiometer = new GPotentiometer(RobotMap.cargoPotentiometer, RobotMap.POTENTIOMETER_RANGE_DEGREES, 1320);
         
         cargoSpeedControllerWrist = new GTalonSRX(RobotMap.cargoWristMotor);
         cargoSpeedControllerWrist.setInverted(true);
@@ -94,6 +94,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
         SmartDashboard.putNumber("Cargo Roller Speed", cargoSpeedControllerRoller.get());
         SmartDashboard.putNumber("Cargo Ship Angle", shipAngle);
         SmartDashboard.putNumber("Cargo Rocket Angle", rocketAngle);
+        SmartDashboard.putBoolean("Potentiometer is broken", isPotentiometerAbsolutelyDestroyed());
     }
 
     /**
@@ -219,6 +220,13 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
 
     public void decreaseShipAngle(){
         shipAngle -= ANGLE_INCREMENTER;
+    }
+
+    public boolean isPotentiometerAbsolutelyDestroyed(){
+        double minValue = -95;
+        double maxValue = 130;
+        double currentValue = returnPIDInput();
+        return currentValue <= minValue || currentValue >= maxValue;
     }
 
 }

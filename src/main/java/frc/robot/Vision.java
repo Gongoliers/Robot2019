@@ -130,7 +130,7 @@ public class Vision extends Subsystem {
             server.setSource(hatchDriverCamera);
         } else {
             currentCamera = cameraSide;
-            server.setSource(cargoDriverCamera);    
+            // server.setSource(cargoDriverCamera);    
         }
     }
 

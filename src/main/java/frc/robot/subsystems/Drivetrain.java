@@ -20,6 +20,8 @@ import com.thegongoliers.talonsrx.TrajectoryCreator;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 
 /**
  * The Drivetrain subsystem is composed of six motors (three on each side). Each
@@ -60,12 +62,14 @@ public class Drivetrain extends SmartDriveTrainSubsystem {
         driveRight.setNeutralDeadband(0.05);
         driveRight.getTalon().setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1);
 
-        GTalonSRX rightSlave1 = new GTalonSRX(RobotMap.rightMotor, RobotMap.rightSlave1);
-        GTalonSRX rightSlave2 = new GTalonSRX(RobotMap.rightMotor, RobotMap.rightSlave2);
+        GTalonSRX rightSlave1 = new GTalonSRX(RobotMap.rightSlave1);
+        GTalonSRX rightSlave2 = new GTalonSRX(RobotMap.rightSlave2);
 
+        SpeedControllerGroup rightMotors = new SpeedControllerGroup(driveRight, rightSlave1, rightSlave2);
         driveRight.setInverted(false);
         rightSlave1.setInverted(false);
         rightSlave2.setInverted(false);
+        
         driveRight.setSensorPhase(true);
 
         driveLeft = new GTalonSRX(RobotMap.leftMotor);
@@ -75,18 +79,17 @@ public class Drivetrain extends SmartDriveTrainSubsystem {
         driveLeft.setNeutralDeadband(0.05);
         driveLeft.getTalon().setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1);
 
-        GTalonSRX leftSlave1 = new GTalonSRX(RobotMap.leftMotor, RobotMap.leftSlave1);
-        GTalonSRX leftSlave2 = new GTalonSRX(RobotMap.leftMotor, RobotMap.leftSlave2);
-        leftSlave1.follow(driveLeft);
-        leftSlave2.follow(driveLeft);
+        GTalonSRX leftSlave1 = new GTalonSRX(RobotMap.leftSlave1);
+        GTalonSRX leftSlave2 = new GTalonSRX(RobotMap.leftSlave2);
 
+        SpeedControllerGroup leftMotors = new SpeedControllerGroup(driveLeft, leftSlave1, leftSlave2);
         driveLeft.setInverted(false);
         leftSlave1.setInverted(false);
         leftSlave2.setInverted(false);
 
         // driveLeft.setSensorPhase(true);
 
-        robotDrive = new DifferentialDrive(driveLeft, driveRight);
+        robotDrive = new DifferentialDrive(leftMotors, rightMotors);
 
         robotDrive.setSafetyEnabled(false);
         // robotDrive.setExpiration(0.1);
@@ -110,6 +113,7 @@ public class Drivetrain extends SmartDriveTrainSubsystem {
 
     @Override
     public void periodic() {
+        SmartDashboard.putNumber("Drivetrain Distance", Odometry.getDistance(getLeftDistance(), getRightDistance()));
         SmartDashboard.putNumber("Left Distance", getLeftDistance());
         SmartDashboard.putNumber("Right Distance", getRightDistance());
         SmartDashboard.putNumber("Left Velocity", driveLeft.getVelocity() / TICKS_PER_FOOT / 10.0);
@@ -346,12 +350,12 @@ public class Drivetrain extends SmartDriveTrainSubsystem {
     @Override
     public MotionProfileController getLeftDistanceController() {
         // TODO: Tune these
-        return new MotionProfileController(9.9 / 12.0, 0, 3.8 / 12.0, 0, 0, 0.05);
+        return new MotionProfileController(60/*9.9*/ / 12.0, 0, /*3.8*/0 / 12.0, 0, 0, 0.05);
     }
 
     @Override
     public MotionProfileController getRightDistanceController() {
-        return new MotionProfileController(9.9 / 12.0, 0, 3.8 / 12.0, 0, 0, 0.05);
+        return new MotionProfileController(60 / 12.0, 0, 0 / 12.0, 0, 0, 0.05);
     }
 
     @Override

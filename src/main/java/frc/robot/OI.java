@@ -124,8 +124,8 @@ public class OI {
 
         // driverSide.whenPressed(new AlignToFrontTarget());
 
-        driverTopLeft.whenPressed(new DisableTargetMode());
-        driverTopRight.whenPressed(new AlignToRearTarget());
+        // driverTopLeft.whenPressed(new DisableTargetMode());
+        // driverTopRight.whenPressed(new DriveForward(0.5 * Constants.FEET_TO_METERS));
 
 
         // driverController.BACK.whenPressed(new StopEverything()); // SELECT to stop everything
@@ -192,7 +192,7 @@ public class OI {
         b5.whenPressed(new StopEverything());
         b6.whenPressed(new RotateCargoIntakeToShip());
         b7.whenPressed(new RotateCargoIntakeToRocket());
-        b8.whenPressed(new DriveToDistance(-0.5));
+        // b8.whenPressed();
         b9.whenPressed(new EjectCargo());
         b10.whenPressed(new StartCompressor());
         b11.whenPressed(new StopCompressor());

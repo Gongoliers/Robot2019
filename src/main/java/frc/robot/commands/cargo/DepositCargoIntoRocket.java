@@ -8,7 +8,7 @@ public class DepositCargoIntoRocket extends CommandGroup {
   public DepositCargoIntoRocket() {
 
     addSequential(new MoveCargoIntakeToAngle(CargoManipulator.rocketAngle), 1.2);
-    addSequential(new EjectCargo(0.8));
+    addSequential(new EjectCargo(0.9));
 
   }
 }

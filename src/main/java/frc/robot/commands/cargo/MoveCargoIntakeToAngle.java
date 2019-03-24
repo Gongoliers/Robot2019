@@ -14,6 +14,9 @@ public class MoveCargoIntakeToAngle extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        if (Robot.cargoManipulator.isPotentiometerAbsolutelyDestroyed()){
+            return;
+        }
         Robot.cargoManipulator.enable();
         Robot.cargoManipulator.setSetpoint(angle);
     }
@@ -27,6 +30,9 @@ public class MoveCargoIntakeToAngle extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
+        if (Robot.cargoManipulator.isPotentiometerAbsolutelyDestroyed()){
+            return true;
+        }
         return Robot.cargoManipulator.onTarget();
     }
 
