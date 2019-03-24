@@ -1,8 +1,8 @@
 package frc.robot.commands.cargo;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.subsystems.CargoManipulator;
 
 /**
  * Deposits the Cargo into the Cargo Ship
@@ -12,13 +12,11 @@ public class EjectCargo extends Command {
     private double speed;
 
     public EjectCargo() {
-
         requires(Robot.cargoManipulator);
-        speed = Robot.cargoManipulator.shootingSpeed;
+        speed = CargoManipulator.CARGO_SHIP_SHOOTING_SPEED;
     }
 
     public EjectCargo(double speed) {
-
         requires(Robot.cargoManipulator);
         this.speed = speed;
     }
@@ -26,8 +24,7 @@ public class EjectCargo extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        OI.manipulatorController.vibrate(0.5F);
-        setTimeout(1);
+        setTimeout(CargoManipulator.EJECT_CARGO_MINIMUM_TIME);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -46,7 +43,6 @@ public class EjectCargo extends Command {
     @Override
     protected void end() {
         Robot.cargoManipulator.stopRollers();
-        OI.manipulatorController.stopVibration();
     }
 
     // Called when another command which requires one or more of the same

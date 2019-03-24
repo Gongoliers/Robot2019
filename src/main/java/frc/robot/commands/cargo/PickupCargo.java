@@ -1,8 +1,6 @@
 package frc.robot.commands.cargo;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.OI;
-import frc.robot.commands.*;
 import frc.robot.subsystems.CargoManipulator;
 
 /**
@@ -12,15 +10,9 @@ public class PickupCargo extends CommandGroup {
 
 
     public PickupCargo() {
-
-        addSequential(new VibrateController(OI.manipulatorController, 0.5F));
-
         addSequential(new BringCargoArmToFloor());
-        addSequential(new MoveCargoIntakeToAngle(CargoManipulator.RESTING_ANGLE - 10), 2);
+        addSequential(new MoveCargoIntakeToAngle(CargoManipulator.intakeAngle), CargoManipulator.WRIST_MOVEMENT_TIMEOUT_SECONDS);
         addSequential(new IntakeCargo());
         addSequential(new ResetCargoManipulator());
-
-        addSequential(new VibrateStop(OI.manipulatorController));
-
     } 
 }

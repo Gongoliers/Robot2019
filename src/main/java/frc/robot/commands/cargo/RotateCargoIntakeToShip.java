@@ -4,6 +4,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.CargoManipulator;
 
+/**
+ * USED FOR TUNING
+ */
 public class RotateCargoIntakeToShip extends Command {
 
     public RotateCargoIntakeToShip() {

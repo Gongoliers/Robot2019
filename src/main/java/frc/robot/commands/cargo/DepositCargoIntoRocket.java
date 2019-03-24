@@ -6,9 +6,7 @@ import frc.robot.subsystems.CargoManipulator;
 public class DepositCargoIntoRocket extends CommandGroup {
 
   public DepositCargoIntoRocket() {
-
-    addSequential(new MoveCargoIntakeToAngle(CargoManipulator.rocketAngle), 1.2);
-    addSequential(new EjectCargo(0.9));
-
+    addSequential(new MoveCargoIntakeToAngle(CargoManipulator.rocketAngle), CargoManipulator.WRIST_MOVEMENT_TIMEOUT_SECONDS);
+    addSequential(new EjectCargo(CargoManipulator.ROCKET_SHIP_SHOOTING_SPEED));
   }
 }

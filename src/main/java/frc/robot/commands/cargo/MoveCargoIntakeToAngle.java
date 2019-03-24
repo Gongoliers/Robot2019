@@ -2,13 +2,14 @@ package frc.robot.commands.cargo;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.subsystems.CargoManipulator;
 
 public class MoveCargoIntakeToAngle extends Command {
 
     private double angle;
 
     public MoveCargoIntakeToAngle(double angle) {
-        this.angle = angle;
+        this.angle = Math.min(CargoManipulator.POTENTIOMETER_SOFT_STOP_MAX, Math.max(CargoManipulator.POTENTIOMETER_SOFT_STOP_MIN, angle));
     }
 
     // Called just before this Command runs the first time
@@ -30,10 +31,7 @@ public class MoveCargoIntakeToAngle extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        if (Robot.cargoManipulator.isPotentiometerAbsolutelyDestroyed()){
-            return true;
-        }
-        return Robot.cargoManipulator.onTarget();
+        return Robot.cargoManipulator.isPotentiometerAbsolutelyDestroyed() || Robot.cargoManipulator.onTarget();
     }
 
     // Called once after isFinished returns true

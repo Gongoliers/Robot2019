@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import frc.robot.Constants;
 import frc.robot.RobotMap;
 import frc.robot.commands.cargo.ResetCargoManipulator;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
@@ -21,17 +22,32 @@ import com.thegongoliers.talonsrx.ITalonSRX;
  */
 public class CargoManipulator extends PIDSubsystem implements IPiston {
 
+    // Potentiometer properties
+    public static final double POTENTIOMETER_OFFSET = 1320;
+    public static final double POTENTIOMETER_SOFT_STOP_MIN = -95;
+    public static final double POTENTIOMETER_SOFT_STOP_MAX = 130;
+    public static final double POTENTIOMETER_NOMINAL_MIN = -100;
+    public static final double POTENTIOMETER_NOMINAL_MAX = 135;
+
     public static final double DEFAULT_SPEED = 1;
     public static final double MAXIMUM_SPEED = 0.9;
     public static final double INTAKE_SPEED = 0.45; 
     public static final double RESTING_ANGLE = 0;
-    public static final double MAXIMUM_ANGLE = 82; // TODO: maybe change this
+    public static final double MAXIMUM_ANGLE = 82;
 
-    public static int shipAngle = 82; // 61
+    // Angles
+    public static int shipAngle = 82;
     public static int rocketAngle = 45;
+    public static int intakeAngle = -10;
     public static final int ANGLE_INCREMENTER = 2;
     
-    public double shootingSpeed = DEFAULT_SPEED; // 0.8
+    // Shooting speeds
+    public static final double CARGO_SHIP_SHOOTING_SPEED = 1.0;
+    public static final double ROCKET_SHIP_SHOOTING_SPEED = 0.9;
+
+    // Timeouts
+    public static final double WRIST_MOVEMENT_TIMEOUT_SECONDS = 1.2; 
+    public static final double EJECT_CARGO_MINIMUM_TIME = 1; 
 
     private IPiston cargoPiston;
 
@@ -45,6 +61,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
      * Create a CargoManipulator with passed in components - used for testing purposes
      */
     public CargoManipulator(IPiston piston, Switch cargoSwitch, Potentiometer potentiometer, ITalonSRX wristTalon, ITalonSRX rollerTalon) {
+        // FOR TESTING PURPOSES
         super(0, 0, 0);
 
         this.cargoPiston = piston;
@@ -63,7 +80,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
         cargoPiston = new Piston(new FRCSolenoid(RobotMap.cargoPiston));
         
         cargoLimitSwitch = new LimitSwitch(RobotMap.cargoLimitSwitch).invert();
-        cargoPotentiometer = new GPotentiometer(RobotMap.cargoPotentiometer, RobotMap.POTENTIOMETER_RANGE_DEGREES, 1320);
+        cargoPotentiometer = new GPotentiometer(RobotMap.cargoPotentiometer, Constants.POTENTIOMETER_RANGE_DEGREES, POTENTIOMETER_OFFSET);
         
         cargoSpeedControllerWrist = new GTalonSRX(RobotMap.cargoWristMotor);
         cargoSpeedControllerWrist.setInverted(true);
@@ -223,8 +240,8 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
     }
 
     public boolean isPotentiometerAbsolutelyDestroyed(){
-        double minValue = -95;
-        double maxValue = 130;
+        double minValue = POTENTIOMETER_NOMINAL_MIN;
+        double maxValue = POTENTIOMETER_NOMINAL_MAX;
         double currentValue = returnPIDInput();
         return currentValue <= minValue || currentValue >= maxValue;
     }
