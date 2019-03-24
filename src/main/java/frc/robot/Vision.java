@@ -65,7 +65,6 @@ public class Vision extends Subsystem {
         // targetDetector = new CargoBayDetector(visionTargetDetector);
 
         // Initialize the server
-        // server = CameraServer.getInstance().getServer();
         server = CameraServer.getInstance().addSwitchedCamera("Driving camera");
         
 
@@ -116,14 +115,6 @@ public class Vision extends Subsystem {
         camera.setWhiteBalanceAuto();
     }
 
-    /**
-     * Switches the CameraServer stream to the driving camera
-     *
-     */
-    public void switchToDriverCamera() {
-        server.setSource(hatchDriverCamera);
-    }
-
     public void setPrimaryCamera(CameraSide cameraSide){
         if (cameraSide == CameraSide.HATCH){
             currentCamera = cameraSide;
@@ -132,14 +123,6 @@ public class Vision extends Subsystem {
             currentCamera = cameraSide;
             // server.setSource(cargoDriverCamera);    
         }
-    }
-
-    /**
-     * Switches the CameraServer stream to the targeting camera
-     *
-     */
-    public void switchToTargetingCamera() {
-        // server.setSource(targetingCamera);
     }
 
     @Override

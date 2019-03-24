@@ -62,8 +62,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void disabledInit(){
-        OI.driverController.stopVibration();
-        OI.manipulatorController.stopVibration();
     }
 
     @Override

@@ -59,6 +59,7 @@ public class OI {
 
     public OI() {
         /*
+         * TODO: Update this
          * Driver (Xbox)
          * -----------
          * LB (pressed) -> Enable Precise
@@ -112,6 +113,7 @@ public class OI {
         // Manipulator joystick is plugged into port 2
         manipulatorJoystick = new Joystick(2);
 
+        // DRIVER
         Button driverTrigger = new JoystickButton(driverJoystick, 1);
         Button driverSide = new JoystickButton(driverJoystick, 2);
         Button driverTopLeft = new JoystickButton(driverJoystick, 3);
@@ -121,25 +123,6 @@ public class OI {
         driverTrigger.whenReleased(new DisableTurboDrivetrain());
 
         driverSide.whenPressed(new ToggleDrivingSide());
-
-        // driverSide.whenPressed(new AlignToFrontTarget());
-
-        // driverTopLeft.whenPressed(new DisableTargetMode());
-        // driverTopRight.whenPressed(new DriveForward(0.5 * Constants.FEET_TO_METERS));
-
-
-        // driverController.BACK.whenPressed(new StopEverything()); // SELECT to stop everything
-        // driverController.RB.whenPressed(new EnableTurboDrivetrain()); // RB to turbo
-        // driverController.LB.whenPressed(new DisableTurboDrivetrain()); // LB to precise
-
-        // driverController.A.whenPressed(new AlignToFrontTarget()); // A to align front
-        // // driverController.B.whenPressed(new AlignToRearTarget()); // B to align rear
-
-        // driverController.LT.whenPressed(new SwitchToCargoMode()); // DPAD Down for cargo mode
-        // driverController.RT.whenPressed(new SwitchToHatchMode()); // DPAD Up for hatch mode
-
-        // driverController.LT.whenPressed(new OperateDrivetrain());
-        // driverController.RT.whenPressed(new OperateDrivetrain());
         
         Button driveStickMoved = Hardware.makeButton(new BooleanSupplier(){
         
@@ -151,27 +134,8 @@ public class OI {
 
         driveStickMoved.whenPressed(new OperateDrivetrain());
         
-        
-        /*
-        manipulatorController.BACK.whenPressed(new StopEverything()); // SELECT to stop everything
-        manipulatorController.START.whenPressed(new DisableClimberSafety()); // allow HAB commands to work (while holding PAUSE)
-        manipulatorController.START.whenReleased(new EnableClimberSafety()); // prevent HAB commands from working (when PAUSE released)
 
-        manipulatorController.Y.whenPressed(new DeploySkids()); // press Y while holding PAUSE to deploy skids for climbing
-        manipulatorController.B.whenPressed(new RetractClimber()); // press B while holding PAUSE to retract climbing piston
-        manipulatorController.A.whenPressed(new ExtendClimber()); // press A while holding PAUSE to extend climbing piston
-        manipulatorController.X.whileHeld(new ManualLowerHatchula()); // hold X to manually lower hatchula
-        
-        manipulatorController.LT.whenPressed(new EjectCargo()); // LT to deposit cargo
-        manipulatorController.RT.whenPressed(new DepositHatch()); // RT to deposit hatch
-
-        manipulatorController.LB.whenPressed(new PickupCargo()); // LB to automatically pickup cargo from floor
-        manipulatorController.RB.whenPressed(new BringToFloorHatch()); // RB to automatically pickup hatch from floor
-
-        manipulatorController.DPAD_UP.whenPressed(new StartCompressor()); // DPAD Up for compressor on 
-        manipulatorController.DPAD_DOWN.whenPressed(new StopCompressor()); // DPAD Down for compressor off
-        */
-
+        // MANIPULATOR
         b1 = new JoystickButton(manipulatorJoystick, 1);
         b2 = new JoystickButton(manipulatorJoystick, 2);
         b3 = new JoystickButton(manipulatorJoystick, 3);
@@ -190,68 +154,21 @@ public class OI {
         b3.whenPressed(new PickupCargo());
         b4.whenPressed(new DepositCargoIntoRocket());
         b5.whenPressed(new StopEverything());
-        b6.whenPressed(new RotateCargoIntakeToShip());
-        b7.whenPressed(new RotateCargoIntakeToRocket());
+        // b6.whenPressed(new RotateCargoIntakeToShip());
+        // b7.whenPressed(new RotateCargoIntakeToRocket());
         // b8.whenPressed();
         b9.whenPressed(new EjectCargo());
         b10.whenPressed(new StartCompressor());
         b11.whenPressed(new StopCompressor());
 
         // ~~ SmartDashboard Buttons ~~
-
-        // Stops
-        // SmartDashboard.putData("Stop Drivetrain", new StopDrivetrain());
-        // SmartDashboard.putData("Stop Cargo Manipulator", new StopCargoManipulator());
-        // SmartDashboard.putData("Stop Hatch Manipulator", new StopHatchManipulator());
-        // SmartDashboard.putData("** STOP EVERYTHING **", new StopEverything());
-        
-        // Drivetrain
-        // SmartDashboard.putData("Enable Turbo Drivetrain", new EnableTurboDrivetrain());
-        // SmartDashboard.putData("Disable Turbo Drivetrain", new DisableTurboDrivetrain());
+        // Drivetrain tuning
         SmartDashboard.putData("Rotate To 90° Angle Drivetrain", new RotateDrivetrain(90));
         SmartDashboard.putData("Rotate To 180° Angle Drivetrain", new RotateDrivetrain(180));
-        
-        // Hatch
-        // SmartDashboard.putData("Bring To Floor Hatch", new BringToFloorHatch());
-        // SmartDashboard.putData("Bring To Standard Position Hatch", new BringToStandardPositionHatch());
-        // SmartDashboard.putData("Eject Hatch", new EjectHatch());
-        // SmartDashboard.putData("Retract Hatch Pistons", new RetractHatchPistons());
-        // SmartDashboard.putData("Deposit Hatch", new DepositHatch());
-        // SmartDashboard.putData("Reset Hatch Manipulator", new ResetHatchManipulator());
-        
-        // Cargo
-        // SmartDashboard.putData("Bring Cargo Arm To Floor", new BringCargoArmToFloor());
-        // SmartDashboard.putData("Intake Cargo", new IntakeCargo());
-        // SmartDashboard.putData("Deposit Cargo", new DepositCargo());
-        // SmartDashboard.putData("Pickup Cargo", new PickupCargo());
-        // SmartDashboard.putData("Stop Cargo Intake", new StopCargoIntake());
-        // SmartDashboard.putData("Retract Cargo Arm", new RetractCargoArm());
-        // SmartDashboard.putData("Reset Cargo Manipulator", new ResetCargoManipulator());
-        
-        // Endgame / HAB Climber
-        // SmartDashboard.putData("Deploy Skids", new DeploySkids());
-        // SmartDashboard.putData("Extend Climber", new ExtendClimber());
-        // SmartDashboard.putData("Retract Climber", new RetractClimber());
-
-        // Drivetrain controller mode
-        // SmartDashboard.putData("Switch to Cargo Mode", new SwitchToCargoMode());
-        // SmartDashboard.putData("Switch to Hatch Mode", new SwitchToHatchMode());
+        SmartDashboard.putData("Back-up from cargo ship", new DriveForward(-1 * Constants.FEET_TO_METERS));
 
         // Vision
-        SmartDashboard.putData("Vision: Align to Front Target", new AlignToTarget());
-        // SmartDashboard.putData("Vision: Align to Rear Target", new AlignToRearTarget());
-        // SmartDashboard.putData("Vision: Disable Target Mode", new DisableTargetMode());
-        // SmartDashboard.putData("Vision: Enable Target Mode", new EnableTargetMode());
-
-        // Autonomous Command Groups
-        // SmartDashboard.putData("Auto: Left HAB1 Deliver Two Hatches", new AutoLeftHAB1DeliverTwoHatches());
-        // SmartDashboard.putData("Auto: Middle HAB1 Deliver Two Hatches", new AutoMiddleHAB1DeliverTwoHatches());
-        // SmartDashboard.putData("Auto: Right HAB1 Deliver Two Hatches", new AutoRightHAB1DeliverTwoHatches());
-
-        // Autonomous Paths
-        // SmartDashboard.putData("Path: Drive Forwards 3.6 feet", new FollowPathDrivetrain(PathDriveForwards.leftPoints, PathDriveForwards.rightPoints));
-        SmartDashboard.putData("Drive Forwards 3.6 feet", new DriveForward(3.6 * Constants.FEET_TO_METERS));
-        SmartDashboard.putData("Back-up from cargo ship", new DriveForward(-1 * Constants.FEET_TO_METERS));
+        SmartDashboard.putData("Vision: Align to Front Target", new AlignToTarget());        
 
         // Cargo wrist tuning
         SmartDashboard.putData("Increase Cargo Ship Angle", new IncreaseShipAngle());

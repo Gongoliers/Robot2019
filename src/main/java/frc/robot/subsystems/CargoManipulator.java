@@ -75,7 +75,7 @@ public class CargoManipulator extends PIDSubsystem implements IPiston {
         this.cargoPotentiometer = potentiometer;
         this.cargoSpeedControllerRoller = rollerTalon;
         this.cargoSpeedControllerWrist = wristTalon;
-        potentiometerFilter = new LowPassFilter(POTENTIOMETER_FILTER_STRENGTH);
+        potentiometerFilter = new LowPassFilter(0);
     }
 
     public CargoManipulator() {
