@@ -1,37 +1,22 @@
-package frc.robot.commands.drivetrain;
+package frc.robot.commands.cargo;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.subsystems.CargoManipulator;
 
-/**
- * Allows the operator to take control of the drivetrain
- */
-public class OperateDrivetrain extends Command {
+public class RotateCargoIntakeToShip extends Command {
 
-    public OperateDrivetrain() {
-
-        requires(Robot.drivetrain);
-
-    }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.drivetrain.resetHeading();
-        Robot.drivetrain.initialGyro = Robot.drivetrain.getHeading();
-        try {
-            Robot.vision.switchToDriverCamera();
-            Robot.vision.disableTargetMode(Robot.vision.cargoDriverCamera);
-        } catch(Exception e){
-            // Empty
-        }
+        Robot.cargoManipulator.enable();
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.drivetrain.operate(OI.driverJoystick);
+        Robot.cargoManipulator.setSetpoint(CargoManipulator.shipAngle);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -43,7 +28,8 @@ public class OperateDrivetrain extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.drivetrain.stop();
+        Robot.cargoManipulator.disable();
+        Robot.cargoManipulator.stopWrist();
     }
 
     // Called when another command which requires one or more of the same

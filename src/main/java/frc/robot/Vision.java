@@ -36,7 +36,7 @@ public class Vision extends Subsystem {
     private static final boolean TARGET_CAMERA_INVERTED = false;
 
     public UsbCamera hatchDriverCamera;
-    public UsbCamera targetingCamera;
+    public UsbCamera cargoDriverCamera;
 
     private VideoSink server;
 
@@ -53,16 +53,16 @@ public class Vision extends Subsystem {
         hatchDriverCamera = CameraServer.getInstance().startAutomaticCapture("Driver camera (hatch)", RobotMap.driverCamera);
         hatchDriverCamera.setResolution(DRIVER_CAMERA_RESOLUTION.getWidth(), DRIVER_CAMERA_RESOLUTION.getHeight());
 
-        // cargoDriverCamera = CameraServer.getInstance().startAutomaticCapture("Driver camera (cargo)", RobotMap.cargoDriverCamera);
-        // cargoDriverCamera.setResolution(DRIVER_CAMERA_RESOLUTION.getWidth(), DRIVER_CAMERA_RESOLUTION.getHeight()); 
+        cargoDriverCamera = CameraServer.getInstance().startAutomaticCapture("Driver camera (cargo)", RobotMap.cargoDriverCamera);
+        cargoDriverCamera.setResolution(DRIVER_CAMERA_RESOLUTION.getWidth(), DRIVER_CAMERA_RESOLUTION.getHeight()); 
 
         // Initialize the targeting camera
-        targetingCamera = CameraServer.getInstance().startAutomaticCapture("Targeting camera", RobotMap.targetingCamera);
-        targetingCamera.setResolution(TARGET_CAMERA_RESOLUTION.getWidth(), TARGET_CAMERA_RESOLUTION.getHeight());
-        enableTargetMode(targetingCamera);
-        cameraSettings = new CameraSettings(TARGET_CAMERA_INVERTED, TARGET_CAMERA_VIEW_ANGLES, TARGET_CAMERA_RESOLUTION);
-        VisionTargetDetector visionTargetDetector = new VideoCameraVisionTargetDetector(targetingCamera, cameraSettings, TargetFinderFactory.getCargoShipTargetFinder(cameraSettings));
-        targetDetector = new CargoBayDetector(visionTargetDetector);
+        // targetingCamera = CameraServer.getInstance().startAutomaticCapture("Targeting camera", RobotMap.targetingCamera);
+        // targetingCamera.setResolution(TARGET_CAMERA_RESOLUTION.getWidth(), TARGET_CAMERA_RESOLUTION.getHeight());
+        // enableTargetMode(targetingCamera);
+        // cameraSettings = new CameraSettings(TARGET_CAMERA_INVERTED, TARGET_CAMERA_VIEW_ANGLES, TARGET_CAMERA_RESOLUTION);
+        // VisionTargetDetector visionTargetDetector = new VideoCameraVisionTargetDetector(targetingCamera, cameraSettings, TargetFinderFactory.getCargoShipTargetFinder(cameraSettings));
+        // targetDetector = new CargoBayDetector(visionTargetDetector);
 
         // Initialize the server
         // server = CameraServer.getInstance().getServer();
@@ -86,8 +86,8 @@ public class Vision extends Subsystem {
      * @return The vision targets sorted by percent area (largest to smallest).
      */
     public List<VisionTarget> detectTargets() {
-        // return new ArrayList<VisionTarget>();
-        return targetDetector.getTargets();
+        return new ArrayList<VisionTarget>();
+        // return targetDetector.getTargets();
     }
 
     /**
@@ -130,8 +130,7 @@ public class Vision extends Subsystem {
             server.setSource(hatchDriverCamera);
         } else {
             currentCamera = cameraSide;
-            // TODO: Set to driver cargo camera
-            // server.setSource(targetingCamera);    
+            server.setSource(cargoDriverCamera);    
         }
     }
 

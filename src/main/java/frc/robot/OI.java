@@ -196,8 +196,8 @@ public class OI {
         b3.whenPressed(new PickupCargo());
         b4.whenPressed(new DepositCargoIntoRocket());
         b5.whenPressed(new StopEverything());
-        // b6.whenPressed(new ExtendClimber());
-        // b7.whenPressed(new RetractClimber());
+        b6.whenPressed(new RotateCargoIntakeToShip());
+        b7.whenPressed(new RotateCargoIntakeToRocket());
         // b8.whenPressed(new DeploySkids());
         b9.whenPressed(new EjectCargo());
         b10.whenPressed(new StartCompressor());
@@ -261,20 +261,7 @@ public class OI {
         SmartDashboard.putData("Drive Forwards 4 feet", new DriveToDistance(4));
         SmartDashboard.putData("Back-up from cargo ship", new DriveToDistance(-1));
 
-        // SmartDashboard.putData("Path: Left HAB1 To FrontLeft Hatch", new FollowPathDrivetrain(PathLeftHAB1ToFrontLeftHatch.leftPoints, PathLeftHAB1ToFrontLeftHatch.rightPoints));
-        // SmartDashboard.putData("Path: Middle HAB1 To FrontLeft Hatch", new FollowPathDrivetrain(PathMiddleHAB1ToFrontLeftHatch.leftPoints, PathMiddleHAB1ToFrontLeftHatch.rightPoints));
-        // SmartDashboard.putData("Path: Right HAB1 To FrontRight Hatch", new FollowPathDrivetrain(PathRightHAB1ToFrontRightHatch.leftPoints, PathRightHAB1ToFrontRightHatch.rightPoints));
-
-        // SmartDashboard.putData("Path: Backup from Left Station", new FollowPathDrivetrain(PathBackupFromLeftStation.leftPoints, PathBackupFromLeftStation.rightPoints));
-        // SmartDashboard.putData("Path: Backup from Right Station", new FollowPathDrivetrain(PathBackupFromRightStation.leftPoints, PathBackupFromRightStation.rightPoints));
-        // SmartDashboard.putData("Path: Backup from Front Left Hatch", new FollowPathDrivetrain(PathBackupFromFrontLeftHatch.leftPoints, PathBackupFromFrontLeftHatch.rightPoints));
-        // SmartDashboard.putData("Path: Backup from Front Right Hatch", new FollowPathDrivetrain(PathBackupFromFrontRightHatch.leftPoints, PathBackupFromFrontRightHatch.rightPoints));
-
-        // SmartDashboard.putData("Path: To Left Station", new FollowPathDrivetrain(PathToLeftStation.leftPoints, PathToLeftStation.rightPoints));
-        // SmartDashboard.putData("Path: To Right Station", new FollowPathDrivetrain(PathToRightStation.leftPoints, PathToRightStation.rightPoints));
-        // SmartDashboard.putData("Path: To Left Side Hatch", new FollowPathDrivetrain(PathToLeftSideHatch.leftPoints, PathToLeftSideHatch.rightPoints));
-        // SmartDashboard.putData("Path: To Right Side Hatch", new FollowPathDrivetrain(PathToRightSideHatch.leftPoints, PathToRightSideHatch.rightPoints));
-
+        // Cargo wrist tuning
         SmartDashboard.putData("Increase Cargo Ship Angle", new IncreaseShipAngle());
         SmartDashboard.putData("Decrease Cargo Ship Angle", new DecreaseShipAngle());
         SmartDashboard.putData("Increase Cargo Rocket Angle", new IncreaseRocketAngle());
