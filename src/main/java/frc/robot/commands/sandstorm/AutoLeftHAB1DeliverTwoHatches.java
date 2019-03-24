@@ -19,15 +19,11 @@ public class AutoLeftHAB1DeliverTwoHatches extends CommandGroup {
    *  and (3) deliver the second hatch to the first left-side cargo bay spot.
    */
   public AutoLeftHAB1DeliverTwoHatches() {
-
-    // Enable target mode
-    addSequential(new EnableTargetMode());
-
     // Drive from HAB to cargo bay
     addSequential(new FollowPathDrivetrain(PathLeftHAB1ToFrontLeftHatch.leftPoints, PathLeftHAB1ToFrontLeftHatch.rightPoints));
     
     // Align and deposit hatch
-    addSequential(new AlignToFrontTarget());
+    addSequential(new AlignToTarget());
     addSequential(new FollowPathDrivetrain(PathDriveForwards.leftPoints, PathDriveForwards.rightPoints));
     addSequential(new DepositHatch());
     
@@ -37,7 +33,7 @@ public class AutoLeftHAB1DeliverTwoHatches extends CommandGroup {
     addSequential(new FollowPathDrivetrain(PathToLeftStation.leftPoints, PathToLeftStation.rightPoints));
 
     // Align with station and grab hatch
-    addSequential(new AlignToFrontTarget());
+    addSequential(new AlignToTarget());
     addSequential(new FollowPathDrivetrain(PathDriveForwards.leftPoints, PathDriveForwards.rightPoints));
 
     // Drive from station to cargo bay
@@ -46,12 +42,9 @@ public class AutoLeftHAB1DeliverTwoHatches extends CommandGroup {
     addSequential(new FollowPathDrivetrain(PathToLeftSideHatch.leftPoints, PathToLeftSideHatch.rightPoints));
     
     // Align and depsoit hatch
-    addSequential(new AlignToFrontTarget());
+    addSequential(new AlignToTarget());
     addSequential(new FollowPathDrivetrain(PathDriveForwards.leftPoints, PathDriveForwards.rightPoints));
     addSequential(new DepositHatch());
-
-    // Disable target mode
-    addSequential(new DisableTargetMode());
 
   }
 }

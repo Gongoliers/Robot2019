@@ -238,9 +238,7 @@ public class OI {
         // SmartDashboard.putData("Switch to Hatch Mode", new SwitchToHatchMode());
 
         // Vision
-        SmartDashboard.putData("Vision: Switch to Cargo camera", new UseCargoCamera());
-        SmartDashboard.putData("Vision: Switch to Hatch camera", new UseHatchCamera());
-        SmartDashboard.putData("Vision: Align to Front Target", new AlignToRearTarget());
+        SmartDashboard.putData("Vision: Align to Front Target", new AlignToTarget());
         // SmartDashboard.putData("Vision: Align to Rear Target", new AlignToRearTarget());
         // SmartDashboard.putData("Vision: Disable Target Mode", new DisableTargetMode());
         // SmartDashboard.putData("Vision: Enable Target Mode", new EnableTargetMode());
